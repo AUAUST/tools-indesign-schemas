@@ -6,12 +6,39 @@
   "definitions": {
     "unit": {
       "anyOf": [
-        { "type": "number" },
+        {
+          "type": "number"
+        },
         {
           "type": "string",
           "pattern": "^-?[0-9]+(?:\\.[0-9]+)?(?:pt|mm|cm|in|i|)$"
         }
       ]
+    },
+    "style": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_.-]+$"
+    },
+    "layout": {
+      "corners": {
+        "type": "object",
+        "properties": {
+          "style": {
+            "type": "string",
+            "enum": [
+              "BEVEL_CORNER",
+              "FANCY_CORNER",
+              "INSET_CORNER",
+              "INVERSE_ROUNDED_CORNER",
+              "NONE",
+              "ROUNDED_CORNER"
+            ]
+          },
+          "radius": {
+            "$ref": "#/definitions/unit"
+          }
+        }
+      }
     }
   },
   "properties": {
@@ -30,23 +57,36 @@
               "type": "array",
               "description": "Snippets to apply to the paragraph style. Can also be used inside a snippet paragraph style and it'll work as expected.\n\nIt uses no InDesign built-in inheritance but applies the properties directly.",
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/style"
               }
             },
             "basedOn": {
-              "type": "string",
+              "$ref": "#/definitions/style",
               "description": "On which other paragraph style this one should be based. The input is the name of the target paragraph style."
+            },
+            "nextStyle": {
+              "$ref": "#/definitions/style",
+              "description": "The style to apply to new paragraphs that follow paragraphs tagged with this style."
             },
             "text": {
               "type": "object",
               "description": "Configure text.",
               "properties": {
-                "fontFamily": { "type": "string" },
-                "fontStyle": { "type": "string" },
-                "fontSize": { "$ref": "#/definitions/unit" },
+                "fontFamily": {
+                  "type": "string"
+                },
+                "fontStyle": {
+                  "type": "string"
+                },
+                "fontSize": {
+                  "$ref": "#/definitions/unit"
+                },
                 "variable": {
                   "anyOf": [
-                    { "type": "boolean", "enum": [false] },
+                    {
+                      "type": "boolean",
+                      "enum": [false]
+                    },
                     {
                       "type": "object",
                       "patternProperties": {
@@ -55,9 +95,15 @@
                         }
                       },
                       "properties": {
-                        "Weight": { "type": "number" },
-                        "Width": { "type": "number" },
-                        "Italic": { "type": "number" }
+                        "Weight": {
+                          "type": "number"
+                        },
+                        "Width": {
+                          "type": "number"
+                        },
+                        "Italic": {
+                          "type": "number"
+                        }
                       }
                     }
                   ]
@@ -86,13 +132,109 @@
                   "properties": {
                     "kerning": {
                       "anyOf": [
-                        { "type": "number", "const": 0 },
-                        { "type": "string", "enum": ["Optical", "Metrics"] }
+                        {
+                          "type": "number",
+                          "const": 0
+                        },
+                        {
+                          "type": "string",
+                          "enum": ["Optical", "Metrics"]
+                        }
                       ]
                     },
                     "ligatures": {
                       "type": "boolean",
                       "description": "If true, replaces specific character combinations (e.g., fl, fi) with ligature characters."
+                    },
+                    "contextualAlternate": {
+                      "type": "boolean",
+                      "description": "If true, uses contextual alternate forms in OpenType fonts."
+                    },
+                    "discretionaryLigature": {
+                      "type": "boolean",
+                      "description": "If true, uses discretionary ligatures in OpenType fonts."
+                    },
+                    "figureStyle": {
+                      "type": "string",
+                      "enum": [
+                        "DEFAULT_VALUE",
+                        "PROPORTIONAL_LINING",
+                        "PROPORTIONAL_OLDSTYLE",
+                        "TABULAR_LINING",
+                        "TABULAR_OLDSTYLE"
+                      ],
+                      "description": "The figure style in OpenType fonts."
+                    },
+                    "fraction": {
+                      "type": "boolean",
+                      "description": "If true, uses fractions in OpenType fonts."
+                    },
+                    "historical": {
+                      "type": "boolean",
+                      "description": "If true, use historical forms in OpenType fonts."
+                    },
+                    "justificationAlternate": {
+                      "type": "boolean",
+                      "description": "If true, use alternate justification forms in OpenType fonts"
+                    },
+                    "locale": {
+                      "type": "boolean",
+                      "description": "If true, uses localized forms in OpenType fonts."
+                    },
+                    "mark": {
+                      "type": "boolean",
+                      "description": "If true, uses mark positioning in OpenType fonts."
+                    },
+                    "ordinal": {
+                      "type": "boolean",
+                      "description": "If true, uses ordinals in OpenType fonts."
+                    },
+                    "overlapSwash": {
+                      "type": "boolean",
+                      "description": "If true, use overlapping swash forms in OpenType fonts"
+                    },
+                    "proportionalMetrics": {
+                      "type": "boolean",
+                      "description": "If true, kerns according to proportional CJK metrics in OpenType fonts."
+                    },
+                    "romanItalics": {
+                      "type": "boolean",
+                      "description": "If true, applies italics to half-width alphanumerics."
+                    },
+                    "slashedZero": {
+                      "type": "boolean",
+                      "description": "If true, use a slashed zeroes in OpenType fonts."
+                    },
+                    "stretchedAlternate": {
+                      "type": "boolean",
+                      "description": "If true, use stretched alternate forms in OpenType fonts"
+                    },
+                    "stylisticAlternate": {
+                      "type": "boolean",
+                      "description": "If true, use stylistic alternate forms in OpenType fonts"
+                    },
+                    "stylisticSets": {
+                      "type": "array",
+                      "description": "The stylistic sets to use in OpenType fonts.",
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "items": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 20
+                      }
+                    },
+                    "swash": {
+                      "type": "boolean",
+                      "description": "If true, uses swash forms in OpenType fonts."
+                    },
+                    "titling": {
+                      "type": "boolean",
+                      "description": "If true, uses titling forms in OpenType fonts."
+                    },
+                    "HVKana": {
+                      "type": "boolean",
+                      "description": "If true, switches hiragana fonts, which have different glyphs for horizontal and vertical."
                     }
                   }
                 },
@@ -123,7 +265,9 @@
                   "type": "object",
                   "properties": {}
                 },
-                "baseLineShift": { "$ref": "#/definitions/unit" },
+                "baseLineShift": {
+                  "$ref": "#/definitions/unit"
+                },
                 "dropCap": {
                   "type": "object",
                   "properties": {
@@ -174,6 +318,10 @@
             "composition": {
               "type": "object",
               "properties": {
+                "noBreak": {
+                  "type": "boolean",
+                  "description": "If true, disables ALL automatic line breaks."
+                },
                 "justification": {
                   "type": "string",
                   "enum": [
@@ -192,7 +340,10 @@
                   "keepLinesTogether": {
                     "description": "If false, doesn't keep lines together and the paragraph can break across columns or text frames.",
                     "anyOf": [
-                      { "type": "boolean", "const": false },
+                      {
+                        "type": "boolean",
+                        "const": false
+                      },
                       {
                         "type": "object",
                         "properties": {
@@ -228,9 +379,15 @@
                   }
                 },
                 "indents": {
-                  "firstLineIndent": { "$ref": "#/definitions/unit" },
-                  "lastLineIndent": { "$ref": "#/definitions/unit" },
-                  "leftIndent": { "$ref": "#/definitions/unit" }
+                  "firstLineIndent": {
+                    "$ref": "#/definitions/unit"
+                  },
+                  "lastLineIndent": {
+                    "$ref": "#/definitions/unit"
+                  },
+                  "leftIndent": {
+                    "$ref": "#/definitions/unit"
+                  }
                 },
                 "ignoreEdgeAlignment": {
                   "type": "boolean",
@@ -301,11 +458,15 @@
                 },
                 "balanceRaggedLines": {
                   "anyOf": [
-                    { "type": "string" },
-                    { "type": "boolean", "const": false }
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean",
+                      "const": false
+                    }
                   ]
                 },
-
                 "scaling": {
                   "type": "object",
                   "definition": "Glyph scaling, word spacing and letter spacing preferences.",
@@ -456,8 +617,10 @@
             },
             "list": {
               "anyOf": [
-                { "type": "boolean", "const": false },
-                { "type": "string", "const": "NO_LIST" },
+                {
+                  "type": "boolean",
+                  "const": false
+                },
                 {
                   "type": "object",
                   "properties": {
@@ -476,8 +639,8 @@
                         "bulletChar": {
                           "type": "string"
                         },
-                        "bulletsCharacterStyle": {
-                          "type": "string",
+                        "characterStyle": {
+                          "$ref": "#/definitions/style",
                           "description": "A character style ID to apply to the bullets."
                         }
                       }
@@ -507,6 +670,14 @@
                             "UPPER_LETTERS",
                             "UPPER_ROMAN"
                           ]
+                        },
+                        "characterStyle": {
+                          "$ref": "#/definitions/style",
+                          "description": "A character style ID to apply to the numbers."
+                        },
+                        "numberingExpression": {
+                          "type": "string",
+                          "definition": "The number string expression (format) for numbering."
                         }
                       }
                     }
@@ -535,13 +706,74 @@
                   ]
                 }
               }
+            },
+            "layout": {
+              "type": "object",
+              "properties": {
+                "borders": {
+                  "type": "object",
+                  "properties": {
+                    "corners": {
+                      "type": "object",
+                      "properties": {
+                        "topRight": {
+                          "$ref": "#/definitions/layout/corners"
+                        },
+                        "topLeft": {
+                          "$ref": "#/definitions/layout/corners"
+                        },
+                        "bottomRight": {
+                          "$ref": "#/definitions/layout/corners"
+                        },
+                        "bottomLeft": {
+                          "$ref": "#/definitions/layout/corners"
+                        }
+                      }
+                    },
+                    "top": {
+                      "type": "object",
+                      "properties": {
+                        "leftCornerOption": {
+                          "type": "string",
+                          "enum": [
+                            "BEVEL_CORNER",
+                            "FANCY_CORNER",
+                            "INSET_CORNER",
+                            "INVERSE_ROUNDED_CORNER",
+                            "NONE",
+                            "ROUNDED_CORNER"
+                          ]
+                        },
+                        "leftCornerRadius": {
+                          "$ref": "#/definitions/unit"
+                        },
+                        "rightCornerRadius": {
+                          "$ref": "#/definitions/unit"
+                        },
+                        "lineWeight": {
+                          "$ref": "#/definitions/unit"
+                        },
+                        "offset": {
+                          "$ref": "#/definitions/unit"
+                        },
+                        "origin": {
+                          "type": "string",
+                          "enum": [
+                            "BASELINE_BOTTOM_ORIGIN",
+                            "DESCENT_BOTTOM_ORIGIN"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
       }
     }
   },
-
   "": "",
   " ": "",
   "  ": "",
@@ -557,97 +789,24 @@
     "OutlineJoin.BEVEL_END_JOIN",
     "OutlineJoin.MITER_END_JOIN",
     "OutlineJoin.ROUND_END_JOIN",
+    "miterLimit",
     "fillColor",
     "fillTint",
+    "overprintFill",
+    "overprintStroke",
     "gradientFillAngle",
     "gradientFillLength",
     "gradientFillStart",
     "gradientStrokeAngle",
     "gradientStrokeLength",
     "gradientStrokeStart",
-
-    "label",
-    "ligatures",
     "mergeConsecutiveParaBorders",
-    "miterLimit",
-    "mojikumi",
-    "MojikumiTableDefaults.LINE_END_ALL_ONE_EM_ENUM",
-    "MojikumiTableDefaults.LINE_END_ALL_ONE_HALF_EM_ENUM",
-    "MojikumiTableDefaults.LINE_END_PERIOD_ONE_EM_ENUM",
-    "MojikumiTableDefaults.LINE_END_UKE_NO_FLOAT_ENUM",
-    "MojikumiTableDefaults.NOTHING",
-    "MojikumiTableDefaults.ONE_EM_INDENT_LINE_END_ALL_NO_FLOAT_ENUM",
-    "MojikumiTableDefaults.ONE_EM_INDENT_LINE_END_ALL_ONE_EM_ENUM",
-    "MojikumiTableDefaults.ONE_EM_INDENT_LINE_END_ALL_ONE_HALF_EM_ENUM",
-    "MojikumiTableDefaults.ONE_EM_INDENT_LINE_END_PERIOD_ONE_EM_ENUM",
-    "MojikumiTableDefaults.ONE_EM_INDENT_LINE_END_UKE_NO_FLOAT_ENUM",
-    "MojikumiTableDefaults.ONE_EM_INDENT_LINE_END_UKE_ONE_HALF_EM_ENUM",
-    "MojikumiTableDefaults.ONE_OR_ONE_HALF_EM_INDENT_LINE_END_ALL_ONE_EM_ENUM",
-    "MojikumiTableDefaults.ONE_OR_ONE_HALF_EM_INDENT_LINE_END_PERIOD_ONE_EM_ENUM",
-    "MojikumiTableDefaults.ONE_OR_ONE_HALF_EM_INDENT_LINE_END_UKE_NO_FLOAT_ENUM",
-    "MojikumiTableDefaults.ONE_OR_ONE_HALF_EM_INDENT_LINE_END_UKE_ONE_HALF_EM_ENUM",
-    "MojikumiTableDefaults.SIMP_CHINESE_DEFAULT",
-    "MojikumiTableDefaults.TRAD_CHINESE_DEFAULT",
-    "name",
-    "nestedGrepStyles",
-    "nestedLineStyles",
-    "nestedStyles",
-    "nextStyle",
-    "noBreak",
-    "numberingAlignment",
-    "ListAlignment.CENTER_ALIGN",
-    "ListAlignment.LEFT_ALIGN",
-    "ListAlignment.RIGHT_ALIGN",
     "numberingApplyRestartPolicy",
     "numberingCharacterStyle",
     "numberingContinue",
-    "numberingExpression",
-    "numberingFormat",
-    "NumberingStyle.ARABIC",
-    "NumberingStyle.ARABIC_ABJAD",
-    "NumberingStyle.ARABIC_ALIF_BA_TAH",
-    "NumberingStyle.DOUBLE_LEADING_ZEROS",
-    "NumberingStyle.FORMAT_NONE",
-    "NumberingStyle.HEBREW_BIBLICAL",
-    "NumberingStyle.HEBREW_NON_STANDARD",
-    "NumberingStyle.KANJI",
-    "NumberingStyle.KATAKANA_MODERN",
-    "NumberingStyle.KATAKANA_TRADITIONAL",
-    "NumberingStyle.LOWER_LETTERS",
-    "NumberingStyle.LOWER_ROMAN",
-    "NumberingStyle.SINGLE_LEADING_ZEROS",
-    "NumberingStyle.TRIPLE_LEADING_ZEROS",
-    "NumberingStyle.UPPER_LETTERS",
-    "NumberingStyle.UPPER_ROMAN",
     "numberingLevel",
     "numberingRestartPolicies",
     "numberingStartAt",
-    "otfContextualAlternate",
-    "otfDiscretionaryLigature",
-    "otfFigureStyle",
-    "OTFFigureStyle.DEFAULT_VALUE",
-    "OTFFigureStyle.PROPORTIONAL_LINING",
-    "OTFFigureStyle.PROPORTIONAL_OLDSTYLE",
-    "OTFFigureStyle.TABULAR_LINING",
-    "OTFFigureStyle.TABULAR_OLDSTYLE",
-    "otfFraction",
-    "otfHVKana",
-    "otfHistorical",
-    "otfJustificationAlternate",
-    "otfLocale",
-    "otfMark",
-    "otfOrdinal",
-    "otfOverlapSwash",
-    "otfProportionalMetrics",
-    "otfRomanItalics",
-    "otfSlashedZero",
-    "otfStretchedAlternate",
-    "otfStylisticAlternate",
-    "otfStylisticSets",
-    "otfSwash",
-    "otfTitling",
-    "overprintFill",
-    "overprintStroke",
     "paragraphBorderBottomLeftCornerOption",
     "CornerOptions.BEVEL_CORNER",
     "CornerOptions.FANCY_CORNER",
