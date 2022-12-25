@@ -22,6 +22,17 @@
         "^[a-zA-Z0-9_.-]+$": {
           "type": "object",
           "properties": {
+            "isSnippet": {
+              "type": "boolean",
+              "description": "If set to true, it doesn't create a new paragraph style but you can use it with \"useSnippet\": [\"ids\"] in another paragraph style and the properties will be used."
+            },
+            "useSnippets": {
+              "type": "array",
+              "description": "Snippets to apply to the paragraph style. Can also be used inside a snippet paragraph style and it'll work as expected.\n\nIt uses no InDesign built-in inheritance but apply the properties directly.\n\nThe snippets used must be set BEFORE in the file.",
+              "items": {
+                "type": "string"
+              }
+            },
             "basedOn": {
               "type": "string",
               "description": "On which other paragraphs style this one should be based. The input is the name of the target paragraphs style. The target paragraphs style must be set BEFORE in the file."
@@ -51,8 +62,28 @@
                     }
                   ]
                 },
+                "textTransform": {
+                  "type": "string",
+                  "enum": [
+                    "SMALL_CAPS",
+                    "NORMAL",
+                    "CAP_TO_SMALL_CAP",
+                    "ALL_CAPS"
+                  ]
+                },
                 "alignToBaseline": {
                   "type": "boolean"
+                },
+                "characterAlignment": {
+                  "type": "string",
+                  "enum": [
+                    "ALIGN_BASELINE",
+                    "ALIGN_EM_BOTTOM",
+                    "ALIGN_EM_CENTER",
+                    "ALIGN_EM_TOP",
+                    "ALIGN_ICF_BOTTOM",
+                    "ALIGN_ICF_TOP"
+                  ]
                 },
                 "baseLineShift": { "$ref": "#/definitions/unit" },
                 "composition": {
@@ -174,13 +205,28 @@
                       "description": "List type, bulleted or numbered.",
                       "enum": ["NUMBERED_LIST", "BULLET_LIST"]
                     },
-                    "startAt": {
-                      "type": "number",
-                      "description": "The index of the first element in the list if it is a numbered list."
-                    },
                     "alignment": {
                       "type": "string",
                       "enum": ["CENTER_ALIGN", "LEFT_ALIGN", "RIGHT_ALIGN"]
+                    },
+                    "bulletList": {
+                      "type": "object",
+                      "properties": {
+                        "bulletChar": {
+                          "type": "string"
+                        },
+                        "bulletsCharacterStyle": {
+                          "type": "string",
+                          "description": "A characters style ID to apply to the bullets."
+                        }
+                      }
+                    },
+                    "numberedList": {
+                      "properties": {
+                        "startAt": {
+                          "type": "number"
+                        }
+                      }
                     }
                   }
                 }
@@ -238,26 +284,9 @@
   "all": [
     "allowArbitraryHyphenation",
     "bulletChar",
-    "bulletsAlignment",
-    "ListAlignment.CENTER_ALIGN",
-    "ListAlignment.LEFT_ALIGN",
-    "ListAlignment.RIGHT_ALIGN",
-    "bulletsAndNumberingListType",
     "bulletsCharacterStyle",
     "bulletsTextAfter",
-    "bunriKinshi",
-    "capitalization",
-    "Capitalization.ALL_CAPS",
-    "Capitalization.CAP_TO_SMALL_CAP",
-    "Capitalization.NORMAL",
-    "Capitalization.SMALL_CAPS",
-    "characterAlignment",
-    "CharacterAlignment.ALIGN_BASELINE",
-    "CharacterAlignment.ALIGN_EM_BOTTOM",
-    "CharacterAlignment.ALIGN_EM_CENTER",
-    "CharacterAlignment.ALIGN_EM_TOP",
-    "CharacterAlignment.ALIGN_ICF_BOTTOM",
-    "CharacterAlignment.ALIGN_ICF_TOP",
+
     "characterDirection",
     "CharacterDirectionOptions.DEFAULT_DIRECTION",
     "CharacterDirectionOptions.LEFT_TO_RIGHT_DIRECTION",
