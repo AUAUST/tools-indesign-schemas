@@ -1,7 +1,7 @@
 {
   "$id": "/Users/aurianaubert/Library/Preferences/Adobe InDesign/Version 18.0/fr_FR/Scripts/Scripts Panel/SCHEMAS/styles.json",
-  "title": "Paragraphs and characters styles",
-  "description": "Paragraphs and characters styles",
+  "title": "Paragraphs and character styles",
+  "description": "Paragraphs and character styles",
   "type": "object",
   "definitions": {
     "unit": {
@@ -28,14 +28,14 @@
             },
             "useSnippets": {
               "type": "array",
-              "description": "Snippets to apply to the paragraph style. Can also be used inside a snippet paragraph style and it'll work as expected.\n\nIt uses no InDesign built-in inheritance but applies the properties directly.\n\nThe snippets used must be set BEFORE in the file.",
+              "description": "Snippets to apply to the paragraph style. Can also be used inside a snippet paragraph style and it'll work as expected.\n\nIt uses no InDesign built-in inheritance but applies the properties directly.",
               "items": {
                 "type": "string"
               }
             },
             "basedOn": {
               "type": "string",
-              "description": "On which other paragraph style this one should be based. The input is the name of the target paragraph style. The target paragraph style must be set BEFORE in the file."
+              "description": "On which other paragraph style this one should be based. The input is the name of the target paragraph style."
             },
             "text": {
               "type": "object",
@@ -114,12 +114,13 @@
                       "minimum": 0,
                       "maximum": 25
                     },
-                    "style": {
-                      "type": "string"
+                    "characterStyle": {
+                      "type": "string",
+                      "description": "A character style ID to apply to the drop cap."
                     },
                     "detail": {
                       "type": "number",
-                      "description": "Drop cap's details. Align to left side: 1. Adjust descenders: 2. Enable both: 3. Disable both: 0.",
+                      "description": "Drop cap's details.\n\nAlign to left side: 1.\nAdjust descenders: 2.\nEnable both: 3.\nDisable both: 0.",
                       "minimum": 0,
                       "maximum": 3
                     }
@@ -160,6 +161,49 @@
                         "TO_BINDING_SIDE"
                       ]
                     },
+                    "paragraphBreak": {
+                      "keepLinesTogether": {
+                        "description": "If false, doesn't keep lines together and the paragraph can break across columns or text frames.",
+                        "anyOf": [
+                          { "type": "boolean", "const": false },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "keepFirstLines": {
+                                "type": "number",
+                                "description": "The minimum number of lines to keep together in a paragraph before allowing a page break.",
+                                "minimum": 1,
+                                "maximum": 50
+                              },
+                              "keepLastLines": {
+                                "type": "number",
+                                "description": "The minimum number of lines to keep together in a paragraph after a page break.",
+                                "minimum": 1,
+                                "maximum": 50
+                              },
+                              "keepWithNext": {
+                                "type": "number",
+                                "description": "The minimum number of lines to keep with the next paragraph.",
+                                "minimum": 0,
+                                "maximum": 5
+                              },
+                              "keepWithPrevious": {
+                                "type": "boolean",
+                                "description": "If the first line in the paragraph should be kept with the last line of previous paragraph."
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "keepAllLinesTogether": {
+                        "type": "boolean",
+                        "description": "If true, keeps all lines of the paragraph together. If false, allows paragraphs to break across pages or columns."
+                      }
+                    },
+                    "ignoreEdgeAlignment": {
+                      "type": "boolean",
+                      "description": "If true, ignores optical edge alignment for the paragraph."
+                    },
                     "singleWordJustification": {
                       "type": "string",
                       "enum": [
@@ -181,7 +225,7 @@
                           "properties": {
                             "hyphenWeight": {
                               "type": "number",
-                              "description": "The relative desirability of better spacing or fewer hyphens. A lower value results in greater use of hyphens.",
+                              "description": "The relative desirability of better spacing over fewer hyphens. A lower value results in greater use of hyphens.",
                               "minimum": 0,
                               "maximum": 10
                             },
@@ -209,7 +253,15 @@
                             },
                             "hyphenateLastWord": {
                               "type": "boolean",
-                              "description": "If true, allows hyphenation in the last word in a paragraph. Note: Valid only when hyphenation is true."
+                              "description": "If true, allows hyphenation in the last word in a paragraph."
+                            },
+                            "allowArbitraryHyphenation": {
+                              "type": "boolean",
+                              "description": "If true, words unassociated with a hyphenation dictionary can break to the next line on any character."
+                            },
+                            "hyphenationZone": {
+                              "$ref": "#/definitions/unit",
+                              "description": "The amount of white space allowed at the end of a line of non-justified text before hypenation begins."
                             }
                           }
                         }
@@ -404,7 +456,7 @@
                         },
                         "bulletsCharacterStyle": {
                           "type": "string",
-                          "description": "A characters style ID to apply to the bullets."
+                          "description": "A character style ID to apply to the bullets."
                         }
                       }
                     },
@@ -479,7 +531,6 @@
   "        ": "",
   "         ": "",
   "all": [
-    "allowArbitraryHyphenation",
     "endJoin",
     "OutlineJoin.BEVEL_END_JOIN",
     "OutlineJoin.MITER_END_JOIN",
@@ -492,43 +543,7 @@
     "gradientStrokeAngle",
     "gradientStrokeLength",
     "gradientStrokeStart",
-    "hyphenWeight",
-    "hyphenateAcrossColumns",
-    "hyphenateAfterFirst",
-    "hyphenateBeforeLast",
-    "hyphenateCapitalizedWords",
-    "hyphenateLadderLimit",
-    "hyphenateLastWord",
-    "hyphenateWordsLongerThan",
-    "hyphenation",
-    "hyphenationZone",
-    "id",
-    "ignoreEdgeAlignment",
-    "imported",
-    "includeClass",
-    "index",
-    "isValid",
-    "jidori",
-    "justification",
-    "Justification.AWAY_FROM_BINDING_SIDE",
-    "Justification.CENTER_ALIGN",
-    "Justification.CENTER_JUSTIFIED",
-    "Justification.FULLY_JUSTIFIED",
-    "Justification.LEFT_ALIGN",
-    "Justification.LEFT_JUSTIFIED",
-    "Justification.RIGHT_ALIGN",
-    "Justification.RIGHT_JUSTIFIED",
-    "Justification.TO_BINDING_SIDE",
-    "kashidas",
-    "KashidasOptions.DEFAULT_KASHIDAS",
-    "KashidasOptions.KASHIDAS_OFF",
-    "keepAllLinesTogether",
-    "keepFirstLines",
-    "keepLastLines",
-    "keepLinesTogether",
-    "keepRuleAboveInFrame",
-    "keepWithNext",
-    "keepWithPrevious",
+
     "kentenAlignment",
     "KentenAlignment.ALIGN_KENTEN_CENTER",
     "KentenAlignment.ALIGN_KENTEN_LEFT",
