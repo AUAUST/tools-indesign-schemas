@@ -63,13 +63,38 @@
                   ]
                 },
                 "textTransform": {
-                  "type": "string",
-                  "enum": [
-                    "SMALL_CAPS",
-                    "NORMAL",
-                    "CAP_TO_SMALL_CAP",
-                    "ALL_CAPS"
-                  ]
+                  "capitalization": {
+                    "type": "string",
+                    "enum": [
+                      "SMALL_CAPS",
+                      "NORMAL",
+                      "CAP_TO_SMALL_CAP",
+                      "ALL_CAPS"
+                    ]
+                  },
+                  "horizontalScale": {
+                    "type": "number",
+                    "description": "The horizontal scaling applied to the glyphs."
+                  },
+                  "verticalScale": {
+                    "type": "number",
+                    "description": "The vertical scaling applied to the glyphs."
+                  }
+                },
+                "opentype": {
+                  "type": "object",
+                  "properties": {
+                    "kerning": {
+                      "anyOf": [
+                        { "type": "number", "const": 0 },
+                        { "type": "string", "enum": ["Optical", "Metrics"] }
+                      ]
+                    },
+                    "ligatures": {
+                      "type": "boolean",
+                      "description": "If true, replaces specific character combinations (e.g., fl, fi) with ligature characters."
+                    }
+                  }
                 },
                 "characterAlignment": {
                   "type": "string",
@@ -143,291 +168,288 @@
                       }
                     }
                   }
+                }
+              }
+            },
+            "composition": {
+              "type": "object",
+              "properties": {
+                "justification": {
+                  "type": "string",
+                  "enum": [
+                    "AWAY_FROM_BINDING_SIDE",
+                    "CENTER_ALIGN",
+                    "CENTER_JUSTIFIED",
+                    "FULLY_JUSTIFIED",
+                    "LEFT_ALIGN",
+                    "LEFT_JUSTIFIED",
+                    "RIGHT_ALIGN",
+                    "RIGHT_JUSTIFIED",
+                    "TO_BINDING_SIDE"
+                  ]
                 },
-                "composition": {
-                  "type": "object",
-                  "properties": {
-                    "justification": {
-                      "type": "string",
-                      "enum": [
-                        "AWAY_FROM_BINDING_SIDE",
-                        "CENTER_ALIGN",
-                        "CENTER_JUSTIFIED",
-                        "FULLY_JUSTIFIED",
-                        "LEFT_ALIGN",
-                        "LEFT_JUSTIFIED",
-                        "RIGHT_ALIGN",
-                        "RIGHT_JUSTIFIED",
-                        "TO_BINDING_SIDE"
-                      ]
-                    },
-                    "paragraphBreak": {
-                      "keepLinesTogether": {
-                        "description": "If false, doesn't keep lines together and the paragraph can break across columns or text frames.",
-                        "anyOf": [
-                          { "type": "boolean", "const": false },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "keepFirstLines": {
-                                "type": "number",
-                                "description": "The minimum number of lines to keep together in a paragraph before allowing a page break.",
-                                "minimum": 1,
-                                "maximum": 50
-                              },
-                              "keepLastLines": {
-                                "type": "number",
-                                "description": "The minimum number of lines to keep together in a paragraph after a page break.",
-                                "minimum": 1,
-                                "maximum": 50
-                              },
-                              "keepWithNext": {
-                                "type": "number",
-                                "description": "The minimum number of lines to keep with the next paragraph.",
-                                "minimum": 0,
-                                "maximum": 5
-                              },
-                              "keepWithPrevious": {
-                                "type": "boolean",
-                                "description": "If the first line in the paragraph should be kept with the last line of previous paragraph."
-                              }
-                            }
+                "paragraphBreak": {
+                  "keepLinesTogether": {
+                    "description": "If false, doesn't keep lines together and the paragraph can break across columns or text frames.",
+                    "anyOf": [
+                      { "type": "boolean", "const": false },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "keepFirstLines": {
+                            "type": "number",
+                            "description": "The minimum number of lines to keep together in a paragraph before allowing a page break.",
+                            "minimum": 1,
+                            "maximum": 50
+                          },
+                          "keepLastLines": {
+                            "type": "number",
+                            "description": "The minimum number of lines to keep together in a paragraph after a page break.",
+                            "minimum": 1,
+                            "maximum": 50
+                          },
+                          "keepWithNext": {
+                            "type": "number",
+                            "description": "The minimum number of lines to keep with the next paragraph.",
+                            "minimum": 0,
+                            "maximum": 5
+                          },
+                          "keepWithPrevious": {
+                            "type": "boolean",
+                            "description": "If the first line in the paragraph should be kept with the last line of previous paragraph."
                           }
-                        ]
-                      },
-                      "keepAllLinesTogether": {
-                        "type": "boolean",
-                        "description": "If true, keeps all lines of the paragraph together. If false, allows paragraphs to break across pages or columns."
+                        }
                       }
-                    },
-                    "ignoreEdgeAlignment": {
+                    ]
+                  },
+                  "keepAllLinesTogether": {
+                    "type": "boolean",
+                    "description": "If true, keeps all lines of the paragraph together. If false, allows paragraphs to break across pages or columns."
+                  }
+                },
+                "indents": {
+                  "firstLineIndent": { "$ref": "#/definitions/unit" },
+                  "lastLineIndent": { "$ref": "#/definitions/unit" },
+                  "leftIndent": { "$ref": "#/definitions/unit" }
+                },
+                "ignoreEdgeAlignment": {
+                  "type": "boolean",
+                  "description": "If true, ignores optical edge alignment for the paragraph."
+                },
+                "singleWordJustification": {
+                  "type": "string",
+                  "enum": [
+                    "CENTER_ALIGN",
+                    "FULLY_JUSTIFIED",
+                    "LEFT_ALIGN",
+                    "RIGHT_ALIGN"
+                  ]
+                },
+                "hyphenation": {
+                  "anyOf": [
+                    {
                       "type": "boolean",
-                      "description": "If true, ignores optical edge alignment for the paragraph."
+                      "const": false,
+                      "description": "Disables hyphenation."
                     },
-                    "singleWordJustification": {
-                      "type": "string",
-                      "enum": [
-                        "CENTER_ALIGN",
-                        "FULLY_JUSTIFIED",
-                        "LEFT_ALIGN",
-                        "RIGHT_ALIGN"
-                      ]
-                    },
-                    "hyphenation": {
-                      "anyOf": [
-                        {
-                          "type": "boolean",
-                          "const": false,
-                          "description": "Disables hyphenation."
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "hyphenWeight": {
-                              "type": "number",
-                              "description": "The relative desirability of better spacing over fewer hyphens. A lower value results in greater use of hyphens.",
-                              "minimum": 0,
-                              "maximum": 10
-                            },
-                            "hyphenateAcrossColumns": {
-                              "type": "boolean",
-                              "description": "If true, allows the last word in a text column to be hyphenated."
-                            },
-                            "hyphenateAfterFirst": {
-                              "type": "number",
-                              "description": "The mininum number of letters at the beginning of a word that can be broken by a hyphen.",
-                              "minimum": 1,
-                              "maximum": 15
-                            },
-                            "hyphenateBeforeLast": {
-                              "type": "number",
-                              "description": "The minimum number of letters at the end of a word that can be broken by a hyphen.",
-                              "minimum": 1,
-                              "maximum": 15
-                            },
-                            "hyphenateLadderLimit": {
-                              "type": "number",
-                              "description": "The maximum number of hyphens that can appear on consecutive lines. To specify unlimited consecutive lines, use zero.",
-                              "minimum": 0,
-                              "maximum": 25
-                            },
-                            "hyphenateLastWord": {
-                              "type": "boolean",
-                              "description": "If true, allows hyphenation in the last word in a paragraph."
-                            },
-                            "allowArbitraryHyphenation": {
-                              "type": "boolean",
-                              "description": "If true, words unassociated with a hyphenation dictionary can break to the next line on any character."
-                            },
-                            "hyphenationZone": {
-                              "$ref": "#/definitions/unit",
-                              "description": "The amount of white space allowed at the end of a line of non-justified text before hypenation begins."
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    "balanceRaggedLines": {
-                      "anyOf": [
-                        { "type": "string" },
-                        { "type": "boolean", "const": false }
-                      ]
-                    },
-                    "firstLineIndent": { "$ref": "#/definitions/unit" },
-                    "scaling": {
+                    {
                       "type": "object",
-                      "definition": "Glyph scaling, word spacing and letter spacing preferences.",
                       "properties": {
-                        "horizontalScale": {
+                        "hyphenWeight": {
                           "type": "number",
-                          "description": "The horizontal scaling applied to the glyphs."
+                          "description": "The relative desirability of better spacing over fewer hyphens. A lower value results in greater use of hyphens.",
+                          "minimum": 0,
+                          "maximum": 10
                         },
-                        "verticalScale": {
+                        "hyphenateAcrossColumns": {
+                          "type": "boolean",
+                          "description": "If true, allows the last word in a text column to be hyphenated."
+                        },
+                        "hyphenateAfterFirst": {
                           "type": "number",
-                          "description": "The vertical scaling applied to the glyphs."
+                          "description": "The mininum number of letters at the beginning of a word that can be broken by a hyphen.",
+                          "minimum": 1,
+                          "maximum": 15
                         },
-                        "glyphScaling": {
-                          "type": "object",
-                          "properties": {
-                            "minimum": {
-                              "type": "number",
-                              "description": "The minimum width (%) of individual characters.",
-                              "minimum": 50,
-                              "maximum": 200
-                            },
-                            "desired": {
-                              "type": "number",
-                              "description": "The desired width (%) of individual characters.",
-                              "minimum": 50,
-                              "maximum": 200
-                            },
-                            "maximum": {
-                              "type": "number",
-                              "description": "The maximum width (%) of individual characters.",
-                              "minimum": 50,
-                              "maximum": 200
-                            }
-                          }
+                        "hyphenateBeforeLast": {
+                          "type": "number",
+                          "description": "The minimum number of letters at the end of a word that can be broken by a hyphen.",
+                          "minimum": 1,
+                          "maximum": 15
                         },
-                        "letterSpacing": {
-                          "type": "object",
-                          "properties": {
-                            "minimum": {
-                              "type": "number",
-                              "description": "The minimum letter spacing (%) of the built-in space between letters in the font.",
-                              "minimum": -100,
-                              "maximum": 500
-                            },
-                            "desired": {
-                              "type": "number",
-                              "description": "The desired letter spacing (%) of the built-in space between letters in the font.",
-                              "minimum": -100,
-                              "maximum": 500
-                            },
-                            "maximum": {
-                              "type": "number",
-                              "description": "The maximum letter spacing (%) of the built-in space between letters in the font.",
-                              "minimum": -100,
-                              "maximum": 500
-                            }
-                          }
+                        "hyphenateLadderLimit": {
+                          "type": "number",
+                          "description": "The maximum number of hyphens that can appear on consecutive lines. To specify unlimited consecutive lines, use zero.",
+                          "minimum": 0,
+                          "maximum": 25
                         },
-                        "wordSpacing": {
-                          "type": "object",
-                          "properties": {
-                            "minimum": {
-                              "type": "number",
-                              "description": "The minimum word spacing (%) of the font word space value.",
-                              "minimum": 0,
-                              "maximum": 1000
-                            },
-                            "desired": {
-                              "type": "number",
-                              "description": "The desired word spacing (%) of the font word space value.",
-                              "minimum": 0,
-                              "maximum": 1000
-                            },
-                            "maximum": {
-                              "type": "number",
-                              "description": "The maximum word spacing (%) of the font word space value.",
-                              "minimum": 0,
-                              "maximum": 1000
-                            }
-                          }
+                        "hyphenateLastWord": {
+                          "type": "boolean",
+                          "description": "If true, allows hyphenation in the last word in a paragraph."
+                        },
+                        "allowArbitraryHyphenation": {
+                          "type": "boolean",
+                          "description": "If true, words unassociated with a hyphenation dictionary can break to the next line on any character."
+                        },
+                        "hyphenationZone": {
+                          "$ref": "#/definitions/unit",
+                          "description": "The amount of white space allowed at the end of a line of non-justified text before hypenation begins."
+                        }
+                      }
+                    }
+                  ]
+                },
+                "balanceRaggedLines": {
+                  "anyOf": [
+                    { "type": "string" },
+                    { "type": "boolean", "const": false }
+                  ]
+                },
+
+                "scaling": {
+                  "type": "object",
+                  "definition": "Glyph scaling, word spacing and letter spacing preferences.",
+                  "properties": {
+                    "glyphScaling": {
+                      "type": "object",
+                      "properties": {
+                        "minimum": {
+                          "type": "number",
+                          "description": "The minimum width (%) of individual characters.",
+                          "minimum": 50,
+                          "maximum": 200
+                        },
+                        "desired": {
+                          "type": "number",
+                          "description": "The desired width (%) of individual characters.",
+                          "minimum": 50,
+                          "maximum": 200
+                        },
+                        "maximum": {
+                          "type": "number",
+                          "description": "The maximum width (%) of individual characters.",
+                          "minimum": 50,
+                          "maximum": 200
                         }
                       }
                     },
-                    "language": {
-                      "type": "string",
-                      "enum": [
-                        "French",
-                        "French: Canadian",
-                        "German: Traditional",
-                        "German: Reformed",
-                        "German: Swiss",
-                        "German: Austrian",
-                        "Italian",
-                        "English: UK",
-                        "English: Canadian",
-                        "English: USA",
-                        "English: USA Medical",
-                        "English: USA Legal",
-                        "Spanish: Castilian",
-                        "Portuguese",
-                        "Portuguese: Brazilian",
-                        "Portuguese: Orthographic Agreement",
-                        "Arabic",
-                        "Bulgarian",
-                        "Catalan",
-                        "Croatian",
-                        "Czech",
-                        "Danish",
-                        "Dutch",
-                        "Estonian",
-                        "Finnish",
-                        "Greek",
-                        "Hebrew",
-                        "Hungarian",
-                        "Lithuanian",
-                        "Latvian",
-                        "Norwegian: Bokmal",
-                        "Norwegian: Nynorsk",
-                        "Polish",
-                        "Romanian",
-                        "Russian",
-                        "Slovak",
-                        "Slovenian",
-                        "Swedish",
-                        "Thai",
-                        "Turkish",
-                        "Ukrainian"
-                      ]
-                    }
-                  },
-                  "if": {
-                    "properties": {
-                      "justification": {
-                        "enum": [
-                          "AWAY_FROM_BINDING_SIDE",
-                          "CENTER_ALIGN",
-                          "LEFT_ALIGN",
-                          "RIGHT_ALIGN",
-                          "TO_BINDING_SIDE"
-                        ]
+                    "letterSpacing": {
+                      "type": "object",
+                      "properties": {
+                        "minimum": {
+                          "type": "number",
+                          "description": "The minimum letter spacing (%) of the built-in space between letters in the font.",
+                          "minimum": -100,
+                          "maximum": 500
+                        },
+                        "desired": {
+                          "type": "number",
+                          "description": "The desired letter spacing (%) of the built-in space between letters in the font.",
+                          "minimum": -100,
+                          "maximum": 500
+                        },
+                        "maximum": {
+                          "type": "number",
+                          "description": "The maximum letter spacing (%) of the built-in space between letters in the font.",
+                          "minimum": -100,
+                          "maximum": 500
+                        }
+                      }
+                    },
+                    "wordSpacing": {
+                      "type": "object",
+                      "properties": {
+                        "minimum": {
+                          "type": "number",
+                          "description": "The minimum word spacing (%) of the font word space value.",
+                          "minimum": 0,
+                          "maximum": 1000
+                        },
+                        "desired": {
+                          "type": "number",
+                          "description": "The desired word spacing (%) of the font word space value.",
+                          "minimum": 0,
+                          "maximum": 1000
+                        },
+                        "maximum": {
+                          "type": "number",
+                          "description": "The maximum word spacing (%) of the font word space value.",
+                          "minimum": 0,
+                          "maximum": 1000
+                        }
                       }
                     }
-                  },
-                  "then": {
-                    "properties": {
-                      "balanceRaggedLines": {
-                        "enum": [
-                          "FULLY_BALANCED",
-                          "NO_BALANCING",
-                          "PYRAMID_SHAPE",
-                          "VEE_SHAPE"
-                        ]
-                      }
-                    }
+                  }
+                },
+                "language": {
+                  "type": "string",
+                  "enum": [
+                    "French",
+                    "French: Canadian",
+                    "German: Traditional",
+                    "German: Reformed",
+                    "German: Swiss",
+                    "German: Austrian",
+                    "Italian",
+                    "English: UK",
+                    "English: Canadian",
+                    "English: USA",
+                    "English: USA Medical",
+                    "English: USA Legal",
+                    "Spanish: Castilian",
+                    "Portuguese",
+                    "Portuguese: Brazilian",
+                    "Portuguese: Orthographic Agreement",
+                    "Arabic",
+                    "Bulgarian",
+                    "Catalan",
+                    "Croatian",
+                    "Czech",
+                    "Danish",
+                    "Dutch",
+                    "Estonian",
+                    "Finnish",
+                    "Greek",
+                    "Hebrew",
+                    "Hungarian",
+                    "Lithuanian",
+                    "Latvian",
+                    "Norwegian: Bokmal",
+                    "Norwegian: Nynorsk",
+                    "Polish",
+                    "Romanian",
+                    "Russian",
+                    "Slovak",
+                    "Slovenian",
+                    "Swedish",
+                    "Thai",
+                    "Turkish",
+                    "Ukrainian"
+                  ]
+                }
+              },
+              "if": {
+                "properties": {
+                  "justification": {
+                    "enum": [
+                      "AWAY_FROM_BINDING_SIDE",
+                      "CENTER_ALIGN",
+                      "LEFT_ALIGN",
+                      "RIGHT_ALIGN",
+                      "TO_BINDING_SIDE"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "balanceRaggedLines": {
+                    "enum": [
+                      "FULLY_BALANCED",
+                      "NO_BALANCING",
+                      "PYRAMID_SHAPE",
+                      "VEE_SHAPE"
+                    ]
                   }
                 }
               }
@@ -544,85 +566,7 @@
     "gradientStrokeLength",
     "gradientStrokeStart",
 
-    "kentenAlignment",
-    "KentenAlignment.ALIGN_KENTEN_CENTER",
-    "KentenAlignment.ALIGN_KENTEN_LEFT",
-    "kentenCharacterSet",
-    "KentenCharacterSet.CHARACTER_INPUT",
-    "KentenCharacterSet.JIS",
-    "KentenCharacterSet.KUTEN",
-    "KentenCharacterSet.SHIFT_JIS",
-    "KentenCharacterSet.UNICODE",
-    "kentenCustomCharacter",
-    "kentenFillColor",
-    "kentenFont",
-    "kentenFontSize",
-    "kentenFontStyle",
-    "NothingEnum.NOTHING",
-    "kentenKind",
-    "KentenCharacter.CUSTOM",
-    "KentenCharacter.KENTEN_BLACK_CIRCLE",
-    "KentenCharacter.KENTEN_BLACK_TRIANGLE",
-    "KentenCharacter.KENTEN_BULLSEYE",
-    "KentenCharacter.KENTEN_FISHEYE",
-    "KentenCharacter.KENTEN_SESAME_DOT",
-    "KentenCharacter.KENTEN_SMALL_BLACK_CIRCLE",
-    "KentenCharacter.KENTEN_SMALL_WHITE_CIRCLE",
-    "KentenCharacter.KENTEN_WHITE_CIRCLE",
-    "KentenCharacter.KENTEN_WHITE_SESAME_DOT",
-    "KentenCharacter.KENTEN_WHITE_TRIANGLE",
-    "KentenCharacter.NONE",
-    "kentenOverprintFill",
-    "AdornmentOverprint.AUTO",
-    "AdornmentOverprint.OVERPRINT_OFF",
-    "AdornmentOverprint.OVERPRINT_ON",
-    "kentenOverprintStroke",
-    "AdornmentOverprint.AUTO",
-    "AdornmentOverprint.OVERPRINT_OFF",
-    "AdornmentOverprint.OVERPRINT_ON",
-    "kentenPlacement",
-    "kentenPosition",
-    "RubyKentenPosition.ABOVE_RIGHT",
-    "RubyKentenPosition.BELOW_LEFT",
-    "kentenStrokeColor",
-    "kentenStrokeTint",
-    "kentenTint",
-    "kentenWeight",
-    "kentenXScale",
-    "kentenYScale",
-    "kerningMethod",
-    "keyboardDirection",
-    "CharacterDirectionOptions.DEFAULT_DIRECTION",
-    "CharacterDirectionOptions.LEFT_TO_RIGHT_DIRECTION",
-    "CharacterDirectionOptions.RIGHT_TO_LEFT_DIRECTION",
-    "kinsokuHangType",
-    "KinsokuHangTypes.KINSOKU_HANG_FORCE",
-    "KinsokuHangTypes.KINSOKU_HANG_REGULAR",
-    "KinsokuHangTypes.NONE",
-    "kinsokuSet",
-    "KinsokuSet.HARD_KINSOKU",
-    "KinsokuSet.KOREAN_KINSOKU",
-    "KinsokuSet.NOTHING",
-    "KinsokuSet.SIMPLIFIED_CHINESE_KINSOKU",
-    "KinsokuSet.SOFT_KINSOKU",
-    "KinsokuSet.TRADITIONAL_CHINESE_KINSOKU",
-    "kinsokuType",
-    "KinsokuType.KINSOKU_PRIORITIZE_ADJUSTMENT_AMOUNT",
-    "KinsokuType.KINSOKU_PUSH_IN_FIRST",
-    "KinsokuType.KINSOKU_PUSH_OUT_FIRST",
-    "KinsokuType.KINSOKU_PUSH_OUT_ONLY",
     "label",
-    "lastLineIndent",
-    "leading",
-    "Leading.AUTO",
-    "leadingAki",
-    "leadingModel",
-    "LeadingModel.LEADING_MODEL_AKI_ABOVE",
-    "LeadingModel.LEADING_MODEL_AKI_BELOW",
-    "LeadingModel.LEADING_MODEL_CENTER",
-    "LeadingModel.LEADING_MODEL_CENTER_DOWN",
-    "LeadingModel.LEADING_MODEL_ROMAN",
-    "leftIndent",
     "ligatures",
     "mergeConsecutiveParaBorders",
     "miterLimit",
