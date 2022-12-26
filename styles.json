@@ -7,15 +7,55 @@
     "unit": {
       "anyOf": [
         {
-          "type": "number"
+          "type": "number",
+          "description": "When set to a number without an unit, the unit used is the one set in the general `document.json` config. If it isn't there, it fallbacks to `um`."
         },
         {
           "type": "string",
-          "pattern": "^-?[0-9]+(?:\\.[0-9]+)?(?:pt|mm|cm|in|i|)$"
+          "pattern": "^-?[0-9]+(?:\\.[0-9]+)?(?:pt|mm|cm|in|i|um|)$"
         }
       ]
     },
-    "style": {
+    "color": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/id",
+          "description": "A color ID if `colors.json` has been imported."
+        },
+        {
+          "type": "object",
+          "description": "A color object containing the keys to format a CMYK color.",
+          "properties": {
+            "C": { "type": "number", "mininum": 0, "maximum": 100 },
+            "M": { "type": "number", "mininum": 0, "maximum": 100 },
+            "Y": { "type": "number", "mininum": 0, "maximum": 100 },
+            "K": { "type": "number", "mininum": 0, "maximum": 100 }
+          },
+          "required": ["C", "M", "Y", "K"]
+        },
+        {
+          "type": "object",
+          "description": "A color object containing the keys to format a RGB color.",
+          "properties": {
+            "R": { "type": "number", "mininum": 0, "maximum": 255 },
+            "G": { "type": "number", "mininum": 0, "maximum": 255 },
+            "B": { "type": "number", "mininum": 0, "maximum": 255 }
+          },
+          "required": ["R", "G", "G"]
+        },
+        {
+          "type": "object",
+          "description": "A color object containing the keys to format a LAB color.",
+          "properties": {
+            "L": { "type": "number", "mininum": 0, "maximum": 255 },
+            "A": { "type": "number", "mininum": -128, "maximum": 127 },
+            "B": { "type": "number", "mininum": -128, "maximum": 127 }
+          },
+          "required": ["L", "A", "B"]
+        }
+      ]
+    },
+    "id": {
       "type": "string",
       "pattern": "^[a-zA-Z0-9_.-]+$"
     },
@@ -38,6 +78,13 @@
             "$ref": "#/definitions/unit"
           }
         }
+      },
+      "lines": {
+        "type": "object",
+        "properties": {
+          "weight": { "$ref": "#/definitions/unit" },
+          "offset": { "$ref": "#/definitions/unit" }
+        }
       }
     }
   },
@@ -51,22 +98,212 @@
           "properties": {
             "isSnippet": {
               "type": "boolean",
-              "description": "If set to true, it doesn't create a new paragraph style but you can use it with \"useSnippet\": [\"ids\"] in another paragraph style and the properties will be used."
+              "description": "If set to true, that block doesn't generate a new paragraph style but is available for later use it with \"useSnippet\" in another paragraph style."
             },
             "useSnippets": {
               "type": "array",
-              "description": "Snippets to apply to the paragraph style. Can also be used inside a snippet paragraph style and it'll work as expected.\n\nIt uses no InDesign built-in inheritance but applies the properties directly.",
+              "description": "Snippets to apply to the paragraph style. Can be used inside paragraph styles that are also snippets or specify non-snippet paragraph styles and it'll work as expected.\n\nIt uses no InDesign built-in inheritance but applies the properties directly.",
               "items": {
-                "$ref": "#/definitions/style"
+                "$ref": "#/definitions/id"
               }
             },
             "basedOn": {
-              "$ref": "#/definitions/style",
-              "description": "On which other paragraph style this one should be based. The input is the name of the target paragraph style."
+              "$ref": "#/definitions/id",
+              "description": "On which other paragraph style this one should be based. The input is the name of the target paragraph style.\n\nUses InDesign's built-in inheritance functionnality."
             },
             "nextStyle": {
-              "$ref": "#/definitions/style",
+              "$ref": "#/definitions/id",
               "description": "The style to apply to new paragraphs that follow paragraphs tagged with this style."
+            },
+            "display": {
+              "type": "object",
+              "properties": {
+                "fill": {
+                  "type": "object",
+                  "properties": {
+                    "color": {
+                      "$ref": "#/definitions/color"
+                    },
+                    "overprint": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "If true, the stroke of the characters will overprint."
+                    },
+                    "opacity": {
+                      "type": "number",
+                      "mininum": 0,
+                      "maximum": 100,
+                      "default": 100
+                    }
+                  }
+                },
+                "stroke": {
+                  "type": "object",
+                  "properties": {
+                    "weight": {
+                      "$ref": "#/definitions/unit"
+                    },
+                    "color": {
+                      "$ref": "#/definitions/color"
+                    },
+                    "miterLimit": {
+                      "type": "number",
+                      "mininum": 0,
+                      "maximum": 1000,
+                      "description": "The limit of the ratio of stroke width to miter length before a miter (pointed) join becomes a bevel (squared-off) join."
+                    },
+                    "angles": {
+                      "type": "string",
+                      "enum": [
+                        "BEVEL_END_JOIN",
+                        "MITER_END_JOIN",
+                        "ROUND_END_JOIN"
+                      ]
+                    },
+                    "overprint": {
+                      "type": "boolean",
+                      "default": false,
+                      "description": "If true, the stroke of the characters will overprint."
+                    },
+                    "alignment": {
+                      "type": "string",
+                      "enum": ["CENTER_ALIGNMENT", "OUTSIDE_ALIGNMENT"]
+                    },
+                    "opacity": {
+                      "type": "number",
+                      "mininum": 0,
+                      "maximum": 100,
+                      "default": 100
+                    }
+                  }
+                },
+                "strikeThrough": {
+                  "anyOf": [
+                    { "type": "boolean", "const": false },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "weight": { "$ref": "#/definitions/unit" },
+                        "offset": { "$ref": "#/definitions/unit" },
+                        "color": { "$ref": "#/definitions/color" },
+                        "overprint": {
+                          "type": "boolean",
+                          "default": false,
+                          "description": "If true, the stroke of the characters will overprint."
+                        },
+                        "opacity": {
+                          "type": "number",
+                          "mininum": 0,
+                          "maximum": 100,
+                          "default": 100
+                        },
+                        "gapColor": { "$ref": "#/definitions/color" },
+                        "gapOverprint": {
+                          "type": "boolean",
+                          "default": false,
+                          "description": "If true, the stroke of the characters will overprint."
+                        },
+                        "gapOpacity": {
+                          "type": "number",
+                          "mininum": 0,
+                          "maximum": 100,
+                          "default": 100
+                        },
+                        "style": {
+                          "type": "string",
+                          "enum": [
+                            "SOLID",
+                            "THIN_THIN_THIN",
+                            "THICK_THIN_THICK",
+                            "THIN_THICK_THIN",
+                            "THICK_THICK",
+                            "THICK_THIN",
+                            "THIN_THICK",
+                            "THIN_THIN",
+                            "DOTTED_DENSE",
+                            "DOTTED_SPACED",
+                            "DASHED_SHORT",
+                            "DASHED_MEDIUM",
+                            "DASHED_LONG",
+                            "DIAMONDS",
+                            "BACKWARD_DIAGONAL_HATCHING",
+                            "FORWARD_DIAGONAL_HATCHING",
+                            "VERTICAL_HATCHING",
+                            "WAVE"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                "underline": {
+                  "anyOf": [
+                    { "type": "boolean", "const": false },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "weight": {
+                          "$ref": "#/definitions/unit"
+                        },
+                        "offset": {
+                          "$ref": "#/definitions/unit"
+                        },
+                        "color": {
+                          "$ref": "#/definitions/color"
+                        },
+                        "overprint": {
+                          "type": "boolean",
+                          "default": false,
+                          "description": "If true, the stroke of the characters will overprint."
+                        },
+                        "opacity": {
+                          "type": "number",
+                          "mininum": 0,
+                          "maximum": 100,
+                          "default": 100
+                        },
+                        "gapColor": {
+                          "$ref": "#/definitions/color"
+                        },
+                        "gapOverprint": {
+                          "type": "boolean",
+                          "default": false,
+                          "description": "If true, the stroke of the characters will overprint."
+                        },
+                        "gapOpacity": {
+                          "type": "number",
+                          "mininum": 0,
+                          "maximum": 100,
+                          "default": 100
+                        },
+                        "style": {
+                          "type": "string",
+                          "enum": [
+                            "SOLID",
+                            "THIN_THIN_THIN",
+                            "THICK_THIN_THICK",
+                            "THIN_THICK_THIN",
+                            "THICK_THICK",
+                            "THICK_THIN",
+                            "THIN_THICK",
+                            "THIN_THIN",
+                            "DOTTED_DENSE",
+                            "DOTTED_SPACED",
+                            "DASHED_SHORT",
+                            "DASHED_MEDIUM",
+                            "DASHED_LONG",
+                            "DIAMONDS",
+                            "BACKWARD_DIAGONAL_HATCHING",
+                            "FORWARD_DIAGONAL_HATCHING",
+                            "VERTICAL_HATCHING",
+                            "WAVE"
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
             },
             "text": {
               "type": "object",
@@ -125,6 +362,16 @@
                   "verticalScale": {
                     "type": "number",
                     "description": "The vertical scaling applied to the glyphs."
+                  },
+                  "skew": {
+                    "type": "number",
+                    "minimum": -85,
+                    "maximum": 85,
+                    "description": "Slant of the font in degrees."
+                  },
+                  "rotation": {
+                    "type": "number",
+                    "description": "A value in degrees in which to rotate characters. Applied individually for each glyph and unclock-wise."
                   }
                 },
                 "opentype": {
@@ -238,8 +485,9 @@
                     }
                   }
                 },
-                "characterAlignment": {
+                "smallCharacterAlignment": {
                   "type": "string",
+                  "description": "The alignment of small characters to the largest character in the line.",
                   "enum": [
                     "ALIGN_BASELINE",
                     "ALIGN_EM_BOTTOM",
@@ -249,17 +497,13 @@
                     "ALIGN_ICF_TOP"
                   ]
                 },
-                "characterDirection:": {
+                "characterDirection": {
                   "type": "string",
                   "enum": [
                     "DEFAULT_DIRECTION",
                     "LEFT_TO_RIGHT_DIRECTION",
                     "RIGHT_TO_LEFT_DIRECTION"
                   ]
-                },
-                "characterRotation": {
-                  "type": "number",
-                  "description": "A value in degrees in which to rotate characters. Applied individually for each glyph and unclock-wise."
                 },
                 "numbers": {
                   "type": "object",
@@ -284,14 +528,18 @@
                       "maximum": 25
                     },
                     "characterStyle": {
-                      "type": "string",
+                      "$ref": "#/definitions/id",
                       "description": "A character style ID to apply to the drop cap."
                     },
                     "detail": {
-                      "type": "number",
-                      "description": "Drop cap's details.\n\nAlign to left side: 1.\nAdjust descenders: 2.\nEnable both: 3.\nDisable both: 0.",
-                      "minimum": 0,
-                      "maximum": 3
+                      "type": "string",
+                      "description": "Drop cap's details.",
+                      "enum": [
+                        "ALIGN_TO_LEFT",
+                        "ADJUST_DESCENDERS",
+                        "ALIGN_TO_LEFT_AND_ADJUST_DESCENDERS",
+                        "NONE"
+                      ]
                     }
                   }
                 },
@@ -337,56 +585,65 @@
                   ]
                 },
                 "paragraphBreak": {
-                  "keepLinesTogether": {
-                    "description": "If false, doesn't keep lines together and the paragraph can break across columns or text frames.",
-                    "anyOf": [
-                      {
-                        "type": "boolean",
-                        "const": false
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "keepFirstLines": {
-                            "type": "number",
-                            "description": "The minimum number of lines to keep together in a paragraph before allowing a page break.",
-                            "minimum": 1,
-                            "maximum": 50
-                          },
-                          "keepLastLines": {
-                            "type": "number",
-                            "description": "The minimum number of lines to keep together in a paragraph after a page break.",
-                            "minimum": 1,
-                            "maximum": 50
-                          },
-                          "keepWithNext": {
-                            "type": "number",
-                            "description": "The minimum number of lines to keep with the next paragraph.",
-                            "minimum": 0,
-                            "maximum": 5
-                          },
-                          "keepWithPrevious": {
-                            "type": "boolean",
-                            "description": "If the first line in the paragraph should be kept with the last line of previous paragraph."
+                  "type": "object",
+                  "properties": {
+                    "keepLinesTogether": {
+                      "description": "If set, keeps a specified number of lines together when the paragraph breaks across columns or text frames.",
+                      "anyOf": [
+                        {
+                          "type": "boolean",
+                          "const": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "keepFirstLines": {
+                              "type": "number",
+                              "description": "The minimum number of lines to keep together in a paragraph before allowing a page break.",
+                              "minimum": 1,
+                              "maximum": 50
+                            },
+                            "keepLastLines": {
+                              "type": "number",
+                              "description": "The minimum number of lines to keep together in a paragraph after a page break.",
+                              "minimum": 1,
+                              "maximum": 50
+                            },
+                            "keepWithNext": {
+                              "type": "number",
+                              "description": "The minimum number of lines to keep with the next paragraph.",
+                              "minimum": 0,
+                              "maximum": 5
+                            },
+                            "keepWithPrevious": {
+                              "type": "boolean",
+                              "description": "If the first line in the paragraph should be kept with the last line of previous paragraph."
+                            }
                           }
                         }
-                      }
-                    ]
-                  },
-                  "keepAllLinesTogether": {
-                    "type": "boolean",
-                    "description": "If true, keeps all lines of the paragraph together. If false, allows paragraphs to break across pages or columns."
+                      ]
+                    },
+                    "keepAllLinesTogether": {
+                      "type": "boolean",
+                      "description": "If true, keeps all lines of the paragraph together. If false, allows paragraphs to break across pages or columns."
+                    }
                   }
                 },
                 "indents": {
-                  "firstLineIndent": {
-                    "$ref": "#/definitions/unit"
-                  },
-                  "lastLineIndent": {
-                    "$ref": "#/definitions/unit"
-                  },
-                  "leftIndent": {
-                    "$ref": "#/definitions/unit"
+                  "type": "object",
+                  "properties": {
+                    "firstLineIndent": {
+                      "$ref": "#/definitions/unit",
+                      "description": "The width in unit to indent the first line."
+                    },
+                    "lastLineIndent": {
+                      "$ref": "#/definitions/unit",
+                      "description": "The width in unit to indent the last line."
+                    },
+                    "leftIndent": {
+                      "$ref": "#/definitions/unit",
+                      "description": "The width of the left indent."
+                    }
                   }
                 },
                 "ignoreEdgeAlignment": {
@@ -459,7 +716,13 @@
                 "balanceRaggedLines": {
                   "anyOf": [
                     {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "FULLY_BALANCED",
+                        "NO_BALANCING",
+                        "PYRAMID_SHAPE",
+                        "VEE_SHAPE"
+                      ]
                     },
                     {
                       "type": "boolean",
@@ -467,7 +730,7 @@
                     }
                   ]
                 },
-                "scaling": {
+                "justificationScaling": {
                   "type": "object",
                   "definition": "Glyph scaling, word spacing and letter spacing preferences.",
                   "properties": {
@@ -476,18 +739,21 @@
                       "properties": {
                         "minimum": {
                           "type": "number",
+                          "default": 95,
                           "description": "The minimum width (%) of individual characters.",
                           "minimum": 50,
                           "maximum": 200
                         },
                         "desired": {
                           "type": "number",
+                          "default": 100,
                           "description": "The desired width (%) of individual characters.",
                           "minimum": 50,
                           "maximum": 200
                         },
                         "maximum": {
                           "type": "number",
+                          "default": 105,
                           "description": "The maximum width (%) of individual characters.",
                           "minimum": 50,
                           "maximum": 200
@@ -499,18 +765,21 @@
                       "properties": {
                         "minimum": {
                           "type": "number",
+                          "default": 95,
                           "description": "The minimum letter spacing (%) of the built-in space between letters in the font.",
                           "minimum": -100,
                           "maximum": 500
                         },
                         "desired": {
                           "type": "number",
+                          "default": 100,
                           "description": "The desired letter spacing (%) of the built-in space between letters in the font.",
                           "minimum": -100,
                           "maximum": 500
                         },
                         "maximum": {
                           "type": "number",
+                          "default": 105,
                           "description": "The maximum letter spacing (%) of the built-in space between letters in the font.",
                           "minimum": -100,
                           "maximum": 500
@@ -522,18 +791,21 @@
                       "properties": {
                         "minimum": {
                           "type": "number",
+                          "default": 80,
                           "description": "The minimum word spacing (%) of the font word space value.",
                           "minimum": 0,
                           "maximum": 1000
                         },
                         "desired": {
                           "type": "number",
+                          "default": 100,
                           "description": "The desired word spacing (%) of the font word space value.",
                           "minimum": 0,
                           "maximum": 1000
                         },
                         "maximum": {
                           "type": "number",
+                          "default": 120,
                           "description": "The maximum word spacing (%) of the font word space value.",
                           "minimum": 0,
                           "maximum": 1000
@@ -588,31 +860,6 @@
                     "Ukrainian"
                   ]
                 }
-              },
-              "if": {
-                "properties": {
-                  "justification": {
-                    "enum": [
-                      "AWAY_FROM_BINDING_SIDE",
-                      "CENTER_ALIGN",
-                      "LEFT_ALIGN",
-                      "RIGHT_ALIGN",
-                      "TO_BINDING_SIDE"
-                    ]
-                  }
-                }
-              },
-              "then": {
-                "properties": {
-                  "balanceRaggedLines": {
-                    "enum": [
-                      "FULLY_BALANCED",
-                      "NO_BALANCING",
-                      "PYRAMID_SHAPE",
-                      "VEE_SHAPE"
-                    ]
-                  }
-                }
               }
             },
             "list": {
@@ -640,7 +887,7 @@
                           "type": "string"
                         },
                         "characterStyle": {
-                          "$ref": "#/definitions/style",
+                          "$ref": "#/definitions/id",
                           "description": "A character style ID to apply to the bullets."
                         }
                       }
@@ -672,7 +919,7 @@
                           ]
                         },
                         "characterStyle": {
-                          "$ref": "#/definitions/style",
+                          "$ref": "#/definitions/id",
                           "description": "A character style ID to apply to the numbers."
                         },
                         "numberingExpression": {
@@ -694,15 +941,19 @@
                 "alignFirstLineOnly": {
                   "type": "boolean"
                 },
-                "alignment": {
-                  "type": "string",
-                  "enum": [
-                    "ALIGN_BASELINE",
-                    "ALIGN_EM_BOTTOM",
-                    "ALIGN_EM_CENTER",
-                    "ALIGN_EM_TOP",
-                    "ALIGN_ICF_BOTTOM",
-                    "ALIGN_ICF_TOP"
+                "alignmentType": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "ALIGN_BASELINE",
+                        "ALIGN_EM_BOTTOM",
+                        "ALIGN_EM_CENTER",
+                        "ALIGN_EM_TOP",
+                        "ALIGN_ICF_BOTTOM",
+                        "ALIGN_ICF_TOP"
+                      ]
+                    }
                   ]
                 }
               }
@@ -713,6 +964,113 @@
                 "borders": {
                   "type": "object",
                   "properties": {
+                    "color": { "$ref": "#/definitions/color" },
+                    "gapColor": { "$ref": "#/definitions/color" },
+                    "overprint": { "type": "boolean", "default": false },
+                    "gapOverprint": { "type": "boolean", "default": false },
+                    "opacity": {
+                      "type": "number",
+                      "mininum": 0,
+                      "maximum": 100
+                    },
+                    "gapOpacity": {
+                      "type": "number",
+                      "mininum": 0,
+                      "maximum": 100
+                    },
+                    "displayIfSplits": {
+                      "type": "boolean",
+                      "description": "If the paragraph is split across multiple blocks, whether to display the border at those breakpoints."
+                    },
+                    "width": {
+                      "type": "string",
+                      "description": "The basis used to calculate the width of the paragraph border.",
+                      "enum": ["COLUMN_WIDTH", "TEXT_WIDTH"]
+                    },
+                    "endCap": {
+                      "type": "string",
+                      "description": "The end shape of an open path.",
+                      "enum": [
+                        "BUTT_END_CAP",
+                        "PROJECTING_END_CAP",
+                        "ROUND_END_CAP"
+                      ]
+                    },
+                    "endJoin": {
+                      "type": "string",
+                      "description": "The corner join applied to the paragraph style.",
+                      "enum": [
+                        "BEVEL_END_JOIN",
+                        "MITER_END_JOIN",
+                        "ROUND_END_JOIN"
+                      ]
+                    },
+                    "style": {
+                      "type": "string",
+                      "enum": [
+                        "SOLID",
+                        "THIN_THIN_THIN",
+                        "THICK_THIN_THICK",
+                        "THIN_THICK_THIN",
+                        "THICK_THICK",
+                        "THICK_THIN",
+                        "THIN_THICK",
+                        "THIN_THIN",
+                        "DOTTED_DENSE",
+                        "DOTTED_SPACED",
+                        "DASHED_SHORT",
+                        "DASHED_MEDIUM",
+                        "DASHED_LONG",
+                        "DIAMONDS",
+                        "BACKWARD_DIAGONAL_HATCHING",
+                        "FORWARD_DIAGONAL_HATCHING",
+                        "VERTICAL_HATCHING",
+                        "WAVE"
+                      ]
+                    },
+                    "borderTop": {
+                      "type": "object",
+                      "properties": {
+                        "weight": { "$ref": "#/definitions/unit" },
+                        "offset": { "$ref": "#/definitions/unit" },
+                        "origin": {
+                          "type": "string",
+                          "enum": [
+                            "ASCENT_TOP_ORIGIN",
+                            "BASELINE_TOP_ORIGIN",
+                            "LEADING_TOP_ORIGIN"
+                          ]
+                        }
+                      }
+                    },
+                    "borderRight": {
+                      "type": "object",
+                      "properties": {
+                        "weight": { "$ref": "#/definitions/unit" },
+                        "offset": { "$ref": "#/definitions/unit" }
+                      }
+                    },
+                    "borderBottom": {
+                      "type": "object",
+                      "properties": {
+                        "weight": { "$ref": "#/definitions/unit" },
+                        "offset": { "$ref": "#/definitions/unit" },
+                        "origin": {
+                          "type": "string",
+                          "enum": [
+                            "BASELINE_BOTTOM_ORIGIN",
+                            "DESCENT_BOTTOM_ORIGIN"
+                          ]
+                        }
+                      }
+                    },
+                    "borderLeft": {
+                      "type": "object",
+                      "properties": {
+                        "weight": { "$ref": "#/definitions/unit" },
+                        "offset": { "$ref": "#/definitions/unit" }
+                      }
+                    },
                     "corners": {
                       "type": "object",
                       "properties": {
@@ -727,41 +1085,6 @@
                         },
                         "bottomLeft": {
                           "$ref": "#/definitions/layout/corners"
-                        }
-                      }
-                    },
-                    "top": {
-                      "type": "object",
-                      "properties": {
-                        "leftCornerOption": {
-                          "type": "string",
-                          "enum": [
-                            "BEVEL_CORNER",
-                            "FANCY_CORNER",
-                            "INSET_CORNER",
-                            "INVERSE_ROUNDED_CORNER",
-                            "NONE",
-                            "ROUNDED_CORNER"
-                          ]
-                        },
-                        "leftCornerRadius": {
-                          "$ref": "#/definitions/unit"
-                        },
-                        "rightCornerRadius": {
-                          "$ref": "#/definitions/unit"
-                        },
-                        "lineWeight": {
-                          "$ref": "#/definitions/unit"
-                        },
-                        "offset": {
-                          "$ref": "#/definitions/unit"
-                        },
-                        "origin": {
-                          "type": "string",
-                          "enum": [
-                            "BASELINE_BOTTOM_ORIGIN",
-                            "DESCENT_BOTTOM_ORIGIN"
-                          ]
                         }
                       }
                     }
@@ -789,11 +1112,7 @@
     "OutlineJoin.BEVEL_END_JOIN",
     "OutlineJoin.MITER_END_JOIN",
     "OutlineJoin.ROUND_END_JOIN",
-    "miterLimit",
-    "fillColor",
-    "fillTint",
-    "overprintFill",
-    "overprintStroke",
+
     "gradientFillAngle",
     "gradientFillLength",
     "gradientFillStart",
@@ -807,73 +1126,7 @@
     "numberingLevel",
     "numberingRestartPolicies",
     "numberingStartAt",
-    "paragraphBorderBottomLeftCornerOption",
-    "CornerOptions.BEVEL_CORNER",
-    "CornerOptions.FANCY_CORNER",
-    "CornerOptions.INSET_CORNER",
-    "CornerOptions.INVERSE_ROUNDED_CORNER",
-    "CornerOptions.NONE",
-    "CornerOptions.ROUNDED_CORNER",
-    "paragraphBorderBottomLeftCornerRadius",
-    "paragraphBorderBottomLineWeight",
-    "paragraphBorderBottomOffset",
-    "paragraphBorderBottomOrigin",
-    "ParagraphBorderBottomOriginEnum.BASELINE_BOTTOM_ORIGIN",
-    "ParagraphBorderBottomOriginEnum.DESCENT_BOTTOM_ORIGIN",
-    "paragraphBorderBottomRightCornerOption",
-    "CornerOptions.BEVEL_CORNER",
-    "CornerOptions.FANCY_CORNER",
-    "CornerOptions.INSET_CORNER",
-    "CornerOptions.INVERSE_ROUNDED_CORNER",
-    "CornerOptions.NONE",
-    "CornerOptions.ROUNDED_CORNER",
-    "paragraphBorderBottomRightCornerRadius",
-    "paragraphBorderColor",
-    "paragraphBorderDisplayIfSplits",
-    "paragraphBorderGapColor",
-    "paragraphBorderGapOverprint",
-    "paragraphBorderGapTint",
-    "paragraphBorderLeftLineWeight",
-    "paragraphBorderLeftOffset",
-    "paragraphBorderOn",
-    "paragraphBorderOverprint",
-    "paragraphBorderRightLineWeight",
-    "paragraphBorderRightOffset",
-    "paragraphBorderStrokeEndCap",
-    "EndCap.BUTT_END_CAP",
-    "EndCap.PROJECTING_END_CAP",
-    "EndCap.ROUND_END_CAP",
-    "paragraphBorderStrokeEndJoin",
-    "EndJoin.BEVEL_END_JOIN",
-    "EndJoin.MITER_END_JOIN",
-    "EndJoin.ROUND_END_JOIN",
-    "paragraphBorderTint",
-    "paragraphBorderTopLeftCornerOption",
-    "CornerOptions.BEVEL_CORNER",
-    "CornerOptions.FANCY_CORNER",
-    "CornerOptions.INSET_CORNER",
-    "CornerOptions.INVERSE_ROUNDED_CORNER",
-    "CornerOptions.NONE",
-    "CornerOptions.ROUNDED_CORNER",
-    "paragraphBorderTopLeftCornerRadius",
-    "paragraphBorderTopLineWeight",
-    "paragraphBorderTopOffset",
-    "paragraphBorderTopOrigin",
-    "ParagraphBorderTopOriginEnum.ASCENT_TOP_ORIGIN",
-    "ParagraphBorderTopOriginEnum.BASELINE_TOP_ORIGIN",
-    "ParagraphBorderTopOriginEnum.LEADING_TOP_ORIGIN",
-    "paragraphBorderTopRightCornerOption",
-    "CornerOptions.BEVEL_CORNER",
-    "CornerOptions.FANCY_CORNER",
-    "CornerOptions.INSET_CORNER",
-    "CornerOptions.INVERSE_ROUNDED_CORNER",
-    "CornerOptions.NONE",
-    "CornerOptions.ROUNDED_CORNER",
-    "paragraphBorderTopRightCornerRadius",
-    "paragraphBorderType",
-    "paragraphBorderWidth",
-    "ParagraphBorderEnum.COLUMN_WIDTH",
-    "ParagraphBorderEnum.TEXT_WIDTH",
+
     "paragraphDirection",
     "ParagraphDirectionOptions.LEFT_TO_RIGHT_DIRECTION",
     "ParagraphDirectionOptions.RIGHT_TO_LEFT_DIRECTION",
@@ -965,65 +1218,14 @@
     "HyphenationStyleEnum.HYPH_ALL",
     "HyphenationStyleEnum.HYPH_ALL_BUT_UNAESTHETIC",
     "HyphenationStyleEnum.HYPH_PREFERRED_AESTHETIC",
-    "rensuuji",
     "rightIndent",
     "rotateSingleByteCharacters",
-    "rubyAlignment",
-    "RubyAlignments.RUBY_1_AKI",
-    "RubyAlignments.RUBY_CENTER",
-    "RubyAlignments.RUBY_EQUAL_AKI",
-    "RubyAlignments.RUBY_FULL_JUSTIFY",
-    "RubyAlignments.RUBY_JIS",
-    "RubyAlignments.RUBY_LEFT",
-    "RubyAlignments.RUBY_RIGHT",
-    "rubyAutoAlign",
-    "rubyAutoScaling",
-    "rubyAutoTcyAutoScale",
-    "rubyAutoTcyDigits",
-    "rubyAutoTcyIncludeRoman",
-    "rubyFill",
-    "rubyFont",
-    "rubyFontSize",
-    "rubyFontStyle",
-    "NothingEnum.NOTHING",
-    "rubyOpenTypePro",
-    "rubyOverhang",
-    "rubyOverprintFill",
     "AdornmentOverprint.AUTO",
     "AdornmentOverprint.OVERPRINT_OFF",
     "AdornmentOverprint.OVERPRINT_ON",
-    "rubyOverprintStroke",
     "AdornmentOverprint.AUTO",
     "AdornmentOverprint.OVERPRINT_OFF",
     "AdornmentOverprint.OVERPRINT_ON",
-    "rubyParentOverhangAmount",
-    "RubyOverhang.NONE",
-    "RubyOverhang.RUBY_OVERHANG_HALF_CHAR",
-    "RubyOverhang.RUBY_OVERHANG_HALF_RUBY",
-    "RubyOverhang.RUBY_OVERHANG_NO_LIMIT",
-    "RubyOverhang.RUBY_OVERHANG_ONE_CHAR",
-    "RubyOverhang.RUBY_OVERHANG_ONE_RUBY",
-    "rubyParentScalingPercent",
-    "rubyParentSpacing",
-    "RubyParentSpacing.RUBY_PARENT_121_AKI",
-    "RubyParentSpacing.RUBY_PARENT_BOTH_SIDES",
-    "RubyParentSpacing.RUBY_PARENT_EQUAL_AKI",
-    "RubyParentSpacing.RUBY_PARENT_FULL_JUSTIFY",
-    "RubyParentSpacing.RUBY_PARENT_NO_ADJUSTMENT",
-    "rubyPosition",
-    "RubyKentenPosition.ABOVE_RIGHT",
-    "RubyKentenPosition.BELOW_LEFT",
-    "rubyStroke",
-    "rubyStrokeTint",
-    "rubyTint",
-    "rubyType",
-    "RubyTypes.GROUP_RUBY",
-    "RubyTypes.PER_CHARACTER_RUBY",
-    "rubyWeight",
-    "rubyXOffset",
-    "rubyXScale",
-    "rubyYOffset",
-    "rubyYScale",
     "ruleAbove",
     "ruleAboveColor",
     "ruleAboveGapColor",
@@ -1057,16 +1259,11 @@
     "sameParaStyleSpacing",
     "Spacing.SETIGNORE",
     "scaleAffectsLineHeight",
-    "shataiAdjustRotation",
-    "shataiAdjustTsume",
-    "shataiDegreeAngle",
-    "shataiMagnification",
     "singleWordJustification",
     "SingleWordJustification.CENTER_ALIGN",
     "SingleWordJustification.FULLY_JUSTIFIED",
     "SingleWordJustification.LEFT_ALIGN",
     "SingleWordJustification.RIGHT_ALIGN",
-    "skew",
     "spaceAfter",
     "spaceBefore",
     "spanColumnMinSpaceAfter",
@@ -1087,84 +1284,15 @@
     "StartParagraph.NEXT_FRAME",
     "StartParagraph.NEXT_ODD_PAGE",
     "StartParagraph.NEXT_PAGE",
-    "strikeThroughColor",
-    "strikeThroughGapColor",
-    "strikeThroughGapOverprint",
-    "strikeThroughGapTint",
-    "strikeThroughOffset",
-    "strikeThroughOverprint",
-    "strikeThroughTint",
-    "strikeThroughType",
-    "strikeThroughWeight",
-    "strikeThru",
-    "strokeAlignment",
-    "TextStrokeAlign.CENTER_ALIGNMENT",
-    "TextStrokeAlign.OUTSIDE_ALIGNMENT",
-    "strokeColor",
-    "strokeTint",
-    "strokeWeight",
     "styleExportTagMaps",
     "styleUniqueId",
     "tabList",
     "tabStops",
-    "tatechuyoko",
-    "tatechuyokoXOffset",
-    "tatechuyokoYOffset",
     "tracking",
-    "trailingAki",
-    "treatIdeographicSpaceAsSpace",
-    "tsume",
-    "underline",
-    "underlineColor",
-    "underlineGapColor",
-    "underlineGapOverprint",
-    "underlineGapTint",
-    "underlineOffset",
-    "underlineOverprint",
-    "underlineTint",
-    "underlineType",
-    "underlineWeight",
-    "warichu",
-    "warichuAlignment",
-    "WarichuAlignment.AUTO",
-    "WarichuAlignment.CENTER_ALIGN",
-    "WarichuAlignment.CENTER_JUSTIFIED",
-    "WarichuAlignment.FULLY_JUSTIFIED",
-    "WarichuAlignment.LEFT_ALIGN",
-    "WarichuAlignment.LEFT_JUSTIFIED",
-    "WarichuAlignment.RIGHT_ALIGN",
-    "WarichuAlignment.RIGHT_JUSTIFIED",
-    "warichuCharsAfterBreak",
-    "warichuCharsBeforeBreak",
-    "warichuLineSpacing",
-    "warichuLines",
-    "warichuSize",
     "xOffsetDiacritic",
     "yOffsetDiacritic",
-    "addEventListener",
-    "convertBulletsAndNumberingToText",
-    "createThumbnailWithProperties",
-    "ColorSpace.CMYK",
-    "ColorSpace.HSB",
-    "ColorSpace.LAB",
-    "ColorSpace.MIXEDINK",
-    "ColorSpace.RGB",
-    "duplicate",
     "extractLabel",
-    "forceDelete",
-    "getElements",
-    "insertLabel",
     "isNthDesignAxisHidden",
-    "move",
-    "LocationOptions.AFTER",
-    "LocationOptions.AT_BEGINNING",
-    "LocationOptions.AT_END",
-    "LocationOptions.BEFORE",
-    "LocationOptions.UNKNOWN",
-    "remove",
-    "removeEventListener",
-    "setNthDesignAxis",
-    "toSource",
-    "toSpecifier"
+    "setNthDesignAxis"
   ]
 }
