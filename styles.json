@@ -20,11 +20,13 @@
       "oneOf": [
         {
           "$ref": "#/definitions/id",
+          "default": "someID",
           "description": "A color ID if `colors.json` has been imported."
         },
         {
           "type": "object",
           "description": "A color object containing the keys to format a CMYK color.",
+          "default": { "C": 0, "M": 0, "Y": 0, "K": 0 },
           "properties": {
             "C": { "type": "number", "mininum": 0, "maximum": 100 },
             "M": { "type": "number", "mininum": 0, "maximum": 100 },
@@ -36,6 +38,7 @@
         {
           "type": "object",
           "description": "A color object containing the keys to format a RGB color.",
+          "default": { "R": 0, "G": 0, "B": 0 },
           "properties": {
             "R": { "type": "number", "mininum": 0, "maximum": 255 },
             "G": { "type": "number", "mininum": 0, "maximum": 255 },
@@ -46,6 +49,7 @@
         {
           "type": "object",
           "description": "A color object containing the keys to format a LAB color.",
+          "default": { "L": 0, "A": 0, "B": 0 },
           "properties": {
             "L": { "type": "number", "mininum": 0, "maximum": 100 },
             "A": { "type": "number", "mininum": -128, "maximum": 127 },
@@ -374,10 +378,12 @@
                     "description": "A value in degrees in which to rotate characters. Applied individually for each glyph and unclock-wise."
                   }
                 },
-                "opentype": {
+                "letterSpacing": {
                   "type": "object",
+                  "description": "Kerning, tracking and other letter positioning options.",
                   "properties": {
                     "kerning": {
+                      "description": "Adjusting the space between specific pairs of letters in a piece of text.",
                       "anyOf": [
                         {
                           "type": "number",
@@ -389,6 +395,27 @@
                         }
                       ]
                     },
+                    "tracking": {
+                      "type": "integer",
+                      "description": "Adjusting the space between all letters in a piece of text.\n\nSpecified in thousands of an em."
+                    },
+                    "position": {
+                      "type": "string",
+                      "enum": [
+                        "NORMAL",
+                        "OT_DENOMINATOR",
+                        "OT_NUMERATOR",
+                        "OT_SUBSCRIPT",
+                        "OT_SUPERSCRIPT",
+                        "SUBSCRIPT",
+                        "SUPERSCRIPT"
+                      ]
+                    }
+                  }
+                },
+                "opentype": {
+                  "type": "object",
+                  "properties": {
                     "ligatures": {
                       "type": "boolean",
                       "description": "If true, replaces specific character combinations (e.g., fl, fi) with ligature characters."
@@ -466,7 +493,7 @@
                       "minItems": 1,
                       "uniqueItems": true,
                       "items": {
-                        "type": "number",
+                        "type": "integer",
                         "minimum": 0,
                         "maximum": 20
                       }
@@ -505,26 +532,24 @@
                     "RIGHT_TO_LEFT_DIRECTION"
                   ]
                 },
-                "numbers": {
-                  "type": "object",
-                  "properties": {}
-                },
                 "baseLineShift": {
                   "$ref": "#/definitions/unit"
                 },
                 "dropCap": {
                   "type": "object",
                   "properties": {
-                    "characters": {
+                    "length": {
                       "type": "number",
                       "description": "The number of characters to drop cap.",
                       "minimum": 0,
+                      "default": 1,
                       "maximum": 150
                     },
                     "lines": {
                       "type": "number",
                       "description": "The number of lines to drop cap.",
                       "minimum": 0,
+                      "default": 2,
                       "maximum": 25
                     },
                     "characterStyle": {
@@ -542,24 +567,6 @@
                       ]
                     }
                   }
-                },
-                "colors": {
-                  "type": "object",
-                  "properties": {
-                    "fill": {
-                      "type": "object",
-                      "properties": {
-                        "color": {
-                          "type": "string"
-                        },
-                        "opacity": {
-                          "type": "number",
-                          "minimum": 0,
-                          "maximum": 100
-                        }
-                      }
-                    }
-                  }
                 }
               }
             },
@@ -569,6 +576,17 @@
                 "noBreak": {
                   "type": "boolean",
                   "description": "If true, disables ALL automatic line breaks."
+                },
+                "startParagraph": {
+                  "type": "string",
+                  "enum": [
+                    "ANYWHERE",
+                    "NEXT_COLUMN",
+                    "NEXT_EVEN_PAGE",
+                    "NEXT_FRAME",
+                    "NEXT_ODD_PAGE",
+                    "NEXT_PAGE"
+                  ]
                 },
                 "justification": {
                   "type": "string",
@@ -596,14 +614,15 @@
                         },
                         {
                           "type": "object",
+                          "default": {},
                           "properties": {
-                            "keepFirstLines": {
+                            "firstLines": {
                               "type": "number",
                               "description": "The minimum number of lines to keep together in a paragraph before allowing a page break.",
                               "minimum": 1,
                               "maximum": 50
                             },
-                            "keepLastLines": {
+                            "lastLines": {
                               "type": "number",
                               "description": "The minimum number of lines to keep together in a paragraph after a page break.",
                               "minimum": 1,
@@ -669,23 +688,24 @@
                     {
                       "type": "object",
                       "properties": {
-                        "hyphenWeight": {
+                        "undesirability": {
                           "type": "number",
                           "description": "The relative desirability of better spacing over fewer hyphens. A lower value results in greater use of hyphens.",
                           "minimum": 0,
+                          "default": 5,
                           "maximum": 10
                         },
                         "hyphenateAcrossColumns": {
                           "type": "boolean",
                           "description": "If true, allows the last word in a text column to be hyphenated."
                         },
-                        "hyphenateAfterFirst": {
+                        "hyphenateAfter": {
                           "type": "number",
                           "description": "The mininum number of letters at the beginning of a word that can be broken by a hyphen.",
                           "minimum": 1,
                           "maximum": 15
                         },
-                        "hyphenateBeforeLast": {
+                        "hyphenateBefore": {
                           "type": "number",
                           "description": "The minimum number of letters at the end of a word that can be broken by a hyphen.",
                           "minimum": 1,
@@ -870,6 +890,7 @@
                 },
                 {
                   "type": "object",
+                  "default": {},
                   "properties": {
                     "type": {
                       "type": "string",
@@ -880,15 +901,19 @@
                       "type": "string",
                       "enum": ["CENTER_ALIGN", "LEFT_ALIGN", "RIGHT_ALIGN"]
                     },
+                    "characterStyle": {
+                      "$ref": "#/definitions/id",
+                      "description": "A character style ID to apply to the bullets."
+                    },
                     "bulletList": {
                       "type": "object",
                       "properties": {
                         "bulletChar": {
                           "type": "string"
                         },
-                        "characterStyle": {
-                          "$ref": "#/definitions/id",
-                          "description": "A character style ID to apply to the bullets."
+                        "textAfter": {
+                          "type": "string",
+                          "default": "^t"
                         }
                       }
                     },
@@ -918,12 +943,9 @@
                             "UPPER_ROMAN"
                           ]
                         },
-                        "characterStyle": {
-                          "$ref": "#/definitions/id",
-                          "description": "A character style ID to apply to the numbers."
-                        },
                         "numberingExpression": {
                           "type": "string",
+                          "default": "^# — ",
                           "definition": "The number string expression (format) for numbering."
                         }
                       }
@@ -982,9 +1004,9 @@
                       "type": "boolean",
                       "description": "If the paragraph is split across multiple blocks, whether to display the border at those breakpoints."
                     },
-                    "width": {
+                    "fittedTo": {
                       "type": "string",
-                      "description": "The basis used to calculate the width of the paragraph border.",
+                      "description": "The basis used to calculate the width of the \"paragraph box\".",
                       "enum": ["COLUMN_WIDTH", "TEXT_WIDTH"]
                     },
                     "endCap": {
@@ -1194,14 +1216,7 @@
     "ParagraphShadingWidthEnum.TEXT_WIDTH",
     "parent",
     "pointSize",
-    "position",
-    "Position.NORMAL",
-    "Position.OT_DENOMINATOR",
-    "Position.OT_NUMERATOR",
-    "Position.OT_SUBSCRIPT",
-    "Position.OT_SUPERSCRIPT",
-    "Position.SUBSCRIPT",
-    "Position.SUPERSCRIPT",
+
     "positionalForm",
     "PositionalForms.CALCULATE",
     "PositionalForms.FINAL",
@@ -1285,7 +1300,6 @@
     "StartParagraph.NEXT_ODD_PAGE",
     "StartParagraph.NEXT_PAGE",
     "styleExportTagMaps",
-    "styleUniqueId",
     "tabList",
     "tabStops",
     "tracking",
