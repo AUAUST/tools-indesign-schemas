@@ -47,7 +47,7 @@
           "type": "object",
           "description": "A color object containing the keys to format a LAB color.",
           "properties": {
-            "L": { "type": "number", "mininum": 0, "maximum": 255 },
+            "L": { "type": "number", "mininum": 0, "maximum": 100 },
             "A": { "type": "number", "mininum": -128, "maximum": 127 },
             "B": { "type": "number", "mininum": -128, "maximum": 127 }
           },
