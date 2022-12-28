@@ -193,7 +193,7 @@
                         "overprint": {
                           "type": "boolean",
                           "default": false,
-                          "description": "If true, the stroke of the characters will overprint."
+                          "description": "If true, the strikethrough will overprint."
                         },
                         "opacity": {
                           "type": "number",
@@ -205,7 +205,7 @@
                         "gapOverprint": {
                           "type": "boolean",
                           "default": false,
-                          "description": "If true, the stroke of the characters will overprint."
+                          "description": "If true, the gap of the strikethrough will overprint."
                         },
                         "gapOpacity": {
                           "type": "number",
@@ -258,7 +258,7 @@
                         "overprint": {
                           "type": "boolean",
                           "default": false,
-                          "description": "If true, the stroke of the characters will overprint."
+                          "description": "If true, the underline will overprint."
                         },
                         "opacity": {
                           "type": "number",
@@ -272,7 +272,7 @@
                         "gapOverprint": {
                           "type": "boolean",
                           "default": false,
-                          "description": "If true, the stroke of the characters will overprint."
+                          "description": "If true, the gap of the underline will overprint."
                         },
                         "gapOpacity": {
                           "type": "number",
@@ -309,6 +309,7 @@
                 }
               }
             },
+
             "text": {
               "type": "object",
               "description": "Configure text.",
@@ -416,6 +417,17 @@
                 "opentype": {
                   "type": "object",
                   "properties": {
+                    "positionalForm": {
+                      "type": "string",
+                      "enum": [
+                        "CALCULATE",
+                        "FINAL",
+                        "INITIAL",
+                        "ISOLATED",
+                        "MEDIAL",
+                        "NONE"
+                      ]
+                    },
                     "ligatures": {
                       "type": "boolean",
                       "description": "If true, replaces specific character combinations (e.g., fl, fi) with ligature characters."
@@ -662,6 +674,10 @@
                     "leftIndent": {
                       "$ref": "#/definitions/unit",
                       "description": "The width of the left indent."
+                    },
+                    "rightIndent": {
+                      "$ref": "#/definitions/unit",
+                      "description": "The width of the right indent."
                     }
                   }
                 },
@@ -977,6 +993,66 @@
                       ]
                     }
                   ]
+                },
+                "columns": {},
+                "tabs": {
+                  "type": "object",
+                  "description": "The tabulations. Can be indiviudally set, generated or both.",
+                  "properties": {
+                    "repeated": {
+                      "type": "array",
+                      "default": [{}],
+                      "description": "Each set of rules inside the array will be executed to generate new tabs.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "spaceBetween": { "$ref": "#/definitions/unit" },
+                          "startAt": {
+                            "$ref": "#/definitions/unit",
+                            "default": 0
+                          },
+                          "endAt": { "$ref": "#/definitions/unit" },
+                          "alignment": {
+                            "type": "string",
+                            "enum": [
+                              "CENTER_ALIGN",
+                              "LEFT_ALIGN",
+                              "RIGHT_ALIGN",
+                              "CHARACTER_ALIGN"
+                            ]
+                          },
+                          "alignToCharacter": {
+                            "type": "string",
+                            "description": "On which string a CHARACTER_ALIGN tabulation should align."
+                          }
+                        }
+                      }
+                    },
+                    "individuals": {
+                      "type": "array",
+                      "default": [{}],
+                      "description": "Applies each tab individually.\n\nBy default, they inherit from the previous one. For exemple, if all tabs should be LEFT_ALIGN, setting it for the first tab will apply for all the following tabs until it is set to something else. Does NOT work with position.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "position": { "$ref": "#/definitions/unit" },
+                          "alignment": {
+                            "type": "string",
+                            "enum": [
+                              "CENTER_ALIGN",
+                              "LEFT_ALIGN",
+                              "RIGHT_ALIGN",
+                              "CHARACTER_ALIGN"
+                            ]
+                          },
+                          "alignToCharacter": {
+                            "type": "string",
+                            "description": "On which string a CHARACTER_ALIGN tabulation should align."
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             },
@@ -984,133 +1060,208 @@
               "type": "object",
               "properties": {
                 "borders": {
-                  "type": "object",
-                  "properties": {
-                    "color": { "$ref": "#/definitions/color" },
-                    "gapColor": { "$ref": "#/definitions/color" },
-                    "overprint": { "type": "boolean", "default": false },
-                    "gapOverprint": { "type": "boolean", "default": false },
-                    "opacity": {
-                      "type": "number",
-                      "mininum": 0,
-                      "maximum": 100
-                    },
-                    "gapOpacity": {
-                      "type": "number",
-                      "mininum": 0,
-                      "maximum": 100
-                    },
-                    "displayIfSplits": {
-                      "type": "boolean",
-                      "description": "If the paragraph is split across multiple blocks, whether to display the border at those breakpoints."
-                    },
-                    "fittedTo": {
-                      "type": "string",
-                      "description": "The basis used to calculate the width of the \"paragraph box\".",
-                      "enum": ["COLUMN_WIDTH", "TEXT_WIDTH"]
-                    },
-                    "endCap": {
-                      "type": "string",
-                      "description": "The end shape of an open path.",
-                      "enum": [
-                        "BUTT_END_CAP",
-                        "PROJECTING_END_CAP",
-                        "ROUND_END_CAP"
-                      ]
-                    },
-                    "endJoin": {
-                      "type": "string",
-                      "description": "The corner join applied to the paragraph style.",
-                      "enum": [
-                        "BEVEL_END_JOIN",
-                        "MITER_END_JOIN",
-                        "ROUND_END_JOIN"
-                      ]
-                    },
-                    "style": {
-                      "type": "string",
-                      "enum": [
-                        "SOLID",
-                        "THIN_THIN_THIN",
-                        "THICK_THIN_THICK",
-                        "THIN_THICK_THIN",
-                        "THICK_THICK",
-                        "THICK_THIN",
-                        "THIN_THICK",
-                        "THIN_THIN",
-                        "DOTTED_DENSE",
-                        "DOTTED_SPACED",
-                        "DASHED_SHORT",
-                        "DASHED_MEDIUM",
-                        "DASHED_LONG",
-                        "DIAMONDS",
-                        "BACKWARD_DIAGONAL_HATCHING",
-                        "FORWARD_DIAGONAL_HATCHING",
-                        "VERTICAL_HATCHING",
-                        "WAVE"
-                      ]
-                    },
-                    "borderTop": {
+                  "anyOf": [
+                    { "type": "boolean", "const": false },
+                    {
                       "type": "object",
+                      "default": {},
                       "properties": {
-                        "weight": { "$ref": "#/definitions/unit" },
-                        "offset": { "$ref": "#/definitions/unit" },
-                        "origin": {
+                        "color": { "$ref": "#/definitions/color" },
+                        "gapColor": { "$ref": "#/definitions/color" },
+                        "overprint": { "type": "boolean", "default": false },
+                        "gapOverprint": { "type": "boolean", "default": false },
+                        "opacity": {
+                          "type": "number",
+                          "mininum": 0,
+                          "maximum": 100
+                        },
+                        "gapOpacity": {
+                          "type": "number",
+                          "mininum": 0,
+                          "maximum": 100
+                        },
+                        "displayIfSplits": {
+                          "type": "boolean",
+                          "description": "If the paragraph is split across multiple blocks, whether to display the border at those breakpoints."
+                        },
+                        "fittedTo": {
+                          "type": "string",
+                          "description": "The basis used to calculate the width of the \"paragraph box\".",
+                          "enum": ["COLUMN_WIDTH", "TEXT_WIDTH"]
+                        },
+                        "endCap": {
+                          "type": "string",
+                          "description": "The end shape of an open path.",
+                          "enum": [
+                            "BUTT_END_CAP",
+                            "PROJECTING_END_CAP",
+                            "ROUND_END_CAP"
+                          ]
+                        },
+                        "endJoin": {
+                          "type": "string",
+                          "description": "The corner join applied to the paragraph style.",
+                          "enum": [
+                            "BEVEL_END_JOIN",
+                            "MITER_END_JOIN",
+                            "ROUND_END_JOIN"
+                          ]
+                        },
+                        "style": {
+                          "type": "string",
+                          "enum": [
+                            "SOLID",
+                            "THIN_THIN_THIN",
+                            "THICK_THIN_THICK",
+                            "THIN_THICK_THIN",
+                            "THICK_THICK",
+                            "THICK_THIN",
+                            "THIN_THICK",
+                            "THIN_THIN",
+                            "DOTTED_DENSE",
+                            "DOTTED_SPACED",
+                            "DASHED_SHORT",
+                            "DASHED_MEDIUM",
+                            "DASHED_LONG",
+                            "DIAMONDS",
+                            "BACKWARD_DIAGONAL_HATCHING",
+                            "FORWARD_DIAGONAL_HATCHING",
+                            "VERTICAL_HATCHING",
+                            "WAVE"
+                          ]
+                        },
+                        "borderTop": {
+                          "type": "object",
+                          "properties": {
+                            "weight": { "$ref": "#/definitions/unit" },
+                            "offset": { "$ref": "#/definitions/unit" },
+                            "origin": {
+                              "type": "string",
+                              "enum": [
+                                "ASCENT_TOP_ORIGIN",
+                                "BASELINE_TOP_ORIGIN",
+                                "LEADING_TOP_ORIGIN"
+                              ]
+                            }
+                          }
+                        },
+                        "borderRight": {
+                          "type": "object",
+                          "properties": {
+                            "weight": { "$ref": "#/definitions/unit" },
+                            "offset": { "$ref": "#/definitions/unit" }
+                          }
+                        },
+                        "borderBottom": {
+                          "type": "object",
+                          "properties": {
+                            "weight": { "$ref": "#/definitions/unit" },
+                            "offset": { "$ref": "#/definitions/unit" },
+                            "origin": {
+                              "type": "string",
+                              "enum": [
+                                "BASELINE_BOTTOM_ORIGIN",
+                                "DESCENT_BOTTOM_ORIGIN"
+                              ]
+                            }
+                          }
+                        },
+                        "borderLeft": {
+                          "type": "object",
+                          "properties": {
+                            "weight": { "$ref": "#/definitions/unit" },
+                            "offset": { "$ref": "#/definitions/unit" }
+                          }
+                        },
+                        "corners": {
+                          "type": "object",
+                          "properties": {
+                            "topRight": {
+                              "$ref": "#/definitions/layout/corners"
+                            },
+                            "topLeft": {
+                              "$ref": "#/definitions/layout/corners"
+                            },
+                            "bottomRight": {
+                              "$ref": "#/definitions/layout/corners"
+                            },
+                            "bottomLeft": {
+                              "$ref": "#/definitions/layout/corners"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+
+                "background": {
+                  "anyOf": [
+                    { "type": "boolean", "const": false },
+                    {
+                      "type": "object",
+                      "default": {},
+                      "properties": {
+                        "color": { "$ref": "#/definitions/color" },
+                        "overprint": { "type": "boolean", "default": false },
+                        "opacity": {
+                          "type": "number",
+                          "mininum": 0,
+                          "maximum": 100
+                        },
+                        "printAndExport": {
+                          "type": "boolean",
+                          "default": true,
+                          "description": "Whether to include the background in exports and for print."
+                        },
+                        "clipToFrame": {
+                          "type": "boolean",
+                          "description": "If the background would be larger than the text frame, clip it to its size."
+                        },
+                        "fittedTo": {
+                          "type": "string",
+                          "description": "The basis used to calculate the width of the \"paragraph box\".",
+                          "enum": ["COLUMN_WIDTH", "TEXT_WIDTH"]
+                        },
+                        "topOffset": { "$ref": "#/definitions/unit" },
+                        "topOrigin": {
                           "type": "string",
                           "enum": [
                             "ASCENT_TOP_ORIGIN",
                             "BASELINE_TOP_ORIGIN",
                             "LEADING_TOP_ORIGIN"
                           ]
-                        }
-                      }
-                    },
-                    "borderRight": {
-                      "type": "object",
-                      "properties": {
-                        "weight": { "$ref": "#/definitions/unit" },
-                        "offset": { "$ref": "#/definitions/unit" }
-                      }
-                    },
-                    "borderBottom": {
-                      "type": "object",
-                      "properties": {
-                        "weight": { "$ref": "#/definitions/unit" },
-                        "offset": { "$ref": "#/definitions/unit" },
-                        "origin": {
+                        },
+                        "rightOffset": { "$ref": "#/definitions/unit" },
+                        "bottomOffset": { "$ref": "#/definitions/unit" },
+                        "bottomOrigin": {
                           "type": "string",
                           "enum": [
                             "BASELINE_BOTTOM_ORIGIN",
                             "DESCENT_BOTTOM_ORIGIN"
                           ]
-                        }
-                      }
-                    },
-                    "borderLeft": {
-                      "type": "object",
-                      "properties": {
-                        "weight": { "$ref": "#/definitions/unit" },
-                        "offset": { "$ref": "#/definitions/unit" }
-                      }
-                    },
-                    "corners": {
-                      "type": "object",
-                      "properties": {
-                        "topRight": {
-                          "$ref": "#/definitions/layout/corners"
                         },
-                        "topLeft": {
-                          "$ref": "#/definitions/layout/corners"
-                        },
-                        "bottomRight": {
-                          "$ref": "#/definitions/layout/corners"
-                        },
-                        "bottomLeft": {
-                          "$ref": "#/definitions/layout/corners"
+                        "leftOffset": { "$ref": "#/definitions/unit" },
+                        "corners": {
+                          "type": "object",
+                          "properties": {
+                            "topRight": {
+                              "$ref": "#/definitions/layout/corners"
+                            },
+                            "topLeft": {
+                              "$ref": "#/definitions/layout/corners"
+                            },
+                            "bottomRight": {
+                              "$ref": "#/definitions/layout/corners"
+                            },
+                            "bottomLeft": {
+                              "$ref": "#/definitions/layout/corners"
+                            }
+                          }
                         }
                       }
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -1149,98 +1300,6 @@
     "numberingRestartPolicies",
     "numberingStartAt",
 
-    "paragraphDirection",
-    "ParagraphDirectionOptions.LEFT_TO_RIGHT_DIRECTION",
-    "ParagraphDirectionOptions.RIGHT_TO_LEFT_DIRECTION",
-    "paragraphGyoudori",
-    "paragraphJustification",
-    "ParagraphJustificationOptions.ARABIC_JUSTIFICATION",
-    "ParagraphJustificationOptions.DEFAULT_JUSTIFICATION",
-    "ParagraphJustificationOptions.NASKH_JUSTIFICATION",
-    "ParagraphJustificationOptions.NASKH_KASHIDA_JUSTIFICATION",
-    "ParagraphJustificationOptions.NASKH_KASHIDA_JUSTIFICATION_FRAC",
-    "ParagraphJustificationOptions.NASKH_TATWEEL_JUSTIFICATION",
-    "ParagraphJustificationOptions.NASKH_TATWEEL_JUSTIFICATION_FRAC",
-    "paragraphKashidaWidth",
-    "paragraphShadingBottomLeftCornerOption",
-    "CornerOptions.BEVEL_CORNER",
-    "CornerOptions.FANCY_CORNER",
-    "CornerOptions.INSET_CORNER",
-    "CornerOptions.INVERSE_ROUNDED_CORNER",
-    "CornerOptions.NONE",
-    "CornerOptions.ROUNDED_CORNER",
-    "paragraphShadingBottomLeftCornerRadius",
-    "paragraphShadingBottomOffset",
-    "paragraphShadingBottomOrigin",
-    "ParagraphShadingBottomOriginEnum.BASELINE_BOTTOM_ORIGIN",
-    "ParagraphShadingBottomOriginEnum.DESCENT_BOTTOM_ORIGIN",
-    "paragraphShadingBottomRightCornerOption",
-    "CornerOptions.BEVEL_CORNER",
-    "CornerOptions.FANCY_CORNER",
-    "CornerOptions.INSET_CORNER",
-    "CornerOptions.INVERSE_ROUNDED_CORNER",
-    "CornerOptions.NONE",
-    "CornerOptions.ROUNDED_CORNER",
-    "paragraphShadingBottomRightCornerRadius",
-    "paragraphShadingClipToFrame",
-    "paragraphShadingColor",
-    "paragraphShadingLeftOffset",
-    "paragraphShadingOn",
-    "paragraphShadingOverprint",
-    "paragraphShadingRightOffset",
-    "paragraphShadingSuppressPrinting",
-    "paragraphShadingTint",
-    "paragraphShadingTopLeftCornerOption",
-    "CornerOptions.BEVEL_CORNER",
-    "CornerOptions.FANCY_CORNER",
-    "CornerOptions.INSET_CORNER",
-    "CornerOptions.INVERSE_ROUNDED_CORNER",
-    "CornerOptions.NONE",
-    "CornerOptions.ROUNDED_CORNER",
-    "paragraphShadingTopLeftCornerRadius",
-    "paragraphShadingTopOffset",
-    "paragraphShadingTopOrigin",
-    "ParagraphShadingTopOriginEnum.ASCENT_TOP_ORIGIN",
-    "ParagraphShadingTopOriginEnum.BASELINE_TOP_ORIGIN",
-    "ParagraphShadingTopOriginEnum.LEADING_TOP_ORIGIN",
-    "paragraphShadingTopRightCornerOption",
-    "CornerOptions.BEVEL_CORNER",
-    "CornerOptions.FANCY_CORNER",
-    "CornerOptions.INSET_CORNER",
-    "CornerOptions.INVERSE_ROUNDED_CORNER",
-    "CornerOptions.NONE",
-    "CornerOptions.ROUNDED_CORNER",
-    "paragraphShadingTopRightCornerRadius",
-    "paragraphShadingWidth",
-    "ParagraphShadingWidthEnum.COLUMN_WIDTH",
-    "ParagraphShadingWidthEnum.TEXT_WIDTH",
-    "parent",
-    "pointSize",
-
-    "positionalForm",
-    "PositionalForms.CALCULATE",
-    "PositionalForms.FINAL",
-    "PositionalForms.INITIAL",
-    "PositionalForms.ISOLATED",
-    "PositionalForms.MEDIAL",
-    "PositionalForms.NONE",
-    "preferences",
-    "previewColor",
-    "NothingEnum.NOTHING",
-    "properties",
-    "providerHyphenationStyle",
-    "HyphenationStyleEnum.HYPH_AESTHETIC",
-    "HyphenationStyleEnum.HYPH_ALL",
-    "HyphenationStyleEnum.HYPH_ALL_BUT_UNAESTHETIC",
-    "HyphenationStyleEnum.HYPH_PREFERRED_AESTHETIC",
-    "rightIndent",
-    "rotateSingleByteCharacters",
-    "AdornmentOverprint.AUTO",
-    "AdornmentOverprint.OVERPRINT_OFF",
-    "AdornmentOverprint.OVERPRINT_ON",
-    "AdornmentOverprint.AUTO",
-    "AdornmentOverprint.OVERPRINT_OFF",
-    "AdornmentOverprint.OVERPRINT_ON",
     "ruleAbove",
     "ruleAboveColor",
     "ruleAboveGapColor",
@@ -1300,13 +1359,8 @@
     "StartParagraph.NEXT_ODD_PAGE",
     "StartParagraph.NEXT_PAGE",
     "styleExportTagMaps",
-    "tabList",
-    "tabStops",
-    "tracking",
+
     "xOffsetDiacritic",
-    "yOffsetDiacritic",
-    "extractLabel",
-    "isNthDesignAxisHidden",
-    "setNthDesignAxis"
+    "yOffsetDiacritic"
   ]
 }
