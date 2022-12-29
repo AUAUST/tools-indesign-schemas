@@ -514,7 +514,7 @@
                     "RIGHT_TO_LEFT_DIRECTION"
                   ]
                 },
-                "baseLineShift": { "$ref": "#/definitions/unit" },
+                "baselineShift": { "$ref": "#/definitions/unit" },
                 "dropCap": {
                   "type": "object",
                   "additionalProperties": false,
