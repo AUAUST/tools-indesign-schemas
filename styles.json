@@ -16,6 +16,12 @@
         }
       ]
     },
+    "opacity": {
+      "type": "integer",
+      "mininum": 0,
+      "maximum": 100,
+      "default": 100
+    },
     "color": {
       "oneOf": [
         {
@@ -89,6 +95,29 @@
           "weight": { "$ref": "#/definitions/unit" },
           "offset": { "$ref": "#/definitions/unit" }
         }
+      },
+      "linesStyles": {
+        "type": "string",
+        "enum": [
+          "SOLID",
+          "THIN_THIN_THIN",
+          "THICK_THIN_THICK",
+          "THIN_THICK_THIN",
+          "THICK_THICK",
+          "THICK_THIN",
+          "THIN_THICK",
+          "THIN_THIN",
+          "DOTTED_DENSE",
+          "DOTTED_SPACED",
+          "DASHED_SHORT",
+          "DASHED_MEDIUM",
+          "DASHED_LONG",
+          "DIAMONDS",
+          "BACKWARD_DIAGONAL_HATCHING",
+          "FORWARD_DIAGONAL_HATCHING",
+          "VERTICAL_HATCHING",
+          "WAVE"
+        ]
       }
     }
   },
@@ -133,12 +162,7 @@
                       "default": false,
                       "description": "If true, the stroke of the characters will overprint."
                     },
-                    "opacity": {
-                      "type": "number",
-                      "mininum": 0,
-                      "maximum": 100,
-                      "default": 100
-                    }
+                    "opacity": { "$ref": "#/definitions/opacity" }
                   }
                 },
                 "stroke": {
@@ -173,12 +197,7 @@
                       "type": "string",
                       "enum": ["CENTER_ALIGNMENT", "OUTSIDE_ALIGNMENT"]
                     },
-                    "opacity": {
-                      "type": "number",
-                      "mininum": 0,
-                      "maximum": 100,
-                      "default": 100
-                    }
+                    "opacity": { "$ref": "#/definitions/opacity" }
                   }
                 },
                 "strikeThrough": {
@@ -195,24 +214,14 @@
                           "default": false,
                           "description": "If true, the strikethrough will overprint."
                         },
-                        "opacity": {
-                          "type": "number",
-                          "mininum": 0,
-                          "maximum": 100,
-                          "default": 100
-                        },
+                        "opacity": { "$ref": "#/definitions/opacity" },
                         "gapColor": { "$ref": "#/definitions/color" },
                         "gapOverprint": {
                           "type": "boolean",
                           "default": false,
                           "description": "If true, the gap of the strikethrough will overprint."
                         },
-                        "gapOpacity": {
-                          "type": "number",
-                          "mininum": 0,
-                          "maximum": 100,
-                          "default": 100
-                        },
+                        "gapOpacity": { "$ref": "#/definitions/opacity" },
                         "style": {
                           "type": "string",
                           "enum": [
@@ -260,12 +269,7 @@
                           "default": false,
                           "description": "If true, the underline will overprint."
                         },
-                        "opacity": {
-                          "type": "number",
-                          "mininum": 0,
-                          "maximum": 100,
-                          "default": 100
-                        },
+                        "opacity": { "$ref": "#/definitions/opacity" },
                         "gapColor": {
                           "$ref": "#/definitions/color"
                         },
@@ -274,12 +278,7 @@
                           "default": false,
                           "description": "If true, the gap of the underline will overprint."
                         },
-                        "gapOpacity": {
-                          "type": "number",
-                          "mininum": 0,
-                          "maximum": 100,
-                          "default": 100
-                        },
+                        "gapOpacity": { "$ref": "#/definitions/opacity" },
                         "style": {
                           "type": "string",
                           "enum": [
@@ -1035,7 +1034,10 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "position": { "$ref": "#/definitions/unit" },
+                          "position": {
+                            "$ref": "#/definitions/unit",
+                            "default": "1um"
+                          },
                           "alignment": {
                             "type": "string",
                             "enum": [
@@ -1059,6 +1061,49 @@
             "layout": {
               "type": "object",
               "properties": {
+                "spacing": {
+                  "type": "object",
+                  "properties": {
+                    "spaceBefore": {
+                      "$ref": "#/definitions/unit"
+                    },
+                    "spaceAfter": {
+                      "$ref": "#/definitions/unit"
+                    },
+                    "sameStyleSpacing": {
+                      "anyOf": [
+                        { "type": "string", "const": "IGNORE" },
+                        { "$ref": "#/definitions/unit" }
+                      ]
+                    }
+                  }
+                },
+                "rules": {
+                  "type": "object",
+                  "properties": {
+                    "above": {
+                      "anyOf": [
+                        { "type": "boolean", "const": false },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "color": { "$ref": "#/definitions/color" },
+                            "gapColor": { "$ref": "#/definitions/color" },
+                            "overprint": { "type": "boolean" },
+                            "gapOverprint": { "type": "boolean" },
+                            "offset": { "$ref": "#/definitions/unit" },
+                            "style": {
+                              "$ref": "#/definitions/layout/linesStyles"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "below": {
+                      "anyOf": [{ "type": "boolean", "const": false }, {}]
+                    }
+                  }
+                },
                 "borders": {
                   "anyOf": [
                     { "type": "boolean", "const": false },
@@ -1070,16 +1115,8 @@
                         "gapColor": { "$ref": "#/definitions/color" },
                         "overprint": { "type": "boolean", "default": false },
                         "gapOverprint": { "type": "boolean", "default": false },
-                        "opacity": {
-                          "type": "number",
-                          "mininum": 0,
-                          "maximum": 100
-                        },
-                        "gapOpacity": {
-                          "type": "number",
-                          "mininum": 0,
-                          "maximum": 100
-                        },
+                        "opacity": { "$ref": "#/definitions/opacity" },
+                        "gapOpacity": { "$ref": "#/definitions/opacity" },
                         "displayIfSplits": {
                           "type": "boolean",
                           "description": "If the paragraph is split across multiple blocks, whether to display the border at those breakpoints."
@@ -1108,27 +1145,7 @@
                           ]
                         },
                         "style": {
-                          "type": "string",
-                          "enum": [
-                            "SOLID",
-                            "THIN_THIN_THIN",
-                            "THICK_THIN_THICK",
-                            "THIN_THICK_THIN",
-                            "THICK_THICK",
-                            "THICK_THIN",
-                            "THIN_THICK",
-                            "THIN_THIN",
-                            "DOTTED_DENSE",
-                            "DOTTED_SPACED",
-                            "DASHED_SHORT",
-                            "DASHED_MEDIUM",
-                            "DASHED_LONG",
-                            "DIAMONDS",
-                            "BACKWARD_DIAGONAL_HATCHING",
-                            "FORWARD_DIAGONAL_HATCHING",
-                            "VERTICAL_HATCHING",
-                            "WAVE"
-                          ]
+                          "$ref": "#/definitions/layout/linesStyles"
                         },
                         "borderTop": {
                           "type": "object",
@@ -1204,11 +1221,7 @@
                       "properties": {
                         "color": { "$ref": "#/definitions/color" },
                         "overprint": { "type": "boolean", "default": false },
-                        "opacity": {
-                          "type": "number",
-                          "mininum": 0,
-                          "maximum": 100
-                        },
+                        "opacity": { "$ref": "#/definitions/opacity" },
                         "printAndExport": {
                           "type": "boolean",
                           "default": true,
@@ -1298,7 +1311,6 @@
     "numberingContinue",
     "numberingLevel",
     "numberingRestartPolicies",
-    "numberingStartAt",
 
     "ruleAbove",
     "ruleAboveColor",
@@ -1330,16 +1342,7 @@
     "ruleBelowWidth",
     "RuleWidth.COLUMN_WIDTH",
     "RuleWidth.TEXT_WIDTH",
-    "sameParaStyleSpacing",
-    "Spacing.SETIGNORE",
     "scaleAffectsLineHeight",
-    "singleWordJustification",
-    "SingleWordJustification.CENTER_ALIGN",
-    "SingleWordJustification.FULLY_JUSTIFIED",
-    "SingleWordJustification.LEFT_ALIGN",
-    "SingleWordJustification.RIGHT_ALIGN",
-    "spaceAfter",
-    "spaceBefore",
     "spanColumnMinSpaceAfter",
     "spanColumnMinSpaceBefore",
     "spanColumnType",
@@ -1349,18 +1352,6 @@
     "spanSplitColumnCount",
     "SpanColumnCountOptions.ALL",
     "splitColumnInsideGutter",
-    "splitColumnOutsideGutter",
-    "splitDocument",
-    "startParagraph",
-    "StartParagraph.ANYWHERE",
-    "StartParagraph.NEXT_COLUMN",
-    "StartParagraph.NEXT_EVEN_PAGE",
-    "StartParagraph.NEXT_FRAME",
-    "StartParagraph.NEXT_ODD_PAGE",
-    "StartParagraph.NEXT_PAGE",
-    "styleExportTagMaps",
-
-    "xOffsetDiacritic",
-    "yOffsetDiacritic"
+    "splitColumnOutsideGutter"
   ]
 }
