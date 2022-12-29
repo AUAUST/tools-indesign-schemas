@@ -4,6 +4,7 @@
   "title": "AUAUST TOOLS — InDesign — Styles schema",
   "description": "A .auaust file formatted as JSON containing paragraphs and character styles for use in a generated InDesign document.",
   "type": "object",
+  "additionalProperties": false,
   "definitions": {
     "unit": {
       "anyOf": [
@@ -129,6 +130,7 @@
       "patternProperties": {
         "^[a-zA-Z0-9_.-]+$": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "isSnippet": {
               "type": "boolean",
@@ -149,9 +151,11 @@
             },
             "display": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "fill": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "color": { "$ref": "#/definitions/color" },
                     "overprint": {
@@ -164,6 +168,7 @@
                 },
                 "stroke": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "weight": { "$ref": "#/definitions/unit" },
                     "color": { "$ref": "#/definitions/color" },
@@ -198,6 +203,7 @@
                     { "type": "boolean", "const": false },
                     {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "weight": { "$ref": "#/definitions/unit" },
                         "offset": { "$ref": "#/definitions/unit" },
@@ -247,6 +253,7 @@
                     { "type": "boolean", "const": false },
                     {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "weight": { "$ref": "#/definitions/unit" },
                         "offset": { "$ref": "#/definitions/unit" },
@@ -296,6 +303,7 @@
             "text": {
               "type": "object",
               "description": "Configure text.",
+              "additionalProperties": false,
               "properties": {
                 "fontFamily": { "type": "string" },
                 "fontStyle": { "type": "string" },
@@ -306,7 +314,7 @@
                     {
                       "type": "object",
                       "patternProperties": {
-                        "^[a-zA-Z0-9_.-]+$": { "not": "object" }
+                        "^[a-zA-Z0-9_.-]+$": {}
                       },
                       "properties": {
                         "Weight": { "type": "number" },
@@ -348,6 +356,7 @@
                 "letterSpacing": {
                   "type": "object",
                   "description": "Kerning, tracking and other letter positioning options.",
+                  "additionalProperties": false,
                   "properties": {
                     "kerning": {
                       "description": "Adjusting the space between specific pairs of letters in a piece of text.",
@@ -376,6 +385,7 @@
                 },
                 "opentype": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "positionalForm": {
                       "type": "string",
@@ -507,6 +517,7 @@
                 "baseLineShift": { "$ref": "#/definitions/unit" },
                 "dropCap": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "length": {
                       "type": "number",
@@ -542,6 +553,7 @@
             },
             "composition": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "noBreak": {
                   "type": "boolean",
@@ -574,6 +586,7 @@
                 },
                 "paragraphBreak": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "keepLinesTogether": {
                       "description": "If set, keeps a specified number of lines together when the paragraph breaks across columns or text frames.",
@@ -582,6 +595,7 @@
                         {
                           "type": "object",
                           "default": {},
+                          "additionalProperties": false,
                           "properties": {
                             "firstLines": {
                               "type": "number",
@@ -617,6 +631,7 @@
                 },
                 "indents": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "firstLineIndent": {
                       "$ref": "#/definitions/unit",
@@ -658,6 +673,7 @@
                     },
                     {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "undesirability": {
                           "type": "number",
@@ -721,9 +737,11 @@
                 "justificationScaling": {
                   "type": "object",
                   "definition": "Glyph scaling, word spacing and letter spacing preferences.",
+                  "additionalProperties": false,
                   "properties": {
                     "glyphScaling": {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "minimum": {
                           "type": "number",
@@ -750,6 +768,7 @@
                     },
                     "letterSpacing": {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "minimum": {
                           "type": "number",
@@ -776,6 +795,7 @@
                     },
                     "wordSpacing": {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "minimum": {
                           "type": "number",
@@ -856,6 +876,7 @@
                 {
                   "type": "object",
                   "default": {},
+                  "additionalProperties": false,
                   "properties": {
                     "type": {
                       "type": "string",
@@ -872,12 +893,14 @@
                     },
                     "bulletList": {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "bulletChar": { "type": "string" },
                         "textAfter": { "type": "string", "default": "^t" }
                       }
                     },
                     "numberedList": {
+                      "additionalProperties": false,
                       "properties": {
                         "startAt": { "type": "number" },
                         "numberingFormat": {
@@ -914,6 +937,7 @@
             },
             "grid": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "alignToBaseline": { "type": "boolean" },
                 "alignFirstLineOnly": { "type": "boolean" },
@@ -934,6 +958,7 @@
                 },
                 "columns": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "type": {
                       "type": "string",
@@ -959,6 +984,7 @@
                     "spaceAfter": { "$ref": "#/definitions/unit" },
                     "splitColumnsGutters": {
                       "type": "object",
+                      "additionalProperties": false,
                       "properties": {
                         "insideGutter": {
                           "$ref": "#/definitions/unit",
@@ -975,6 +1001,7 @@
                 "tabs": {
                   "type": "object",
                   "description": "The tabulations. Can be indiviudally set, generated or both.",
+                  "additionalProperties": false,
                   "properties": {
                     "repeated": {
                       "type": "array",
@@ -982,6 +1009,7 @@
                       "description": "Each set of rules inside the array will be executed to generate new tabs.",
                       "items": {
                         "type": "object",
+                        "additionalProperties": false,
                         "properties": {
                           "spaceBetween": { "$ref": "#/definitions/unit" },
                           "startAt": {
@@ -1011,6 +1039,7 @@
                       "description": "Applies each tab individually.\n\nBy default, they inherit from the previous one. For exemple, if all tabs should be LEFT_ALIGN, setting it for the first tab will apply for all the following tabs until it is set to something else. Does NOT work with position.",
                       "items": {
                         "type": "object",
+                        "additionalProperties": false,
                         "properties": {
                           "position": {
                             "$ref": "#/definitions/unit",
@@ -1038,9 +1067,11 @@
             },
             "layout": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "spacing": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "spaceBefore": { "$ref": "#/definitions/unit" },
                     "spaceAfter": { "$ref": "#/definitions/unit" },
@@ -1054,12 +1085,14 @@
                 },
                 "rules": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "above": {
                       "anyOf": [
                         { "type": "boolean", "const": false },
                         {
                           "type": "object",
+                          "additionalProperties": false,
                           "properties": {
                             "color": { "$ref": "#/definitions/color" },
                             "gapColor": { "$ref": "#/definitions/color" },
@@ -1085,6 +1118,7 @@
                         { "type": "boolean", "const": false },
                         {
                           "type": "object",
+                          "additionalProperties": false,
                           "properties": {
                             "color": { "$ref": "#/definitions/color" },
                             "gapColor": { "$ref": "#/definitions/color" },
@@ -1113,6 +1147,7 @@
                     {
                       "type": "object",
                       "default": {},
+                      "additionalProperties": false,
                       "properties": {
                         "color": { "$ref": "#/definitions/color" },
                         "gapColor": { "$ref": "#/definitions/color" },
@@ -1148,6 +1183,7 @@
                         "style": { "$ref": "#/definitions/layout/linesStyles" },
                         "borderTop": {
                           "type": "object",
+                          "additionalProperties": false,
                           "properties": {
                             "weight": { "$ref": "#/definitions/unit" },
                             "offset": { "$ref": "#/definitions/unit" },
@@ -1163,6 +1199,7 @@
                         },
                         "borderRight": {
                           "type": "object",
+                          "additionalProperties": false,
                           "properties": {
                             "weight": { "$ref": "#/definitions/unit" },
                             "offset": { "$ref": "#/definitions/unit" }
@@ -1170,6 +1207,7 @@
                         },
                         "borderBottom": {
                           "type": "object",
+                          "additionalProperties": false,
                           "properties": {
                             "weight": { "$ref": "#/definitions/unit" },
                             "offset": { "$ref": "#/definitions/unit" },
@@ -1184,6 +1222,7 @@
                         },
                         "borderLeft": {
                           "type": "object",
+                          "additionalProperties": false,
                           "properties": {
                             "weight": { "$ref": "#/definitions/unit" },
                             "offset": { "$ref": "#/definitions/unit" }
@@ -1191,6 +1230,7 @@
                         },
                         "corners": {
                           "type": "object",
+                          "additionalProperties": false,
                           "properties": {
                             "topRight": {
                               "$ref": "#/definitions/layout/corners"
@@ -1216,6 +1256,7 @@
                     {
                       "type": "object",
                       "default": {},
+                      "additionalProperties": false,
                       "properties": {
                         "color": { "$ref": "#/definitions/color" },
                         "overprint": { "type": "boolean", "default": false },
@@ -1253,6 +1294,7 @@
                         "leftOffset": { "$ref": "#/definitions/unit" },
                         "corners": {
                           "type": "object",
+                          "additionalProperties": false,
                           "properties": {
                             "topRight": {
                               "$ref": "#/definitions/layout/corners"
