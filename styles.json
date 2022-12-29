@@ -16,6 +16,11 @@
         }
       ]
     },
+    "columnOrTextWidth": {
+      "type": "string",
+      "description": "The basis used to calculate the width.",
+      "enum": ["COLUMN_WIDTH", "TEXT_WIDTH"]
+    },
     "opacity": {
       "type": "integer",
       "mininum": 0,
@@ -65,10 +70,7 @@
         }
       ]
     },
-    "id": {
-      "type": "string",
-      "pattern": "^[a-zA-Z0-9_.-]+$"
-    },
+    "id": { "type": "string", "pattern": "^[a-zA-Z0-9_.-]+$" },
     "layout": {
       "corners": {
         "type": "object",
@@ -84,9 +86,7 @@
               "ROUNDED_CORNER"
             ]
           },
-          "radius": {
-            "$ref": "#/definitions/unit"
-          }
+          "radius": { "$ref": "#/definitions/unit" }
         }
       },
       "lines": {
@@ -136,9 +136,7 @@
             "useSnippets": {
               "type": "array",
               "description": "Snippets to apply to the paragraph style. Can be used inside paragraph styles that are also snippets or specify non-snippet paragraph styles and it'll work as expected.\n\nIt uses no InDesign built-in inheritance but applies the properties directly.",
-              "items": {
-                "$ref": "#/definitions/id"
-              }
+              "items": { "$ref": "#/definitions/id" }
             },
             "basedOn": {
               "$ref": "#/definitions/id",
@@ -154,9 +152,7 @@
                 "fill": {
                   "type": "object",
                   "properties": {
-                    "color": {
-                      "$ref": "#/definitions/color"
-                    },
+                    "color": { "$ref": "#/definitions/color" },
                     "overprint": {
                       "type": "boolean",
                       "default": false,
@@ -168,12 +164,8 @@
                 "stroke": {
                   "type": "object",
                   "properties": {
-                    "weight": {
-                      "$ref": "#/definitions/unit"
-                    },
-                    "color": {
-                      "$ref": "#/definitions/color"
-                    },
+                    "weight": { "$ref": "#/definitions/unit" },
+                    "color": { "$ref": "#/definitions/color" },
                     "miterLimit": {
                       "type": "number",
                       "mininum": 0,
@@ -255,24 +247,16 @@
                     {
                       "type": "object",
                       "properties": {
-                        "weight": {
-                          "$ref": "#/definitions/unit"
-                        },
-                        "offset": {
-                          "$ref": "#/definitions/unit"
-                        },
-                        "color": {
-                          "$ref": "#/definitions/color"
-                        },
+                        "weight": { "$ref": "#/definitions/unit" },
+                        "offset": { "$ref": "#/definitions/unit" },
+                        "color": { "$ref": "#/definitions/color" },
                         "overprint": {
                           "type": "boolean",
                           "default": false,
                           "description": "If true, the underline will overprint."
                         },
                         "opacity": { "$ref": "#/definitions/opacity" },
-                        "gapColor": {
-                          "$ref": "#/definitions/color"
-                        },
+                        "gapColor": { "$ref": "#/definitions/color" },
                         "gapOverprint": {
                           "type": "boolean",
                           "default": false,
@@ -308,43 +292,25 @@
                 }
               }
             },
-
             "text": {
               "type": "object",
               "description": "Configure text.",
               "properties": {
-                "fontFamily": {
-                  "type": "string"
-                },
-                "fontStyle": {
-                  "type": "string"
-                },
-                "fontSize": {
-                  "$ref": "#/definitions/unit"
-                },
+                "fontFamily": { "type": "string" },
+                "fontStyle": { "type": "string" },
+                "fontSize": { "$ref": "#/definitions/unit" },
                 "variable": {
                   "anyOf": [
-                    {
-                      "type": "boolean",
-                      "enum": [false]
-                    },
+                    { "type": "boolean", "enum": [false] },
                     {
                       "type": "object",
                       "patternProperties": {
-                        "^[a-zA-Z0-9_.-]+$": {
-                          "not": "object"
-                        }
+                        "^[a-zA-Z0-9_.-]+$": { "not": "object" }
                       },
                       "properties": {
-                        "Weight": {
-                          "type": "number"
-                        },
-                        "Width": {
-                          "type": "number"
-                        },
-                        "Italic": {
-                          "type": "number"
-                        }
+                        "Weight": { "type": "number" },
+                        "Width": { "type": "number" },
+                        "Italic": { "type": "number" }
                       }
                     }
                   ]
@@ -385,14 +351,8 @@
                     "kerning": {
                       "description": "Adjusting the space between specific pairs of letters in a piece of text.",
                       "anyOf": [
-                        {
-                          "type": "number",
-                          "const": 0
-                        },
-                        {
-                          "type": "string",
-                          "enum": ["Optical", "Metrics"]
-                        }
+                        { "type": "number", "const": 0 },
+                        { "type": "string", "enum": ["Optical", "Metrics"] }
                       ]
                     },
                     "tracking": {
@@ -543,9 +503,7 @@
                     "RIGHT_TO_LEFT_DIRECTION"
                   ]
                 },
-                "baseLineShift": {
-                  "$ref": "#/definitions/unit"
-                },
+                "baseLineShift": { "$ref": "#/definitions/unit" },
                 "dropCap": {
                   "type": "object",
                   "properties": {
@@ -619,10 +577,7 @@
                     "keepLinesTogether": {
                       "description": "If set, keeps a specified number of lines together when the paragraph breaks across columns or text frames.",
                       "anyOf": [
-                        {
-                          "type": "boolean",
-                          "const": false
-                        },
+                        { "type": "boolean", "const": false },
                         {
                           "type": "object",
                           "default": {},
@@ -759,10 +714,7 @@
                         "VEE_SHAPE"
                       ]
                     },
-                    {
-                      "type": "boolean",
-                      "const": false
-                    }
+                    { "type": "boolean", "const": false }
                   ]
                 },
                 "justificationScaling": {
@@ -899,10 +851,7 @@
             },
             "list": {
               "anyOf": [
-                {
-                  "type": "boolean",
-                  "const": false
-                },
+                { "type": "boolean", "const": false },
                 {
                   "type": "object",
                   "default": {},
@@ -923,20 +872,13 @@
                     "bulletList": {
                       "type": "object",
                       "properties": {
-                        "bulletChar": {
-                          "type": "string"
-                        },
-                        "textAfter": {
-                          "type": "string",
-                          "default": "^t"
-                        }
+                        "bulletChar": { "type": "string" },
+                        "textAfter": { "type": "string", "default": "^t" }
                       }
                     },
                     "numberedList": {
                       "properties": {
-                        "startAt": {
-                          "type": "number"
-                        },
+                        "startAt": { "type": "number" },
                         "numberingFormat": {
                           "type": "string",
                           "enum": [
@@ -972,12 +914,8 @@
             "grid": {
               "type": "object",
               "properties": {
-                "alignToBaseline": {
-                  "type": "boolean"
-                },
-                "alignFirstLineOnly": {
-                  "type": "boolean"
-                },
+                "alignToBaseline": { "type": "boolean" },
+                "alignFirstLineOnly": { "type": "boolean" },
                 "alignmentType": {
                   "anyOf": [
                     {
@@ -1064,12 +1002,8 @@
                 "spacing": {
                   "type": "object",
                   "properties": {
-                    "spaceBefore": {
-                      "$ref": "#/definitions/unit"
-                    },
-                    "spaceAfter": {
-                      "$ref": "#/definitions/unit"
-                    },
+                    "spaceBefore": { "$ref": "#/definitions/unit" },
+                    "spaceAfter": { "$ref": "#/definitions/unit" },
                     "sameStyleSpacing": {
                       "anyOf": [
                         { "type": "string", "const": "IGNORE" },
@@ -1089,9 +1023,16 @@
                           "properties": {
                             "color": { "$ref": "#/definitions/color" },
                             "gapColor": { "$ref": "#/definitions/color" },
+                            "opacity": { "$ref": "#/definitions/opacity" },
+                            "gapOpacity": { "$ref": "#/definitions/opacity" },
                             "overprint": { "type": "boolean" },
                             "gapOverprint": { "type": "boolean" },
                             "offset": { "$ref": "#/definitions/unit" },
+                            "rightIndent": { "$ref": "#/definitions/unit" },
+                            "leftIndent": { "$ref": "#/definitions/unit" },
+                            "fittedTo": {
+                              "$ref": "#/definitions/columnOrTextWidth"
+                            },
                             "style": {
                               "$ref": "#/definitions/layout/linesStyles"
                             }
@@ -1100,7 +1041,29 @@
                       ]
                     },
                     "below": {
-                      "anyOf": [{ "type": "boolean", "const": false }, {}]
+                      "anyOf": [
+                        { "type": "boolean", "const": false },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "color": { "$ref": "#/definitions/color" },
+                            "gapColor": { "$ref": "#/definitions/color" },
+                            "opacity": { "$ref": "#/definitions/opacity" },
+                            "gapOpacity": { "$ref": "#/definitions/opacity" },
+                            "overprint": { "type": "boolean" },
+                            "gapOverprint": { "type": "boolean" },
+                            "offset": { "$ref": "#/definitions/unit" },
+                            "rightIndent": { "$ref": "#/definitions/unit" },
+                            "leftIndent": { "$ref": "#/definitions/unit" },
+                            "fittedTo": {
+                              "$ref": "#/definitions/columnOrTextWidth"
+                            },
+                            "style": {
+                              "$ref": "#/definitions/layout/linesStyles"
+                            }
+                          }
+                        }
+                      ]
                     }
                   }
                 },
@@ -1122,9 +1085,7 @@
                           "description": "If the paragraph is split across multiple blocks, whether to display the border at those breakpoints."
                         },
                         "fittedTo": {
-                          "type": "string",
-                          "description": "The basis used to calculate the width of the \"paragraph box\".",
-                          "enum": ["COLUMN_WIDTH", "TEXT_WIDTH"]
+                          "$ref": "#/definitions/columnOrTextWidth"
                         },
                         "endCap": {
                           "type": "string",
@@ -1144,9 +1105,7 @@
                             "ROUND_END_JOIN"
                           ]
                         },
-                        "style": {
-                          "$ref": "#/definitions/layout/linesStyles"
-                        },
+                        "style": { "$ref": "#/definitions/layout/linesStyles" },
                         "borderTop": {
                           "type": "object",
                           "properties": {
@@ -1211,7 +1170,6 @@
                     }
                   ]
                 },
-
                 "background": {
                   "anyOf": [
                     { "type": "boolean", "const": false },
@@ -1232,9 +1190,7 @@
                           "description": "If the background would be larger than the text frame, clip it to its size."
                         },
                         "fittedTo": {
-                          "type": "string",
-                          "description": "The basis used to calculate the width of the \"paragraph box\".",
-                          "enum": ["COLUMN_WIDTH", "TEXT_WIDTH"]
+                          "$ref": "#/definitions/columnOrTextWidth"
                         },
                         "topOffset": { "$ref": "#/definitions/unit" },
                         "topOrigin": {
@@ -1298,7 +1254,6 @@
     "OutlineJoin.BEVEL_END_JOIN",
     "OutlineJoin.MITER_END_JOIN",
     "OutlineJoin.ROUND_END_JOIN",
-
     "gradientFillAngle",
     "gradientFillLength",
     "gradientFillStart",
@@ -1311,37 +1266,6 @@
     "numberingContinue",
     "numberingLevel",
     "numberingRestartPolicies",
-
-    "ruleAbove",
-    "ruleAboveColor",
-    "ruleAboveGapColor",
-    "ruleAboveGapOverprint",
-    "ruleAboveGapTint",
-    "ruleAboveLeftIndent",
-    "ruleAboveLineWeight",
-    "ruleAboveOffset",
-    "ruleAboveOverprint",
-    "ruleAboveRightIndent",
-    "ruleAboveTint",
-    "ruleAboveType",
-    "ruleAboveWidth",
-    "RuleWidth.COLUMN_WIDTH",
-    "RuleWidth.TEXT_WIDTH",
-    "ruleBelow",
-    "ruleBelowColor",
-    "ruleBelowGapColor",
-    "ruleBelowGapOverprint",
-    "ruleBelowGapTint",
-    "ruleBelowLeftIndent",
-    "ruleBelowLineWeight",
-    "ruleBelowOffset",
-    "ruleBelowOverprint",
-    "ruleBelowRightIndent",
-    "ruleBelowTint",
-    "ruleBelowType",
-    "ruleBelowWidth",
-    "RuleWidth.COLUMN_WIDTH",
-    "RuleWidth.TEXT_WIDTH",
     "scaleAffectsLineHeight",
     "spanColumnMinSpaceAfter",
     "spanColumnMinSpaceBefore",
