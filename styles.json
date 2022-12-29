@@ -1,5 +1,6 @@
 {
-  "$id": "/Users/aurianaubert/Library/Preferences/Adobe InDesign/Version 18.0/fr_FR/Scripts/Scripts Panel/SCHEMAS/styles.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "AUAUST-TOOLS-InDesign-Schemas-Styles",
   "title": "Paragraphs and character styles",
   "description": "Paragraphs and character styles",
   "type": "object",
