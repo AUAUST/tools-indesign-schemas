@@ -942,8 +942,9 @@
                       "anyOf": [
                         {
                           "type": "integer",
-                          "minimum": "2",
-                          "maximum": "40",
+                          "minimum": 2,
+                          "default": 2,
+                          "maximum": 40,
                           "description": "Either the number of sub-columns to generate or the number of columns to span, depending on the mode."
                         },
                         {
