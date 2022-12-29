@@ -931,7 +931,45 @@
                     }
                   ]
                 },
-                "columns": {},
+                "columns": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["SINGLE_COLUMN", "SPAN_COLUMNS", "SPLIT_COLUMNS"]
+                    },
+                    "count": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": "2",
+                          "maximum": "40",
+                          "description": "Either the number of sub-columns to generate or the number of columns to span, depending on the mode."
+                        },
+                        {
+                          "type": "string",
+                          "const": "ALL",
+                          "description": "If the type is \"SPAN_COLUMNS\", spans over all columns."
+                        }
+                      ]
+                    },
+                    "spaceBefore": { "$ref": "#/definitions/unit" },
+                    "spaceAfter": { "$ref": "#/definitions/unit" },
+                    "splitColumnsGutters": {
+                      "type": "object",
+                      "properties": {
+                        "insideGutter": {
+                          "$ref": "#/definitions/unit",
+                          "definition": "The gutter to apply between sub-columns."
+                        },
+                        "outsideGutter": {
+                          "$ref": "#/definitions/unit",
+                          "definition": "The gutter to apply arround the columns."
+                        }
+                      }
+                    }
+                  }
+                },
                 "tabs": {
                   "type": "object",
                   "description": "The tabulations. Can be indiviudally set, generated or both.",
@@ -1250,10 +1288,6 @@
   "        ": "",
   "         ": "",
   "all": [
-    "endJoin",
-    "OutlineJoin.BEVEL_END_JOIN",
-    "OutlineJoin.MITER_END_JOIN",
-    "OutlineJoin.ROUND_END_JOIN",
     "gradientFillAngle",
     "gradientFillLength",
     "gradientFillStart",
@@ -1266,16 +1300,6 @@
     "numberingContinue",
     "numberingLevel",
     "numberingRestartPolicies",
-    "scaleAffectsLineHeight",
-    "spanColumnMinSpaceAfter",
-    "spanColumnMinSpaceBefore",
-    "spanColumnType",
-    "SpanColumnTypeOptions.SINGLE_COLUMN",
-    "SpanColumnTypeOptions.SPAN_COLUMNS",
-    "SpanColumnTypeOptions.SPLIT_COLUMNS",
-    "spanSplitColumnCount",
-    "SpanColumnCountOptions.ALL",
-    "splitColumnInsideGutter",
-    "splitColumnOutsideGutter"
+    "scaleAffectsLineHeight"
   ]
 }
