@@ -325,32 +325,35 @@
                   ]
                 },
                 "textTransform": {
-                  "capitalization": {
-                    "type": "string",
-                    "enum": [
-                      "SMALL_CAPS",
-                      "NORMAL",
-                      "CAP_TO_SMALL_CAP",
-                      "ALL_CAPS"
-                    ]
-                  },
-                  "horizontalScale": {
-                    "type": "number",
-                    "description": "The horizontal scaling applied to the glyphs."
-                  },
-                  "verticalScale": {
-                    "type": "number",
-                    "description": "The vertical scaling applied to the glyphs."
-                  },
-                  "skew": {
-                    "type": "number",
-                    "minimum": -85,
-                    "maximum": 85,
-                    "description": "Slant of the font in degrees."
-                  },
-                  "rotation": {
-                    "type": "number",
-                    "description": "A value in degrees in which to rotate characters. Applied individually for each glyph and unclock-wise."
+                  "type": "object",
+                  "properties": {
+                    "capitalization": {
+                      "type": "string",
+                      "enum": [
+                        "SMALL_CAPS",
+                        "NORMAL",
+                        "CAP_TO_SMALL_CAP",
+                        "ALL_CAPS"
+                      ]
+                    },
+                    "horizontalScale": {
+                      "type": "number",
+                      "description": "The horizontal scaling applied to the glyphs."
+                    },
+                    "verticalScale": {
+                      "type": "number",
+                      "description": "The vertical scaling applied to the glyphs."
+                    },
+                    "skew": {
+                      "type": "number",
+                      "minimum": -85,
+                      "maximum": 85,
+                      "description": "Slant of the font in degrees."
+                    },
+                    "rotation": {
+                      "type": "number",
+                      "description": "A value in degrees in which to rotate characters. Applied individually for each glyph and unclock-wise."
+                    }
                   }
                 },
                 "letterSpacing": {
@@ -362,7 +365,7 @@
                       "description": "Adjusting the space between specific pairs of letters in a piece of text.",
                       "anyOf": [
                         { "type": "number", "const": 0 },
-                        { "type": "string", "enum": ["Optical", "Metrics"] }
+                        { "type": "string", "enum": ["OPTICAL", "METRICS"] }
                       ]
                     },
                     "tracking": {
