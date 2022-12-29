@@ -964,7 +964,7 @@
                         },
                         "outsideGutter": {
                           "$ref": "#/definitions/unit",
-                          "definition": "The gutter to apply arround the columns."
+                          "definition": "The gutter to apply around the sub-columns group."
                         }
                       }
                     }
@@ -1276,30 +1276,5 @@
         }
       }
     }
-  },
-  "": "",
-  " ": "",
-  "  ": "",
-  "   ": "",
-  "    ": "",
-  "     ": "",
-  "      ": "",
-  "       ": "",
-  "        ": "",
-  "         ": "",
-  "all": [
-    "gradientFillAngle",
-    "gradientFillLength",
-    "gradientFillStart",
-    "gradientStrokeAngle",
-    "gradientStrokeLength",
-    "gradientStrokeStart",
-    "mergeConsecutiveParaBorders",
-    "numberingApplyRestartPolicy",
-    "numberingCharacterStyle",
-    "numberingContinue",
-    "numberingLevel",
-    "numberingRestartPolicies",
-    "scaleAffectsLineHeight"
-  ]
+  }
 }
