@@ -308,6 +308,7 @@
                 "fontFamily": { "type": "string" },
                 "fontStyle": { "type": "string" },
                 "fontSize": { "$ref": "#/definitions/unit" },
+                "lineHeight": { "$ref": "#/definitions/unit" },
                 "variable": {
                   "type": "array",
                   "description": "An array of numbers which represents the axis.\nMust match the font's axis order.\n\nTo know the order and ranges of the axis, set the variable font to a text block and see how many axis are available, their ranges and theirs order. If you set the array in the same order and within the same range, it'll work as expected.",
