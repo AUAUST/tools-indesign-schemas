@@ -311,7 +311,7 @@
                 "lineHeight": { "$ref": "#/definitions/unit" },
                 "variable": {
                   "type": "array",
-                  "description": "An array of numbers which represents the axis.\nMust match the font's axis order.\n\nTo know the order and ranges of the axis, set the variable font to a text block and see how many axis are available, their ranges and theirs order. If you set the array in the same order and within the same range, it'll work as expected.",
+                  "description": "An array of numbers which represents the axis.\nMust match the font's axis order.\n\nTo know the order and ranges of the axis, set the variable font to a text block and see how many axis are available, their ranges and theirs order. If you set the array in the same order and within the same range, it'll work as expected.\n\nFor exemple, Antarctica VAR has 4 axis in that order: Width 1 <= n <= 200, Weight 1 <= n <= 950, Italic 1 <= n <= 12, Contrast 0 <= n <= 100. If you wanted to set the font to a width of 150, a weight of 500, an italic of 6 and a contrast of 50, you would set the array to [150, 500, 6, 50].",
                   "items": { "type": "number" }
                 },
                 "textTransform": {
