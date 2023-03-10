@@ -708,6 +708,12 @@
                         "hyphenationZone": {
                           "$ref": "#/definitions/unit",
                           "description": "The amount of white space allowed at the end of a line of non-justified text before hypenation begins."
+                        },
+                        "wordsLongerThan": {
+                          "type": "number",
+                          "minimum": 3,
+                          "maximum": 25,
+                          "description": "The minimum number of letters a word must have in order to qualify for hyphenation."
                         }
                       }
                     }
