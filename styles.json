@@ -1089,6 +1089,7 @@
                           "additionalProperties": false,
                           "properties": {
                             "color": { "$ref": "#/definitions/color" },
+                            "weight": { "$ref": "#/definitions/unit" },
                             "gapColor": { "$ref": "#/definitions/color" },
                             "opacity": { "$ref": "#/definitions/opacity" },
                             "gapOpacity": { "$ref": "#/definitions/opacity" },
@@ -1115,6 +1116,7 @@
                           "additionalProperties": false,
                           "properties": {
                             "color": { "$ref": "#/definitions/color" },
+                            "weight": { "$ref": "#/definitions/unit" },
                             "gapColor": { "$ref": "#/definitions/color" },
                             "opacity": { "$ref": "#/definitions/opacity" },
                             "gapOpacity": { "$ref": "#/definitions/opacity" },
