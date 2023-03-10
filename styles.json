@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "AUAUST-TOOLS-InDesign-Schemas-Styles",
   "title": "AUAUST TOOLS — InDesign — Styles schema",
-  "description": "A .auaust file formatted as JSON containing paragraphs and character styles for use in a generated InDesign document.",
+  "description": "A .aajson file formatted as JSON containing paragraphs and character styles for use in a generated InDesign document.",
   "type": "object",
   "additionalProperties": false,
   "definitions": {
@@ -10,7 +10,7 @@
       "anyOf": [
         {
           "type": "number",
-          "description": "When set to a number without an unit, the unit used is the one set in the general `document.auaust` config. If it isn't there, it fallbacks to `um`."
+          "description": "When set to a number without an unit, the unit used is the one set in the general `document.aajson` config. If it isn't there, it fallbacks to `um`."
         },
         {
           "type": "string",
@@ -34,7 +34,7 @@
         {
           "$ref": "#/definitions/id",
           "default": "someID",
-          "description": "A color ID if `colors.auaust` has been imported."
+          "description": "A color ID if `colors.aajson` has been imported."
         },
         {
           "type": "object",
