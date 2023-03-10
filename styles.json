@@ -34,7 +34,7 @@
         {
           "$ref": "#/definitions/id",
           "default": "someID",
-          "description": "A color ID if `colors.aajson` has been imported."
+          "description": "A color ID if the colors object is defined."
         },
         {
           "type": "object",
@@ -57,7 +57,7 @@
             "G": { "type": "number", "mininum": 0, "maximum": 255 },
             "B": { "type": "number", "mininum": 0, "maximum": 255 }
           },
-          "required": ["R", "G", "G"]
+          "required": ["R", "G", "B"]
         },
         {
           "type": "object",
