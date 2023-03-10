@@ -705,6 +705,10 @@
                           "type": "boolean",
                           "description": "If true, words unassociated with a hyphenation dictionary can break to the next line on any character."
                         },
+                        "hyphenateCapitalizedWords": {
+                          "type": "boolean",
+                          "description": "If true, allows hyphenation of capitalized words."
+                        },
                         "hyphenationZone": {
                           "$ref": "#/definitions/unit",
                           "description": "The amount of white space allowed at the end of a line of non-justified text before hypenation begins."
