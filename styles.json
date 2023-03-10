@@ -714,6 +714,7 @@
                   ]
                 },
                 "balanceRaggedLines": {
+                  "definition": "If true, balances the ragged lines in a non-justified paragraph, making it look more uniform.",
                   "anyOf": [
                     {
                       "type": "string",
