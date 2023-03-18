@@ -910,6 +910,14 @@
                         "numberingFormat": {
                           "type": "string",
                           "enum": [
+                            "1,2,3",
+                            "01,02,03",
+                            "001,002,003",
+                            "0001,0002,0003",
+                            "a,b,c",
+                            "A,B,C",
+                            "i,ii,iii",
+                            "I,II,III",
                             "ARABIC",
                             "ARABIC_ABJAD",
                             "ARABIC_ALIF_BA_TAH",
