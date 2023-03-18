@@ -943,8 +943,16 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "alignToBaseline": { "type": "boolean" },
-                "alignFirstLineOnly": { "type": "boolean" },
+                "alignToBaseline": {
+                  "anyOf": [
+                    { "type": "boolean", "const": false },
+                    {
+                      "type": "string",
+                      "enum": ["ALL_LINES", "FIRST_LINE", "NONE"]
+                    }
+                  ]
+                },
+
                 "alignmentType": {
                   "anyOf": [
                     {
