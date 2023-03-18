@@ -948,7 +948,7 @@
                     { "type": "boolean", "const": false },
                     {
                       "type": "string",
-                      "enum": ["ALL_LINES", "FIRST_LINE", "NONE"]
+                      "enum": ["ALL_LINES", "FIRST_LINE"]
                     }
                   ]
                 },
