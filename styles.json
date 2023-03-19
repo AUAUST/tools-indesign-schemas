@@ -33,8 +33,17 @@
       "oneOf": [
         {
           "$ref": "#/definitions/id",
-          "default": "someID",
-          "description": "A color ID if the colors object is defined."
+          "description": "A color ID if the colors object is defined.",
+          "not": {
+            "enum": [
+              "Black",
+              "Paper",
+              "Registration",
+              "Cyan",
+              "Yellow",
+              "Magenta"
+            ]
+          }
         },
         {
           "type": "object",
@@ -82,32 +91,26 @@
           "required": ["H", "S", "B"]
         },
         {
-          "type": "string",
           "description": "The default solid black color.",
           "const": "Black"
         },
         {
-          "type": "string",
           "description": "The default paper color.",
           "const": "Paper"
         },
         {
-          "type": "string",
           "description": "The registration color. Prints on all plates.",
           "const": "Registration"
         },
         {
-          "type": "string",
           "description": "The default solid cyan color.",
           "const": "Cyan"
         },
         {
-          "type": "string",
           "description": "The default solid yellow color.",
           "const": "Yellow"
         },
         {
-          "type": "string",
           "description": "The default solid magenta color.",
           "const": "Magenta"
         }
