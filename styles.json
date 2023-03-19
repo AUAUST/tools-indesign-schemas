@@ -33,7 +33,7 @@
       "oneOf": [
         {
           "$ref": "#/definitions/id",
-          "description": "A color ID if the colors object is defined.",
+          "description": "A color ID to use from the colors.aajson file.\n\nIn case the color is not found, the [Not found] color is used instead as a debug information.",
           "not": {
             "enum": [
               "Black",
