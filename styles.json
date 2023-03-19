@@ -72,14 +72,14 @@
         },
         {
           "type": "object",
-          "description": "A color object containing the keys to format a HSL color.",
-          "default": { "H": 0, "S": 0, "L": 0 },
+          "description": "A color object containing the keys to format a HSB color.",
+          "default": { "H": 0, "S": 0, "B": 0 },
           "properties": {
             "H": { "type": "number", "mininum": 0, "maximum": 360 },
             "S": { "type": "number", "mininum": 0, "maximum": 100 },
-            "L": { "type": "number", "mininum": 0, "maximum": 100 }
+            "B": { "type": "number", "mininum": 0, "maximum": 100 }
           },
-          "required": ["H", "S", "L"]
+          "required": ["H", "S", "B"]
         }
       ]
     },
