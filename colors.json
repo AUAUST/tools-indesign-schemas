@@ -4,5 +4,84 @@
   "title": "AUAUST TOOLS — InDesign — Colors schema",
   "description": "A .aajson file formatted as JSON containing colors for use in a generated InDesign document.",
   "type": "object",
-  "additionalProperties": false
+  "definitions": {
+    "id": { "type": "string", "pattern": "^[a-zA-Z0-9_.-]+$" },
+    "color": {
+      "anyOf": [
+        {
+          "type": "object",
+          "description": "A color object containing the keys to format a CMYK color.",
+          "default": { "C": 0, "M": 0, "Y": 0, "K": 0 },
+          "properties": {
+            "C": { "type": "number", "mininum": 0, "maximum": 100 },
+            "M": { "type": "number", "mininum": 0, "maximum": 100 },
+            "Y": { "type": "number", "mininum": 0, "maximum": 100 },
+            "K": { "type": "number", "mininum": 0, "maximum": 100 }
+          },
+          "required": ["C", "M", "Y", "K"]
+        },
+        {
+          "type": "object",
+          "description": "A color object containing the keys to format a RGB color.",
+          "default": { "R": 0, "G": 0, "B": 0 },
+          "properties": {
+            "R": { "type": "number", "mininum": 0, "maximum": 255 },
+            "G": { "type": "number", "mininum": 0, "maximum": 255 },
+            "B": { "type": "number", "mininum": 0, "maximum": 255 }
+          },
+          "required": ["R", "G", "B"]
+        },
+        {
+          "type": "object",
+          "description": "A color object containing the keys to format a LAB color.",
+          "default": { "L": 0, "A": 0, "B": 0 },
+          "properties": {
+            "L": { "type": "number", "mininum": 0, "maximum": 100 },
+            "A": { "type": "number", "mininum": -128, "maximum": 127 },
+            "B": { "type": "number", "mininum": -128, "maximum": 127 }
+          },
+          "required": ["L", "A", "B"]
+        },
+        {
+          "type": "object",
+          "description": "A color object containing the keys to format a HSB color.",
+          "default": { "H": 0, "S": 0, "B": 0 },
+          "properties": {
+            "H": { "type": "number", "mininum": 0, "maximum": 360 },
+            "S": { "type": "number", "mininum": 0, "maximum": 100 },
+            "B": { "type": "number", "mininum": 0, "maximum": 100 }
+          },
+          "required": ["H", "S", "B"]
+        }
+      ]
+    }
+  },
+  "additionalProperties": {
+    "anyOf": [
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "color" },
+          "values": {
+            "$ref": "#/definitions/color"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "const": "PROCESS",
+                "description": "The color is a normal CMYK color."
+              },
+              {
+                "const": "SPOT",
+                "description": "The color is a spot color, for exemple a Pantone."
+              }
+            ],
+            "default": "PROCESS"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["values"]
+      }
+    ]
+  }
 }
