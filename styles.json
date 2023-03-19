@@ -80,6 +80,36 @@
             "B": { "type": "number", "mininum": 0, "maximum": 100 }
           },
           "required": ["H", "S", "B"]
+        },
+        {
+          "type": "string",
+          "description": "The default solid black color.",
+          "const": "Black"
+        },
+        {
+          "type": "string",
+          "description": "The default paper color.",
+          "const": "Paper"
+        },
+        {
+          "type": "string",
+          "description": "The registration color. Prints on all plates.",
+          "const": "Registration"
+        },
+        {
+          "type": "string",
+          "description": "The default solid cyan color.",
+          "const": "Cyan"
+        },
+        {
+          "type": "string",
+          "description": "The default solid yellow color.",
+          "const": "Yellow"
+        },
+        {
+          "type": "string",
+          "description": "The default solid magenta color.",
+          "const": "Magenta"
         }
       ]
     },
