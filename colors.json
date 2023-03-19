@@ -60,68 +60,81 @@
       ]
     }
   },
-  "additionalProperties": {
-    "anyOf": [
-      {
-        "type": "object",
-        "properties": {
-          "type": { "const": "color" },
-          "values": {
-            "$ref": "#/definitions/color"
-          },
-          "model": {
-            "anyOf": [
-              {
-                "const": "PROCESS",
-                "description": "The color is a normal CMYK color."
-              },
-              {
-                "const": "SPOT",
-                "description": "The color is a spot color, for exemple a Pantone."
-              }
-            ],
-            "default": "PROCESS"
-          }
-        },
-        "additionalProperties": false,
-        "required": ["values"]
-      },
-      {
-        "type": "object",
-        "properties": {
-          "type": { "const": "gradient" },
-          "shape": {
-            "type": "string",
-            "enum": ["LINEAR", "RADIAL"]
-          },
-          "stops": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "color": {
-                  "anyOf": [
-                    { "$ref": "#/definitions/color" },
-                    { "$ref": "#/definitions/id" }
-                  ]
+  "additionalProperties": false,
+  "properties": {
+    "colors": {
+      "type": "object",
+      "description": "A list of solid colors that can be used in the document, referenced by their key names.",
+      "patternProperties": {
+        "^[a-zA-Z0-9_.-]+$": {
+          "type": "object",
+          "properties": {
+            "values": {
+              "$ref": "#/definitions/color"
+            },
+            "model": {
+              "anyOf": [
+                {
+                  "const": "PROCESS",
+                  "description": "The color is a normal CMYK color."
                 },
-                "location": { "type": "number", "minimum": 0, "maximum": 100 },
-                "midPointAfter": {
-                  "type": "number",
-                  "description": "The midpoint is the location where the middle of the color transition is.\n\nThe smaller the number, the more the transition will be on the left side of the color.\n\nThe bigger the number, the more the transition will be on the right side of the color.",
-                  "default": 50,
-                  "minimum": 13,
-                  "maximum": 87
+                {
+                  "const": "SPOT",
+                  "description": "The color is a spot color, for exemple a Pantone."
                 }
-              },
-              "required": ["location", "color"],
-              "additionalProperties": false
+              ],
+              "default": "PROCESS"
             }
-          }
-        },
-        "required": ["stops"],
-        "additionalProperties": false
+          },
+          "additionalProperties": false,
+          "required": ["values"]
+        }
       }
-    ]
+    },
+    "gradients": {
+      "type": "object",
+      "description": "A list of gradients that can be used in the document, referenced by their key names.",
+      "patternProperties": {
+        "^[a-zA-Z0-9_.-]+$": {
+          "type": "object",
+          "properties": {
+            "shape": {
+              "type": "string",
+              "enum": ["LINEAR", "RADIAL"]
+            },
+            "stops": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "color": {
+                    "anyOf": [
+                      { "$ref": "#/definitions/color" },
+                      { "$ref": "#/definitions/id" }
+                    ]
+                  },
+                  "location": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "midPointAfter": {
+                    "type": "number",
+                    "description": "The midpoint is the location where the middle of the color transition is.\n\nThe smaller the number, the more the transition will be on the left side of the color.\n\nThe bigger the number, the more the transition will be on the right side of the color.",
+                    "default": 50,
+                    "minimum": 13,
+                    "maximum": 87
+                  }
+                },
+                "required": ["location", "color"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["stops"],
+          "additionalProperties": false
+        }
+      }
+    }
   }
 }
