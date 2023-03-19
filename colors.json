@@ -18,7 +18,8 @@
             "Y": { "type": "number", "mininum": 0, "maximum": 100 },
             "K": { "type": "number", "mininum": 0, "maximum": 100 }
           },
-          "required": ["C", "M", "Y", "K"]
+          "required": ["C", "M", "Y", "K"],
+          "additionalProperties": false
         },
         {
           "type": "object",
@@ -29,7 +30,8 @@
             "G": { "type": "number", "mininum": 0, "maximum": 255 },
             "B": { "type": "number", "mininum": 0, "maximum": 255 }
           },
-          "required": ["R", "G", "B"]
+          "required": ["R", "G", "B"],
+          "additionalProperties": false
         },
         {
           "type": "object",
@@ -40,7 +42,8 @@
             "A": { "type": "number", "mininum": -128, "maximum": 127 },
             "B": { "type": "number", "mininum": -128, "maximum": 127 }
           },
-          "required": ["L", "A", "B"]
+          "required": ["L", "A", "B"],
+          "additionalProperties": false
         },
         {
           "type": "object",
@@ -51,7 +54,8 @@
             "S": { "type": "number", "mininum": 0, "maximum": 100 },
             "B": { "type": "number", "mininum": 0, "maximum": 100 }
           },
-          "required": ["H", "S", "B"]
+          "required": ["H", "S", "B"],
+          "additionalProperties": false
         }
       ]
     }
@@ -81,6 +85,42 @@
         },
         "additionalProperties": false,
         "required": ["values"]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "gradient" },
+          "shape": {
+            "type": "string",
+            "enum": ["LINEAR", "RADIAL"]
+          },
+          "stops": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "anyOf": [
+                    { "$ref": "#/definitions/color" },
+                    { "$ref": "#/definitions/id" }
+                  ]
+                },
+                "location": { "type": "number", "minimum": 0, "maximum": 100 },
+                "midPointAfter": {
+                  "type": "number",
+                  "description": "The midpoint is the location where the middle of the color transition is.\n\nThe smaller the number, the more the transition will be on the left side of the color.\n\nThe bigger the number, the more the transition will be on the right side of the color.",
+                  "default": 50,
+                  "minimum": 13,
+                  "maximum": 87
+                }
+              },
+              "required": ["location", "color"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["stops"],
+        "additionalProperties": false
       }
     ]
   }
