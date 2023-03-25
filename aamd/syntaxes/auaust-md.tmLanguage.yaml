@@ -12,8 +12,9 @@ name: "AUAUST Markdown"
 scopeName: "text.auaust-md"
 
 patterns:
-  # - name: constant.character.escape
-  #   match: "\\\\\\/"
+  - name: "constant.character.escape"
+    #  matches \/, \\, \{, \#
+    match: "\\\\([\\\/\\\\{}#*_])"
   - name: comment.line
     comment: true
     match: "(?<!\\\\)//(.*)"

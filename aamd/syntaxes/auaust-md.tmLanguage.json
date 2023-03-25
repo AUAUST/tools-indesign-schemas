@@ -3,6 +3,10 @@
   "scopeName": "text.auaust-md",
   "patterns": [
     {
+      "name": "constant.character.escape",
+      "match": "\\\\([\\/\\\\{}#*_])"
+    },
+    {
       "name": "comment.line",
       "comment": true,
       "match": "(?<!\\\\)//(.*)",
