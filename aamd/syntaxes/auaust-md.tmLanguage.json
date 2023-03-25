@@ -100,19 +100,26 @@
           "match": "\\w+"
         },
         {
-          "name": "markup.placeholder.ponctuation.chaining",
-          "begin": "->",
-          "end": "->",
-          "patterns": [
-            {
-              "name": "markup.placeholder.function",
-              "match": "\\w+"
+          "name": "markup.placeholder",
+          "match": "(->)\\s*(\\w+)\\s*(:)?\\s*(\\w+)?",
+          "captures": {
+            "1": {
+              "name": "markup.placeholder.ponctuation.chaining"
             },
-            {
-              "name": "markup.placeholder.ponctuation.open_arg",
-              "match": "\\w+\\s*(:)"
+            "2": {
+              "name": "markup.placeholder.function"
+            },
+            "3": {
+              "name": "markup.placeholder.ponctuation.open_argument"
+            },
+            "4": {
+              "name": "markup.placeholder.argument"
             }
-          ]
+          }
+        },
+        {
+          "name": "markup.placeholder.syntax_error",
+          "match": "([->]|:{2,})\\s*"
         }
       ]
     }
