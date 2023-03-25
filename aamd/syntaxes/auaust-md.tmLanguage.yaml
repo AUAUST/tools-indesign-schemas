@@ -12,55 +12,53 @@ name: "AUAUST Markdown"
 scopeName: "text.auaust-md"
 
 patterns:
+  - name: comment.line
+    match: "//(.*)"
+    captures:
+      1:
+        name: "comment.line"
   - name: markup.heading.1
-    match: "^\\s*(#)\\s+(.*)"
+    match: "^\\s*(#)\\s+([^//]*)"
     captures:
       1:
         name: "markup.heading.symbol.1"
       0:
         name: "markup.heading.text.1"
   - name: markup.heading.2
-    match: "^\\s*(#{2})\\s+(.*)"
+    match: "^\\s*(#{2})\\s+([^//]*)"
     captures:
       1:
         name: "markup.heading.symbol.2"
       0:
         name: "markup.heading.text.2"
   - name: markup.heading.3
-    match: "^\\s*(#{3})\\s+(.*)"
+    match: "^\\s*(#{3})\\s+([^//]*)"
     captures:
       1:
         name: "markup.heading.symbol.3"
       0:
         name: "markup.heading.text.3"
   - name: markup.heading.4
-    match: "^\\s*(#{4})\\s+(.*)"
+    match: "^\\s*(#{4})\\s+([^//]*)"
     captures:
       1:
         name: "markup.heading.symbol.4"
       0:
         name: "markup.heading.text.4"
   - name: markup.heading.5
-    match: "^\\s*(#{5})\\s+(.*)"
+    match: "^\\s*(#{5})\\s+([^//]*)"
     captures:
       1:
         name: "markup.heading.symbol.5"
       0:
         name: "markup.heading.text.5"
   - name: markup.heading.6
-    match: "^\\s*(#{6})\\s+(.*)"
+    match: "^\\s*(#{6})\\s+([^//]*)"
     captures:
       1:
         name: "markup.heading.symbol.6"
       0:
         name: "markup.heading.text.6"
-  - name: markup.heading
-    match: "^\\s*(#{1,6})\\s+(.*)"
-    captures:
-      1:
-        name: "markup.heading.symbol"
-      0:
-        name: "markup.heading.text"
   - name: markup.placeholder
     begin: "{{2}\\s*"
     end: "\\s*}{2}"
