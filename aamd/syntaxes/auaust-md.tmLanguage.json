@@ -88,8 +88,8 @@
     },
     {
       "name": "markup.placeholder",
-      "begin": "{{2}\\s+",
-      "end": "\\s+}{2}",
+      "begin": "{{2}\\s*",
+      "end": "\\s*}{2}",
       "patterns": [
         {
           "name": "markup.placeholder.default",
@@ -98,6 +98,21 @@
         {
           "name": "markup.placeholder.custom",
           "match": "\\w+"
+        },
+        {
+          "name": "markup.placeholder.ponctuation.chaining",
+          "begin": "->",
+          "end": "->",
+          "patterns": [
+            {
+              "name": "markup.placeholder.function",
+              "match": "\\w+"
+            },
+            {
+              "name": "markup.placeholder.ponctuation.open_arg",
+              "match": "\\w+\\s*(:)"
+            }
+          ]
         }
       ]
     }
