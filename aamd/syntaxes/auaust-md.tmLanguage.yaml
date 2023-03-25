@@ -69,8 +69,8 @@ patterns:
   #     1:
   #       name: markup.placeholder.custom
   - name: markup.placeholder
-    begin: "{{\\s*"
-    end: "\\s*}}"
+    begin: "{{2}\\s+"
+    end: "\\s+}{2}"
     patterns:
       # - name: markup.placeholder.symbol
       #   match: "(?<=\\{{).*?(?=\\}})"
