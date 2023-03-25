@@ -10,16 +10,28 @@
     "Programming Languages"
   ],
   "contributes": {
-    "languages": [{
-      "id": "auaust-md",
-      "aliases": ["AUAUST Markdown", "auaust-md"],
-      "extensions": [".aamd"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "auaust-md",
-      "scopeName": "auaust.md",
-      "path": "./syntaxes/auaust-md.tmLanguage.json"
-    }]
+    "languages": [
+      {
+        "id": "auaust-md",
+        "aliases": [
+          "AUAUST Markdown",
+          "auaust-md"
+        ],
+        "extensions": [
+          ".aamd"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "auaust-md",
+        "scopeName": "auaust.md",
+        "path": "./syntaxes/auaust-md.tmLanguage.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
   }
 }
