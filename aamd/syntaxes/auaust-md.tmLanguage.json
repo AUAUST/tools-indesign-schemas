@@ -3,18 +3,6 @@
   "scopeName": "text.auaust-md",
   "patterns": [
     {
-      "name": "markup.heading",
-      "match": "^\\s*(#{1,6})\\s+(.*)",
-      "captures": {
-        "1": {
-          "name": "markup.heading.symbol"
-        },
-        "2": {
-          "name": "markup.heading.text"
-        }
-      }
-    },
-    {
       "name": "markup.heading.1",
       "match": "^\\s*(#)\\s+(.*)",
       "captures": {
@@ -83,6 +71,18 @@
         },
         "1": {
           "name": "markup.heading.symbol.6"
+        }
+      }
+    },
+    {
+      "name": "markup.heading",
+      "match": "^\\s*(#{1,6})\\s+(.*)",
+      "captures": {
+        "1": {
+          "name": "markup.heading.symbol"
+        },
+        "2": {
+          "name": "markup.heading.text"
         }
       }
     }
