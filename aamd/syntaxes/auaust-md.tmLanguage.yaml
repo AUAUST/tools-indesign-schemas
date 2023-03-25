@@ -1,18 +1,33 @@
 $schema: "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json"
+
 name: "AUAUST Markdown"
-patterns:
-  - include: "#keywords"
-  - include: "#strings"
+
+scopeName: "text.auaust-md"
+
+# The repository of patterns that can be included and reused in other patterns
 repository:
-  keywords:
+  # The pattern for matching inline code (e.g. `code`)
+  inline-code:
+    name: markup.inline.code.custom-md
+    match: "`[^`]+`"
+
+  # The pattern for matching links (e.g. [link](url))
+  link:
+    name: markup.underline.link.custom-md
+    begin: '\\['
+    end: '\\]\\([^\\)]+\\)'
     patterns:
-      - name: "keyword.control.auaust-md"
-        match: "\\b(if|while|for|return)\\b"
-    strings:
-      name: "string.quoted.double.auaust-md"
-      begin: '"'
-      end: '"'
-      patterns:
-        - name": "constant.character.escape.auaust-md"
-          match": "\\\\."
-scopeName: "source.auaust-md"
+      # A sub-pattern for matching the link text
+      - name: markup.underline.link.text.custom-md
+        match: '[^\\]]+'
+      # A sub-pattern for matching the link URL
+      - name: markup.underline.link.url.custom-md
+        match: '\\([^\\)]+\\)'
+
+# The list of rules for applying the styles to the syntax
+# Here we include the inline-code and link patterns from the repository
+# as well as the patterns defined above
+patterns:
+  - include: "#inline-code"
+  - include: "#link"
+  - include: "#patterns"

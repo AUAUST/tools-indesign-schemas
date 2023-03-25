@@ -1,34 +1,37 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "AUAUST Markdown",
-  "patterns": [
-    {
-      "include": "#keywords"
-    },
-    {
-      "include": "#strings"
-    }
-  ],
+  "scopeName": "text.auaust-md",
   "repository": {
-    "keywords": {
+    "inline-code": {
+      "name": "markup.inline.code.custom-md",
+      "match": "`[^`]+`"
+    },
+    "link": {
+      "name": "markup.underline.link.custom-md",
+      "begin": "\\\\[",
+      "end": "\\\\]\\\\([^\\\\)]+\\\\)",
       "patterns": [
         {
-          "name": "keyword.control.auaust-md",
-          "match": "\\b(if|while|for|return)\\b"
+          "name": "markup.underline.link.text.custom-md",
+          "match": "[^\\\\]]+"
+        },
+        {
+          "name": "markup.underline.link.url.custom-md",
+          "match": "\\\\([^\\\\)]+\\\\)"
         }
-      ],
-      "strings": {
-        "name": "string.quoted.double.auaust-md",
-        "begin": "\"",
-        "end": "\"",
-        "patterns": [
-          {
-            "name\"": "constant.character.escape.auaust-md",
-            "match\"": "\\\\."
-          }
-        ]
-      }
+      ]
     }
   },
-  "scopeName": "source.auaust-md"
+  "patterns": [
+    {
+      "include": "#inline-code"
+    },
+    {
+      "include": "#link"
+    },
+    {
+      "include": "#patterns"
+    }
+  ]
 }
