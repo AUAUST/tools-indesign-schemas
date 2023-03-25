@@ -87,7 +87,7 @@ patterns:
       #     - name: markup.placeholder.ponctuation.open_arg
       #       match: "\\w+\\s*(:)"
       - name: markup.placeholder
-        match: "(->)\\s*(\\w+)\\s*(:)?\\s*(\\w+)?"
+        match: "(->)\\s*(\\w+)\\s*(:\\s*(\\w+))?"
         captures:
           1:
             name: markup.placeholder.ponctuation.chaining
