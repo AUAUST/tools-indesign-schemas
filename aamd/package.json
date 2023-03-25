@@ -26,7 +26,7 @@
     "grammars": [
       {
         "language": "auaust-md",
-        "scopeName": "auaust.md",
+        "scopeName": "text.auaust-md",
         "path": "./syntaxes/auaust-md.tmLanguage.json"
       }
     ]

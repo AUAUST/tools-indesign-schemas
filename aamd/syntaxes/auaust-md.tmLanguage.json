@@ -1,37 +1,90 @@
 {
-  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "AUAUST Markdown",
   "scopeName": "text.auaust-md",
-  "repository": {
-    "inline-code": {
-      "name": "markup.inline.code.custom-md",
-      "match": "`[^`]+`"
-    },
-    "link": {
-      "name": "markup.underline.link.custom-md",
-      "begin": "\\\\[",
-      "end": "\\\\]\\\\([^\\\\)]+\\\\)",
-      "patterns": [
-        {
-          "name": "markup.underline.link.text.custom-md",
-          "match": "[^\\\\]]+"
-        },
-        {
-          "name": "markup.underline.link.url.custom-md",
-          "match": "\\\\([^\\\\)]+\\\\)"
-        }
-      ]
-    }
-  },
   "patterns": [
     {
-      "include": "#inline-code"
+      "name": "markup.heading",
+      "match": "^\\s*(#{1,6})\\s+(.*)",
+      "captures": {
+        "1": {
+          "name": "markup.heading.symbol"
+        },
+        "2": {
+          "name": "markup.heading.text"
+        }
+      }
     },
     {
-      "include": "#link"
+      "name": "markup.heading.1",
+      "match": "^\\s*(#)\\s+(.*)",
+      "captures": {
+        "0": {
+          "name": "markup.heading.text.1"
+        },
+        "1": {
+          "name": "markup.heading.symbol.1"
+        }
+      }
     },
     {
-      "include": "#patterns"
+      "name": "markup.heading.2",
+      "match": "^\\s*(#{2})\\s+(.*)",
+      "captures": {
+        "0": {
+          "name": "markup.heading.text.2"
+        },
+        "1": {
+          "name": "markup.heading.symbol.2"
+        }
+      }
+    },
+    {
+      "name": "markup.heading.3",
+      "match": "^\\s*(#{3})\\s+(.*)",
+      "captures": {
+        "0": {
+          "name": "markup.heading.text.3"
+        },
+        "1": {
+          "name": "markup.heading.symbol.3"
+        }
+      }
+    },
+    {
+      "name": "markup.heading.4",
+      "match": "^\\s*(#{4})\\s+(.*)",
+      "captures": {
+        "0": {
+          "name": "markup.heading.text.4"
+        },
+        "1": {
+          "name": "markup.heading.symbol.4"
+        }
+      }
+    },
+    {
+      "name": "markup.heading.5",
+      "match": "^\\s*(#{5})\\s+(.*)",
+      "captures": {
+        "0": {
+          "name": "markup.heading.text.5"
+        },
+        "1": {
+          "name": "markup.heading.symbol.5"
+        }
+      }
+    },
+    {
+      "name": "markup.heading.6",
+      "match": "^\\s*(#{6})\\s+(.*)",
+      "captures": {
+        "0": {
+          "name": "markup.heading.text.6"
+        },
+        "1": {
+          "name": "markup.heading.symbol.6"
+        }
+      }
     }
   ]
 }
