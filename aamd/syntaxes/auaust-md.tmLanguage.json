@@ -4,7 +4,8 @@
   "patterns": [
     {
       "name": "comment.line",
-      "match": "//(.*)",
+      "comment": true,
+      "match": "(?<!\\\\)//(.*)",
       "captures": {
         "1": {
           "name": "comment.line"
@@ -14,7 +15,7 @@
     {
       "name": "markup.heading.text.1",
       "begin": "^\\s*(#{1})\\s+",
-      "end": "(?=$|//)",
+      "end": "(?=$|(?<!\\\\)//)",
       "captures": {
         "1": {
           "name": "markup.heading.symbol.1"
