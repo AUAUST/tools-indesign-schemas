@@ -1,6 +1,6 @@
 {
-  "name": "aamd",
-  "displayName": "AUAUST MD",
+  "name": "auaust-md",
+  "displayName": "AUAUST Markdown",
   "description": "AUAUST TOOLS — InDesign — Custom synthax highlighting for AUAUST Markdown",
   "version": "0.0.1",
   "engines": {
@@ -14,7 +14,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "aamd.helloWorld",
+        "command": "auaust-md.helloWorld",
         "title": "Hello World"
       }
     ]
