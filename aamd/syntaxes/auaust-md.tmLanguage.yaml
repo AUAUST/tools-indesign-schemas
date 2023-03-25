@@ -50,5 +50,19 @@ patterns:
     captures:
       1:
         name: "markup.heading.symbol"
-      2:
+      0:
         name: "markup.heading.text"
+  - name: markup.placeholder
+    match: \{\{([a|b|c])\}\}
+    captures:
+      0:
+        name: markup.placeholder.symbol
+      1:
+        name: markup.placeholder.default
+  - name: markup.placeholder
+    match: \{\{([\w-]+)\}\}
+    captures:
+      0:
+        name: markup.placeholder.symbol
+      1:
+        name: markup.placeholder.custom

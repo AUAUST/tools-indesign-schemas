@@ -78,11 +78,35 @@
       "name": "markup.heading",
       "match": "^\\s*(#{1,6})\\s+(.*)",
       "captures": {
+        "0": {
+          "name": "markup.heading.text"
+        },
         "1": {
           "name": "markup.heading.symbol"
+        }
+      }
+    },
+    {
+      "name": "markup.placeholder",
+      "match": "\\{\\{([a|b|c])\\}\\}",
+      "captures": {
+        "0": {
+          "name": "markup.placeholder.symbol"
         },
-        "2": {
-          "name": "markup.heading.text"
+        "1": {
+          "name": "markup.placeholder.default"
+        }
+      }
+    },
+    {
+      "name": "markup.placeholder",
+      "match": "\\{\\{([\\w-]+)\\}\\}",
+      "captures": {
+        "0": {
+          "name": "markup.placeholder.symbol"
+        },
+        "1": {
+          "name": "markup.placeholder.custom"
         }
       }
     }
