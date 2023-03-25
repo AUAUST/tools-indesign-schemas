@@ -17,48 +17,42 @@ patterns:
     captures:
       1:
         name: "comment.line"
-  - name: markup.heading.1
-    match: "^\\s*(#)\\s+([^//]*)"
+  - name: markup.heading.text.1
+    begin: "^\\s*(#{1})\\s+"
+    end: "(?=$|//)"
     captures:
       1:
         name: "markup.heading.symbol.1"
-      0:
-        name: "markup.heading.text.1"
-  - name: markup.heading.2
-    match: "^\\s*(#{2})\\s+([^//]*)"
+  - name: markup.heading.text.2
+    begin: "^\\s*(#{2})\\s+"
+    end: "(?=$|//)"
     captures:
       1:
         name: "markup.heading.symbol.2"
-      0:
-        name: "markup.heading.text.2"
-  - name: markup.heading.3
-    match: "^\\s*(#{3})\\s+([^//]*)"
+  - name: markup.heading.text.3
+    begin: "^\\s*(#{3})\\s+"
+    end: "(?=$|//)"
     captures:
       1:
         name: "markup.heading.symbol.3"
-      0:
-        name: "markup.heading.text.3"
-  - name: markup.heading.4
-    match: "^\\s*(#{4})\\s+([^//]*)"
+  - name: markup.heading.text.4
+    begin: "^\\s*(#{4})\\s+"
+    end: "(?=$|//)"
     captures:
       1:
         name: "markup.heading.symbol.4"
-      0:
-        name: "markup.heading.text.4"
-  - name: markup.heading.5
-    match: "^\\s*(#{5})\\s+([^//]*)"
+  - name: markup.heading.text.5
+    begin: "^\\s*(#{5})\\s+"
+    end: "(?=$|//)"
     captures:
       1:
         name: "markup.heading.symbol.5"
-      0:
-        name: "markup.heading.text.5"
-  - name: markup.heading.6
-    match: "^\\s*(#{6})\\s+([^//]*)"
+  - name: markup.heading.text.6
+    begin: "^\\s*(#{6})\\s+"
+    end: "(?=$|//)"
     captures:
       1:
         name: "markup.heading.symbol.6"
-      0:
-        name: "markup.heading.text.6"
   - name: markup.placeholder
     begin: "{{2}\\s*"
     end: "\\s*}{2}"
