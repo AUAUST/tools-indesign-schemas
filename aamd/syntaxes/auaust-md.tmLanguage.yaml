@@ -61,31 +61,14 @@ patterns:
         name: "markup.heading.symbol"
       0:
         name: "markup.heading.text"
-  # - name: markup.placeholder
-  #   match: \{\{\s*([\w-]+)\s*\}\}
-  #   captures:
-  #     0:
-  #       name: markup.placeholder.symbol
-  #     1:
-  #       name: markup.placeholder.custom
   - name: markup.placeholder
     begin: "{{2}\\s*"
     end: "\\s*}{2}"
     patterns:
-      # - name: markup.placeholder.symbol
-      #   match: "(?<=\\{{).*?(?=\\}})"
       - name: markup.placeholder.default
         match: (mm|dd|yyyy|hh|ii|ss|ampm)
       - name: markup.placeholder.custom
         match: \w+
-      # - name: markup.placeholder.ponctuation.chaining
-      #   begin: "->"
-      #   end: "->"
-      #   patterns:
-      #     - name: markup.placeholder.function
-      #       match: \w+
-      #     - name: markup.placeholder.ponctuation.open_arg
-      #       match: "\\w+\\s*(:)"
       - name: markup.placeholder
         match: "(->)\\s*(\\w+)\\s*(:\\s*(\\w+))?"
         captures:
