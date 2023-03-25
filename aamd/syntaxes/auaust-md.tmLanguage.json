@@ -88,27 +88,18 @@
     },
     {
       "name": "markup.placeholder",
-      "match": "\\{\\{\\s*([\\w-]+)\\s*\\}\\}",
-      "captures": {
-        "0": {
-          "name": "markup.placeholder.symbol"
+      "begin": "{{\\s*",
+      "end": "\\s*}}",
+      "patterns": [
+        {
+          "name": "markup.placeholder.default",
+          "match": "(mm|dd|yyyy|hh|ii|ss|ampm)"
         },
-        "1": {
-          "name": "markup.placeholder.custom"
+        {
+          "name": "markup.placeholder.custom",
+          "match": "\\w+"
         }
-      }
-    },
-    {
-      "name": "markup.placeholder",
-      "match": "\\{\\{\\s*([mm|nn])\\s*\\}\\}",
-      "captures": {
-        "0": {
-          "name": "markup.placeholder.symbol"
-        },
-        "1": {
-          "name": "markup.placeholder.default"
-        }
-      }
+      ]
     }
   ]
 }
