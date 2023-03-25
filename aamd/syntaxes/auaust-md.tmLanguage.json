@@ -88,25 +88,25 @@
     },
     {
       "name": "markup.placeholder",
-      "match": "\\{\\{([a|b|c])\\}\\}",
-      "captures": {
-        "0": {
-          "name": "markup.placeholder.symbol"
-        },
-        "1": {
-          "name": "markup.placeholder.default"
-        }
-      }
-    },
-    {
-      "name": "markup.placeholder",
-      "match": "\\{\\{([\\w-]+)\\}\\}",
+      "match": "\\{\\{\\s*([\\w-]+)\\s*\\}\\}",
       "captures": {
         "0": {
           "name": "markup.placeholder.symbol"
         },
         "1": {
           "name": "markup.placeholder.custom"
+        }
+      }
+    },
+    {
+      "name": "markup.placeholder",
+      "match": "\\{\\{\\s*([mm|nn])\\s*\\}\\}",
+      "captures": {
+        "0": {
+          "name": "markup.placeholder.symbol"
+        },
+        "1": {
+          "name": "markup.placeholder.default"
         }
       }
     }

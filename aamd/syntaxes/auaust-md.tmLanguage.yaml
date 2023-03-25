@@ -1,3 +1,12 @@
+# Convert yaml to json
+# npx js-yaml syntaxes/auaust-md.tmLanguage.yaml > syntaxes/auaust-md.tmLanguage.json
+
+# Bundle the extension
+# vsce package
+
+# Install the extension
+# code --install-extension auaust-md-0.0.1.vsix
+
 name: "AUAUST Markdown"
 
 scopeName: "text.auaust-md"
@@ -53,16 +62,16 @@ patterns:
       0:
         name: "markup.heading.text"
   - name: markup.placeholder
-    match: \{\{([a|b|c])\}\}
-    captures:
-      0:
-        name: markup.placeholder.symbol
-      1:
-        name: markup.placeholder.default
-  - name: markup.placeholder
-    match: \{\{([\w-]+)\}\}
+    match: \{\{\s*([\w-]+)\s*\}\}
     captures:
       0:
         name: markup.placeholder.symbol
       1:
         name: markup.placeholder.custom
+  - name: markup.placeholder
+    match: \{\{\s*([mm|nn])\s*\}\}
+    captures:
+      0:
+        name: markup.placeholder.symbol
+      1:
+        name: markup.placeholder.default

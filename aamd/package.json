@@ -33,5 +33,11 @@
   },
   "devDependencies": {
     "js-yaml": "^4.1.0"
+  },
+  "scripts": {
+    "update": "yarn convert-yaml && yarn build --silent && yarn install",
+    "convert-yaml": "npx js-yaml syntaxes/auaust-md.tmLanguage.yaml > syntaxes/auaust-md.tmLanguage.json",
+    "build": "vsce package",
+    "install": "code --install-extension auaust-md-0.0.1.vsix"
   }
 }
