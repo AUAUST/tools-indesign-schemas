@@ -25,7 +25,7 @@
     {
       "name": "markup.heading.text.2",
       "begin": "^\\s*(#{2})\\s+",
-      "end": "(?=$|//)",
+      "end": "(?=$|(?<!\\\\)//)",
       "captures": {
         "1": {
           "name": "markup.heading.symbol.2"
@@ -35,7 +35,7 @@
     {
       "name": "markup.heading.text.3",
       "begin": "^\\s*(#{3})\\s+",
-      "end": "(?=$|//)",
+      "end": "(?=$|(?<!\\\\)//)",
       "captures": {
         "1": {
           "name": "markup.heading.symbol.3"
@@ -45,7 +45,7 @@
     {
       "name": "markup.heading.text.4",
       "begin": "^\\s*(#{4})\\s+",
-      "end": "(?=$|//)",
+      "end": "(?=$|(?<!\\\\)//)",
       "captures": {
         "1": {
           "name": "markup.heading.symbol.4"
@@ -55,7 +55,7 @@
     {
       "name": "markup.heading.text.5",
       "begin": "^\\s*(#{5})\\s+",
-      "end": "(?=$|//)",
+      "end": "(?=$|(?<!\\\\)//)",
       "captures": {
         "1": {
           "name": "markup.heading.symbol.5"
@@ -65,7 +65,7 @@
     {
       "name": "markup.heading.text.6",
       "begin": "^\\s*(#{6})\\s+",
-      "end": "(?=$|//)",
+      "end": "(?=$|(?<!\\\\)//)",
       "captures": {
         "1": {
           "name": "markup.heading.symbol.6"
