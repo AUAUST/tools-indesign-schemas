@@ -100,7 +100,7 @@
     {
       "name": "markup.heading.text.6",
       "begin": "^\\s*(#{6})\\s+",
-      "end": "([\n|\r]{2,}|(?<!\\\\)//)",
+      "end": "(?=$|(?<!\\\\)//)",
       "patterns": [
         {
           "include": "#escape"

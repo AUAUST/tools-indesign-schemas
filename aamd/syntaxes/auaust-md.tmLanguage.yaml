@@ -66,6 +66,8 @@ patterns:
   - name: markup.heading.text.6
     begin: "^\\s*(#{6})\\s+"
     end: "(?=$|(?<!\\\\)//)"
+    patterns:
+      - include: "#escape"
     captures:
       1:
         name: "markup.heading.symbol.6"
