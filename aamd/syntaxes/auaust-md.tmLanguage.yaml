@@ -87,6 +87,7 @@ patterns:
         name: "markup.multi_line.limit"
     patterns:
       - name: markup.inline.key
+  - name: markup.inline.key
     match: "^(@)(\\w+)(=)(.*)"
     captures:
       1:

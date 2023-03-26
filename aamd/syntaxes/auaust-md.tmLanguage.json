@@ -130,7 +130,12 @@
         "4": {
           "name": "markup.multi_line.limit"
         }
-      }
+      },
+      "patterns": [
+        {
+          "name": "markup.inline.key"
+        }
+      ]
     },
     {
       "name": "markup.inline.key",
