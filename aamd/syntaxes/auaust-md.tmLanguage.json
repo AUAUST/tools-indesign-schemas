@@ -46,8 +46,13 @@
     },
     "bold": {
       "name": "markup.bold",
-      "begin": "(?<!\\\\)\\*\\*",
-      "end": "(?<!\\\\)\\*\\*",
+      "begin": "(?<!\\\\)(\\*\\*)",
+      "end": "(?<!\\\\)(\\*\\*)",
+      "captures": {
+        "1": {
+          "name": "markup.bold.symbol"
+        }
+      },
       "patterns": [
         {
           "include": "#escape"
@@ -62,8 +67,13 @@
     },
     "italic": {
       "name": "markup.italic",
-      "begin": "(?<!\\\\)__",
-      "end": "(?<!\\\\)__",
+      "begin": "(?<!\\\\)(__)",
+      "end": "(?<!\\\\)(__)",
+      "captures": {
+        "1": {
+          "name": "markup.italic.symbol"
+        }
+      },
       "patterns": [
         {
           "include": "#escape"
@@ -75,6 +85,16 @@
           "include": "#placeholder"
         }
       ]
+    },
+    "comment": {
+      "name": "comment.line",
+      "comment": "//",
+      "match": "(?<!\\\\)//(.*)",
+      "captures": {
+        "1": {
+          "name": "comment.line"
+        }
+      }
     }
   },
   "patterns": [
@@ -91,22 +111,18 @@
       "include": "#placeholder"
     },
     {
-      "name": "comment.line",
-      "comment": "//",
-      "match": "(?<!\\\\)//(.*)",
-      "captures": {
-        "1": {
-          "name": "comment.line"
-        }
-      }
+      "include": "#comment"
     },
     {
       "name": "markup.heading.text.1",
       "begin": "^\\s*(#{1})\\s+",
-      "end": "(?=$|(?<!\\\\)//)",
+      "end": "(?=$)",
       "patterns": [
         {
           "include": "#escape"
+        },
+        {
+          "include": "#comment"
         }
       ],
       "captures": {
@@ -118,10 +134,13 @@
     {
       "name": "markup.heading.text.2",
       "begin": "^\\s*(#{2})\\s+",
-      "end": "(?=$|(?<!\\\\)//)",
+      "end": "(?=$)",
       "patterns": [
         {
           "include": "#escape"
+        },
+        {
+          "include": "#comment"
         }
       ],
       "captures": {
@@ -133,10 +152,13 @@
     {
       "name": "markup.heading.text.3",
       "begin": "^\\s*(#{3})\\s+",
-      "end": "(?=$|(?<!\\\\)//)",
+      "end": "(?=$)",
       "patterns": [
         {
           "include": "#escape"
+        },
+        {
+          "include": "#comment"
         }
       ],
       "captures": {
@@ -148,10 +170,13 @@
     {
       "name": "markup.heading.text.4",
       "begin": "^\\s*(#{4})\\s+",
-      "end": "(?=$|(?<!\\\\)//)",
+      "end": "(?=$)",
       "patterns": [
         {
           "include": "#escape"
+        },
+        {
+          "include": "#comment"
         }
       ],
       "captures": {
@@ -163,10 +188,13 @@
     {
       "name": "markup.heading.text.5",
       "begin": "^\\s*(#{5})\\s+",
-      "end": "(?=$|(?<!\\\\)//)",
+      "end": "(?=$)",
       "patterns": [
         {
           "include": "#escape"
+        },
+        {
+          "include": "#comment"
         }
       ],
       "captures": {
@@ -178,10 +206,13 @@
     {
       "name": "markup.heading.text.6",
       "begin": "^\\s*(#{6})\\s+",
-      "end": "(?=$|(?<!\\\\)//)",
+      "end": "(?=$)",
       "patterns": [
         {
           "include": "#escape"
+        },
+        {
+          "include": "#comment"
         }
       ],
       "captures": {
