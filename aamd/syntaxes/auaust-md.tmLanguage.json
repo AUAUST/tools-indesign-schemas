@@ -1,14 +1,20 @@
 {
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "AUAUST Markdown",
   "scopeName": "text.auaust-md",
-  "patterns": [
-    {
+  "repository": {
+    "escape": {
       "name": "constant.character.escape",
       "match": "\\\\([\\/\\\\{}#*_])"
+    }
+  },
+  "patterns": [
+    {
+      "include": "#escape"
     },
     {
       "name": "comment.line",
-      "comment": true,
+      "comment": "//",
       "match": "(?<!\\\\)//(.*)",
       "captures": {
         "1": {
@@ -20,6 +26,11 @@
       "name": "markup.heading.text.1",
       "begin": "^\\s*(#{1})\\s+",
       "end": "(?=$|(?<!\\\\)//)",
+      "patterns": [
+        {
+          "include": "#escape"
+        }
+      ],
       "captures": {
         "1": {
           "name": "markup.heading.symbol.1"
@@ -30,6 +41,11 @@
       "name": "markup.heading.text.2",
       "begin": "^\\s*(#{2})\\s+",
       "end": "(?=$|(?<!\\\\)//)",
+      "patterns": [
+        {
+          "include": "#escape"
+        }
+      ],
       "captures": {
         "1": {
           "name": "markup.heading.symbol.2"
@@ -40,6 +56,11 @@
       "name": "markup.heading.text.3",
       "begin": "^\\s*(#{3})\\s+",
       "end": "(?=$|(?<!\\\\)//)",
+      "patterns": [
+        {
+          "include": "#escape"
+        }
+      ],
       "captures": {
         "1": {
           "name": "markup.heading.symbol.3"
@@ -50,6 +71,11 @@
       "name": "markup.heading.text.4",
       "begin": "^\\s*(#{4})\\s+",
       "end": "(?=$|(?<!\\\\)//)",
+      "patterns": [
+        {
+          "include": "#escape"
+        }
+      ],
       "captures": {
         "1": {
           "name": "markup.heading.symbol.4"
@@ -60,6 +86,11 @@
       "name": "markup.heading.text.5",
       "begin": "^\\s*(#{5})\\s+",
       "end": "(?=$|(?<!\\\\)//)",
+      "patterns": [
+        {
+          "include": "#escape"
+        }
+      ],
       "captures": {
         "1": {
           "name": "markup.heading.symbol.5"
@@ -69,7 +100,12 @@
     {
       "name": "markup.heading.text.6",
       "begin": "^\\s*(#{6})\\s+",
-      "end": "(?=$|(?<!\\\\)//)",
+      "end": "([\n|\r]{2,}|(?<!\\\\)//)",
+      "patterns": [
+        {
+          "include": "#escape"
+        }
+      ],
       "captures": {
         "1": {
           "name": "markup.heading.symbol.6"
