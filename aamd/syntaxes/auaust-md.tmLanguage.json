@@ -99,21 +99,6 @@
   },
   "patterns": [
     {
-      "include": "#escape"
-    },
-    {
-      "include": "#bold"
-    },
-    {
-      "include": "#italic"
-    },
-    {
-      "include": "#placeholder"
-    },
-    {
-      "include": "#comment"
-    },
-    {
       "name": "markup.multi_line.key",
       "begin": "^(@)(\\w+)(=)(>{5})",
       "end": "^()()()(<{5})",
@@ -132,6 +117,21 @@
         }
       },
       "patterns": [
+        {
+          "include": "#escape"
+        },
+        {
+          "include": "#bold"
+        },
+        {
+          "include": "#italic"
+        },
+        {
+          "include": "#placeholder"
+        },
+        {
+          "include": "#comment"
+        },
         {
           "name": "markup.heading.text.1",
           "begin": "^\\s*(#{1})\\s+",
