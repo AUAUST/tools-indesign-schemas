@@ -100,7 +100,7 @@
   "patterns": [
     {
       "name": "markup.multi_line.key",
-      "begin": "^(@)(\\w+)(=)(>{5})",
+      "begin": "^(@)(\\w+)(=)(>{5})(.+)?",
       "end": "^()()()(<{5})",
       "captures": {
         "1": {
@@ -114,6 +114,9 @@
         },
         "4": {
           "name": "markup.multi_line.limit"
+        },
+        "5": {
+          "name": "markup.syntax_error"
         }
       },
       "patterns": [
