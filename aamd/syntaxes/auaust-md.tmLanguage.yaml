@@ -151,3 +151,8 @@ patterns:
         name: "markup.inline.key.symbol"
       4:
         name: "markup.inline.value"
+  - name: markup.syntax_error
+    match: "(.*)"
+    captures:
+      1:
+        name: "markup.syntax_error"
