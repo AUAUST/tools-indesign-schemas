@@ -114,6 +114,43 @@
       "include": "#comment"
     },
     {
+      "name": "markup.multi_line.key",
+      "begin": "^(@)(\\w+)(=)(>{5})",
+      "end": "^()()()(<{5})",
+      "captures": {
+        "1": {
+          "name": "markup.multi_line.key.symbol"
+        },
+        "2": {
+          "name": "markup.multi_line.key.name"
+        },
+        "3": {
+          "name": "markup.multi_line.key.symbol"
+        },
+        "4": {
+          "name": "markup.multi_line.limit"
+        }
+      }
+    },
+    {
+      "name": "markup.inline.key",
+      "match": "^(@)(\\w+)(=)(.*)",
+      "captures": {
+        "1": {
+          "name": "markup.inline.key.symbol"
+        },
+        "2": {
+          "name": "markup.inline.key.name"
+        },
+        "3": {
+          "name": "markup.inline.key.symbol"
+        },
+        "4": {
+          "name": "markup.inline.value"
+        }
+      }
+    },
+    {
       "name": "markup.heading.text.1",
       "begin": "^\\s*(#{1})\\s+",
       "end": "(?=$)",
