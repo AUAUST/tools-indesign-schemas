@@ -86,7 +86,60 @@ patterns:
       4:
         name: "markup.multi_line.limit"
     patterns:
-      - name: markup.inline.key
+      - name: markup.heading.text.1
+        begin: "^\\s*(#{1})\\s+"
+        end: "(?=$)"
+        patterns:
+          - include: "#escape"
+          - include: "#comment"
+        captures:
+          1:
+            name: "markup.heading.symbol.1"
+      - name: markup.heading.text.2
+        begin: "^\\s*(#{2})\\s+"
+        end: "(?=$)"
+        patterns:
+          - include: "#escape"
+          - include: "#comment"
+        captures:
+          1:
+            name: "markup.heading.symbol.2"
+      - name: markup.heading.text.3
+        begin: "^\\s*(#{3})\\s+"
+        end: "(?=$)"
+        patterns:
+          - include: "#escape"
+          - include: "#comment"
+        captures:
+          1:
+            name: "markup.heading.symbol.3"
+      - name: markup.heading.text.4
+        begin: "^\\s*(#{4})\\s+"
+        end: "(?=$)"
+        patterns:
+          - include: "#escape"
+          - include: "#comment"
+        captures:
+          1:
+            name: "markup.heading.symbol.4"
+      - name: markup.heading.text.5
+        begin: "^\\s*(#{5})\\s+"
+        end: "(?=$)"
+        patterns:
+          - include: "#escape"
+          - include: "#comment"
+        captures:
+          1:
+            name: "markup.heading.symbol.5"
+      - name: markup.heading.text.6
+        begin: "^\\s*(#{6})\\s+"
+        end: "(?=$)"
+        patterns:
+          - include: "#escape"
+          - include: "#comment"
+        captures:
+          1:
+            name: "markup.heading.symbol.6"
   - name: markup.inline.key
     match: "^(@)(\\w+)(=)(.*)"
     captures:
@@ -98,58 +151,3 @@ patterns:
         name: "markup.inline.key.symbol"
       4:
         name: "markup.inline.value"
-
-  - name: markup.heading.text.1
-    begin: "^\\s*(#{1})\\s+"
-    end: "(?=$)"
-    patterns:
-      - include: "#escape"
-      - include: "#comment"
-    captures:
-      1:
-        name: "markup.heading.symbol.1"
-  - name: markup.heading.text.2
-    begin: "^\\s*(#{2})\\s+"
-    end: "(?=$)"
-    patterns:
-      - include: "#escape"
-      - include: "#comment"
-    captures:
-      1:
-        name: "markup.heading.symbol.2"
-  - name: markup.heading.text.3
-    begin: "^\\s*(#{3})\\s+"
-    end: "(?=$)"
-    patterns:
-      - include: "#escape"
-      - include: "#comment"
-    captures:
-      1:
-        name: "markup.heading.symbol.3"
-  - name: markup.heading.text.4
-    begin: "^\\s*(#{4})\\s+"
-    end: "(?=$)"
-    patterns:
-      - include: "#escape"
-      - include: "#comment"
-    captures:
-      1:
-        name: "markup.heading.symbol.4"
-  - name: markup.heading.text.5
-    begin: "^\\s*(#{5})\\s+"
-    end: "(?=$)"
-    patterns:
-      - include: "#escape"
-      - include: "#comment"
-    captures:
-      1:
-        name: "markup.heading.symbol.5"
-  - name: markup.heading.text.6
-    begin: "^\\s*(#{6})\\s+"
-    end: "(?=$)"
-    patterns:
-      - include: "#escape"
-      - include: "#comment"
-    captures:
-      1:
-        name: "markup.heading.symbol.6"
