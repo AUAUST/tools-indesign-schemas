@@ -244,7 +244,8 @@
     },
     {
       "name": "markup.inline.key",
-      "match": "^(@)(\\w+)(=)(.*)",
+      "begin": "^(@)(\\w+)(=)",
+      "end": "(?=$)",
       "captures": {
         "1": {
           "name": "markup.inline.key.symbol"
@@ -258,7 +259,15 @@
         "4": {
           "name": "markup.inline.value"
         }
-      }
+      },
+      "patterns": [
+        {
+          "include": "#placeholder"
+        },
+        {
+          "include": "#escape"
+        }
+      ]
     },
     {
       "name": "markup.syntax_error",
