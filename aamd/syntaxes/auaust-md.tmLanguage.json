@@ -273,13 +273,8 @@
       ]
     },
     {
-      "name": "markup.syntax_error",
-      "match": "(.*)",
-      "captures": {
-        "1": {
-          "name": "markup.syntax_error"
-        }
-      }
+      "name": "markup.ignored",
+      "match": ".*"
     }
   ]
 }
