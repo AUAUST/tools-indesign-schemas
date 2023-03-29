@@ -100,8 +100,8 @@
   "patterns": [
     {
       "name": "markup.multi_line.key",
-      "begin": "^(@)(\\w+)(=)(>{5})(.+)?",
-      "end": "^()()()(<{5})",
+      "begin": "^(@)(\\w+)(=)(`{3})(.+)?",
+      "end": "^()()()(`{3})",
       "captures": {
         "1": {
           "name": "markup.multi_line.key.symbol"
