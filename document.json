@@ -34,6 +34,21 @@
           "type": "string",
           "minLength": 1,
           "description": "The project name. Is used to determine the value of the {project} placeholder.\n\nUpper case letters are recoomended."
+        },
+        "intent": {
+          "type": "string",
+          "markdownDescription": "The final intent of the document.  \nEither it's for `WEB`, `MOBILE` or `PRINT`.",
+          "enum": ["WEB", "MOBILE", "PRINT"]
+        },
+        "save": {
+          "type": "boolean",
+          "markdownDescription": "Whether or not to save the generated InDesign document automatically.  \n\n__Note__: The main change is that you won't be prompted to select a folder twice, but you'll need to save the file later.",
+          "default": true
+        },
+        "debug": {
+          "type": "boolean",
+          "markdownDescription": "Whether or not to show debug information.  \n\n__Note__: Setting it to false disables all feedbacks, including helpful information. There's very little reason to set it to false.",
+          "default": true
         }
       },
       "required": ["project"]
