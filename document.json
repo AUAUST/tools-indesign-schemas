@@ -18,6 +18,30 @@
         }
       ]
     },
+    "renderingIntents": {
+      "anyOf": [
+        {
+          "const": "ABSOLUTE_COLORIMETRIC",
+          "description": "Maintains color accuracy at the expense of preserving relationships between colors; most suitable for previewing how paper color affects printed colors."
+        },
+        {
+          "const": "PERCEPTUAL",
+          "description": "Preserves the visual relationship between colors at the expense of actual color values; most suitable for photographic images with high percentages of out-of-gamut colors."
+        },
+        {
+          "const": "RELATIVE_COLORIMETRIC",
+          "description": "Compares the extreme highlight of the source color space to that of the desination color space and shifts all colors accordingly; out-of-gamut colors are shifted to the closest reproducible color in the destination color space."
+        },
+        {
+          "const": "SATURATION",
+          "description": "Produces vivid colors at the expense of color accuracy; most suitable for business graphics such as graphs or charts."
+        },
+        {
+          "const": "USE_COLOR_SETTINGS",
+          "description": "Uses the current color settings."
+        }
+      ]
+    },
     "id": { "type": "string", "pattern": "^[a-zA-Z0-9_.-]+$" }
   },
   "properties": {
@@ -121,6 +145,25 @@
                       "description": "Preserves embedded color profiles in newly opened documents."
                     }
                   ]
+                }
+              }
+            },
+            "intents": {
+              "type": "object",
+              "description": "The color intents settings.",
+              "additionalProperties": false,
+              "properties": {
+                "afterBlending": {
+                  "description": "The rendering intent for colors that result from transparency interactions on the page after blending.",
+                  "$ref": "#/definitions/renderingIntents"
+                },
+                "images": {
+                  "description": "The rendering intent for bitmap (non-vector) images.",
+                  "$ref": "#/definitions/renderingIntents"
+                },
+                "vector": {
+                  "description": "The rendering intent for all vector art (areas of solid color) in native objects.",
+                  "$ref": "#/definitions/renderingIntents"
                 }
               }
             }
