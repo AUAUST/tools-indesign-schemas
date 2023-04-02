@@ -3,5 +3,40 @@
   "$id": "AUAUST-TOOLS-InDesign-Schemas-Document",
   "title": "AUAUST TOOLS — InDesign — Document schema",
   "description": "A .aajson file formatted as JSON containing the settings for a generated InDesign document.",
-  "type": "object"
+  "type": "object",
+  "additionalProperties": false,
+  "definitions": {
+    "unit": {
+      "anyOf": [
+        {
+          "type": "number",
+          "description": "When set to a number without an unit, the unit used is the one set in the general `document.aajson` config. If it isn't there, it fallbacks to `um`."
+        },
+        {
+          "type": "string",
+          "pattern": "^-?[0-9]+(?:\\.[0-9]+)?(?:pt|mm|cm|in|i|um|)$"
+        }
+      ]
+    },
+    "id": { "type": "string", "pattern": "^[a-zA-Z0-9_.-]+$" }
+  },
+  "properties": {
+    "file": {
+      "type": "object",
+      "description": "The file settings.",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "markdownDescription": "The name of the generated InDesign document. Used for the file name and the metadata title.  \n\nA few useful placeholders are available, such as:  \n`{project}` (the project name specified in the `file.project` key), `{script}` (the script name, which is probably 'GENERATE'), and dates such as `{YYYY}`, `{YY}`, `{MM}`, `{mm}`, `{ss}` etc.  \n\n__Note__: Do not include the file extension."
+        },
+        "project": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The project name. Is used to determine the value of the {project} placeholder.\n\nUpper case letters are recoomended."
+        }
+      },
+      "required": ["project"]
+    }
+  }
 }
