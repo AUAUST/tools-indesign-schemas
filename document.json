@@ -179,7 +179,8 @@
       "properties": {
         "language": {
           "type": "string",
-          "definition": "The document's language, used for hyphenation and other language-specific features if not otherwise specified (for exemple in paragraph styles)."
+          "definition": "The document's language, used for hyphenation and other language-specific features if not otherwise specified (for exemple in paragraph styles).",
+          "$ref": "https://raw.githubusercontent.com/AUAUST/tools-indesign-schemas/main/styles.json#/definitions/language"
         }
       }
     }
