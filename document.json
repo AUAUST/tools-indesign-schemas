@@ -181,6 +181,56 @@
           "type": "string",
           "definition": "The document's language, used for hyphenation and other language-specific features if not otherwise specified (for exemple in paragraph styles).",
           "$ref": "https://raw.githubusercontent.com/AUAUST/tools-indesign-schemas/main/styles.json#/definitions/language"
+        },
+        "defaultUnit": {
+          "type": "string",
+          "markdownDescription": "The default unit to use for measurements.  \nEither it's `POINTS`, `MM`, `CM`, `INCHES`, or, obviously, `UM`.",
+          "enum": [
+            "mm",
+            "millimeters",
+            "cm",
+            "centimeters",
+            "points",
+            "pt",
+            "inches",
+            "i",
+            "in",
+            "um",
+            "unité minimale",
+            "MM",
+            "CM",
+            "POINTS",
+            "PT",
+            "INCHES",
+            "I",
+            "IN",
+            "UM"
+          ]
+        },
+        "pages": {
+          "type": "object",
+          "description": "The document's pages settings.",
+          "additionalProperties": false,
+          "properties": {
+            "facing": {
+              "type": "boolean",
+              "description": "If true, the document has facing pages."
+            },
+            "from": {
+              "type": "integer",
+              "description": "The starting page number for a document. This is the same as the starting page number for the first section of a document.",
+              "default": 1,
+              "minimum": 1,
+              "maximum": 999999
+            },
+            "count": {
+              "type": "integer",
+              "description": "The number of pages in the document.",
+              "default": 1,
+              "minimum": 1,
+              "maximum": 9999
+            }
+          }
         }
       }
     }
