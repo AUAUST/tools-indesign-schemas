@@ -1,0 +1,7 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "AUAUST-TOOLS-InDesign-Schemas-Document",
+  "title": "AUAUST TOOLS — InDesign — Document schema",
+  "description": "A .aajson file formatted as JSON containing the settings for a generated InDesign document.",
+  "type": "object"
+}
