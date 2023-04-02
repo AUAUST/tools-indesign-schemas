@@ -49,6 +49,82 @@
           "type": "boolean",
           "markdownDescription": "Whether or not to show debug information.  \n\n__Note__: Setting it to false disables all feedbacks, including helpful information. There's very little reason to set it to false.",
           "default": true
+        },
+        "colors": {
+          "type": "object",
+          "description": "The colors management settings.",
+          "additionalProperties": false,
+          "properties": {
+            "transparency": {
+              "type": "string",
+              "markdownDescription": "The color mode for handling transparencies.  \nEither it's `CMYK` or `RGB`.",
+              "enum": ["CMYK", "RGB"]
+            },
+            "profiles": {
+              "type": "object",
+              "description": "The color profiles settings.",
+              "additionalProperties": false,
+              "properties": {
+                "CMYK": {
+                  "type": "string",
+                  "markdownDescription": "The CMYK color profile to use.  \nYou can use the wildcard `*` to allow any character(s) at that place, if you don't know the exact name.  \n\n__Note__: The color profile must be installed on the system."
+                },
+                "RGB": {
+                  "type": "string",
+                  "markdownDescription": "The RGB color profile to use.  \nYou can use the wildcard `*` to allow any character(s) at that place, if you don't know the exact name.  \n\n__Note__: The color profile must be installed on the system."
+                }
+              }
+            },
+            "policies": {
+              "type": "object",
+              "description": "The color policies settings.",
+              "additionalProperties": false,
+              "properties": {
+                "CMYK": {
+                  "description": "The CMYK color policies settings.  \nThey describe how imported and embedded colors should be handled, when using images for exemple.",
+                  "anyOf": [
+                    {
+                      "const": "OFF",
+                      "description": "Turns off color management for documents whose profiles do not match the working space. For imported colors, numeric values override color appearance."
+                    },
+                    {
+                      "const": "PRESERVE_AND_SAFE_CMYK",
+                      "description": "Preserves raw color numbers and ignores embedded color profiles."
+                    },
+                    {
+                      "const": "CONVERT_TO_WORKING_SPACE",
+                      "description": "Converts newly opened documents to the current working space. For imported colors, color appearance overrides numeric values."
+                    },
+                    {
+                      "const": "PRESERVE_EMBEDDED_PROFILES",
+                      "description": "Preserves embedded color profiles in newly opened documents."
+                    }
+                  ]
+                },
+                "RGB": {
+                  "description": "The RGB color policies settings.  \nThey describe how imported and embedded colors should be handled, when using images for exemple.",
+                  "anyOf": [
+                    {
+                      "const": "OFF",
+                      "description": "Turns off color management for documents whose profiles do not match the working space. For imported colors, numeric values override color appearance."
+                    },
+                    {
+                      "const": "PRESERVE_AND_SAFE_RGB",
+                      "description": "Preserves raw color numbers and ignores embedded color profiles."
+                    },
+                    {
+                      "const": "CONVERT_TO_WORKING_SPACE",
+                      "description": "Converts newly opened documents to the current working space. For imported colors, color appearance overrides numeric values."
+                    },
+                    {
+                      "const": "PRESERVE_EMBEDDED_PROFILES",
+                      "description": "Preserves embedded color profiles in newly opened documents."
+                    }
+                  ]
+                }
+              }
+            }
+          }
         }
       },
       "required": ["project"]
