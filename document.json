@@ -348,6 +348,18 @@
               },
               "minItems": 3,
               "maxItems": 3
+            },
+            "threshold": {
+              "type": "integer",
+              "description": "The magnification (as a percentage of the document view) less than which ruler guides do not appear.",
+              "default": 75,
+              "minimum": 5,
+              "maximum": 4000
+            },
+            "snapTo": {
+              "type": "boolean",
+              "description": "If true, an object snaps to the nearest grid line when the object is created, moved, or resized.",
+              "default": false
             }
           }
         }
