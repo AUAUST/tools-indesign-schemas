@@ -231,6 +231,67 @@
               "maximum": 9999
             }
           }
+        },
+        "dimensions": {
+          "type": "object",
+          "description": "The document's dimensions settings.",
+          "additionalProperties": false,
+          "properties": {
+            "width": {
+              "definition": "The document's width.",
+              "$ref": "#/definitions/unit"
+            },
+            "height": {
+              "definition": "The document's height.",
+              "$ref": "#/definitions/unit"
+            }
+          }
+        },
+        "margins": {
+          "type": "object",
+          "description": "The document's margins settings.",
+          "additionalProperties": false,
+          "properties": {
+            "top": {
+              "description": "The document's top margin.",
+              "$ref": "#/definitions/unit"
+            },
+            "inner": {
+              "description": "The document's inner margin, or left margin if it hasn't facing pages.",
+              "$ref": "#/definitions/unit"
+            },
+            "outer": {
+              "description": "The document's outer margin, or right margin if it hasn't facing pages.",
+              "$ref": "#/definitions/unit"
+            },
+            "bottom": {
+              "description": "The document's bottom margin.",
+              "$ref": "#/definitions/unit"
+            }
+          }
+        },
+        "bleed": {
+          "type": "object",
+          "description": "The document's bleed settings.",
+          "additionalProperties": false,
+          "properties": {
+            "top": {
+              "description": "The document's top bleed.",
+              "$ref": "#/definitions/unit"
+            },
+            "inner": {
+              "description": "The document's left bleed, or inner bleed if it has facing pages.",
+              "$ref": "#/definitions/unit"
+            },
+            "outer": {
+              "description": "The document's right bleed, or outer bleed if it has facing pages.",
+              "$ref": "#/definitions/unit"
+            },
+            "bottom": {
+              "description": "The document's bottom bleed.",
+              "$ref": "#/definitions/unit"
+            }
+          }
         }
       }
     }
