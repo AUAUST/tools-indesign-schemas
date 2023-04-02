@@ -292,6 +292,64 @@
               "$ref": "#/definitions/unit"
             }
           }
+        },
+        "grid": {
+          "type": "object",
+          "description": "The document's grid settings, including baseline grid, columns and gutters.",
+          "additionalProperties": false,
+          "properties": {
+            "columns": {
+              "type": "integer",
+              "description": "The number of columns in the document.",
+              "default": 1,
+              "minimum": 1,
+              "maximum": 216
+            },
+            "gutter": {
+              "description": "The document's gutter.",
+              "$ref": "#/definitions/unit"
+            },
+            "visible": {
+              "type": "boolean",
+              "description": "If true, the document's baseline grid is visible.",
+              "default": false
+            },
+            "startAt": {
+              "type": "integer",
+              "description": "The amount to offset the baseline grid from the zero point.",
+              "default": 1,
+              "minimum": 1,
+              "maximum": 216
+            },
+            "relativeTo": {
+              "description": "The zero point for the baseline grid offset.",
+              "anyOf": [
+                {
+                  "const": "MARGIN",
+                  "description": "The baseline grid offset zero point is at the top page margin."
+                },
+                {
+                  "const": "PAGE",
+                  "description": "The baseline grid offset zero point is at the top of the page."
+                }
+              ]
+            },
+            "lineHeight": {
+              "description": "The amount of space between baseline grid lines.",
+              "$ref": "#/definitions/unit"
+            },
+            "color": {
+              "description": "The color of the baseline grid.",
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          }
         }
       }
     }
