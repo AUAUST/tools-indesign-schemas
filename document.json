@@ -49,6 +49,7 @@
       "type": "object",
       "description": "The file settings.",
       "additionalProperties": false,
+      "required": ["project"],
       "properties": {
         "name": {
           "type": "string",
@@ -169,8 +170,18 @@
             }
           }
         }
-      },
-      "required": ["project"]
+      }
+    },
+    "document": {
+      "type": "object",
+      "description": "The document's overall layout settings.",
+      "additionalProperties": false,
+      "properties": {
+        "language": {
+          "type": "string",
+          "definition": "The document's language, used for hyphenation and other language-specific features if not otherwise specified (for exemple in paragraph styles)."
+        }
+      }
     }
   }
 }
