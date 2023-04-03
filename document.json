@@ -184,7 +184,7 @@
         },
         "defaultUnit": {
           "type": "string",
-          "markdownDescription": "The default unit to use for measurements.  \nEither it's `POINTS`, `MM`, `CM`, `INCHES`, or, obviously, `UM`.",
+          "markdownDescription": "The default unit to use for measurements.  \nEither it's `POINTS`, `MM`, `CM`, `INCHES`, or, obviously, `UM`.  \n\nIt is used for unit set a numbers, but can easily be overridden in specific places by specifying the unit in the string.",
           "enum": [
             "mm",
             "millimeters",
